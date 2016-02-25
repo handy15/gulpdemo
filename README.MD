@@ -49,8 +49,8 @@ gulp
         |__modules  # 公共html模块目录，如header、footer等
     |__img          # 图片文件目录
     |__js           # 脚本文件
-    |__less         # 预编译的less文件
-    |__sass         # 预编译的scss文件
+    |__less         # 预编译css的less文件
+    |__sass         # 预编译css的scss文件
 
 
 ##浏览地址
