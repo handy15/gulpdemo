@@ -158,7 +158,7 @@ gulp.task('html', function(){
 
 //copy images
 gulp.task('copyImages',function(){
-    gulp.src([PATH.src.img+'/*'])
+    gulp.src([PATH.src.img+'/**/*'])
         .pipe(gulp.dest(PATH.dest.img));
     return console.log(PATH.src.img + '下图片复制成功');
 });
