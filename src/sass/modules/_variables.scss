@@ -1,7 +1,20 @@
+//定义一些全局遍历，比如说字体颜色，字体大小，宽度，边框颜色等等
 //color变量
-$grey:#cccccc;
+$Cblack:#000000;
+$Cwhite:#ffffff;
+$Cblue: #00a3cf;
+$Corange: #ff851b;
+$Cgreen: #2ecc40;
+$Cpurple: #b10dc9;
+
 
 //文本变量
-$baseFontFamily:Arial, sans-serif;
-$baseFontSize:12px;
+$baseFontFamily:'microsoft Yahei', Arial, sans-serif;
+$baseFontSize:12px!default;
 $baseLineHeight:1.5!default;
+$f14:14px;
+$f15:15px;
+$f16:16px;
+
+//盒模型变量
+$boxMarginPadding:5px 10px 15px 20px;

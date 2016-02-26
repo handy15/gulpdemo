@@ -1,0 +1,25 @@
+//变量
+@import "modules/_variables";
+//代码片段
+@import "modules/_mixin";
+
+/*section*/
+.section01{
+  margin-top: 30px;
+  h1{
+    text-align: center;
+  }
+}
+.ul-modules{
+  width: 960px;
+  margin:0 auto;
+  li{
+    float:left;
+    width: 140px;
+    height: 140px;
+    margin:10px;
+    background-color: $Cblue;
+    color: $Cwhite;
+    font-size: 18px;
+  }
+}

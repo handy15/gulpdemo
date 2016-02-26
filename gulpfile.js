@@ -165,7 +165,7 @@ gulp.task('copyImages',function(){
 
 //copy fonts
 gulp.task('copyFonts',function(){
-    gulp.src([PATH.src.font+'/*'])
+    gulp.src([PATH.src.font+'/**/*'])
         .pipe(gulp.dest(PATH.dest.font));
     return console.log(PATH.src.font + '下字体复制成功');
 });
@@ -197,10 +197,10 @@ gulp.task('watch', function() {
     gulp.watch(PATH.src.js +'/**/*.js', ['scripts']);
     // 看守所有图片档
     //gulp.watch('src/img/**/*', ['images']);
-    gulp.watch([PATH.src.img],['copyImages']);
+    gulp.watch([PATH.src.img+'/**/*'],['copyImages']);
 
     //看守字体文件
-    gulp.watch([PATH.src.font],['copyFonts']);
+    gulp.watch([PATH.src.font+'/**/*'],['copyFonts']);
 
     // 看守所有HTML档
     gulp.watch(PATH.src.html +'/**/*.html', ['html']);
