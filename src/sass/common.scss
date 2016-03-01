@@ -13,14 +13,14 @@
 //布局
 .clear {
   clear: both;
-}
-.clear:after{
-  display: block;
-  content: '';
-  zoom: 1;
-  height: 0;
-  visibility: hidden;
-  clear: both;
+  &:after{
+    display: block;
+    content: '';
+    zoom: 1;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+  }
 }
 .cb{
   clear: both;
@@ -60,9 +60,10 @@ body{
 @include body-size('html');
 
 /*===========整体布局===========*/
-@include container-width('.header nav,.footer,.container');
+@include container-width('.header nav,.container');
 .container{
-  padding-top: 40px;
+  padding-top: 60px;
+  padding-bottom: 20px;
 }
 
 /*===========导航菜单===========*/
@@ -80,15 +81,40 @@ body{
   }
 }
 .nav{
-  position: relative;
-  left: 50%;
+  //float: left;
+  //position: relative;
+  //left: 50%;
   > li{
-    position: relative;
-    left:-50%;
+    //position: relative;
+    //left:-50%;
     float: left;
-    margin:0 30px;
+    padding: 0 15px;
+    margin:0 15px;
   }
   a{
     color: $Cwhite;
   }
+  .active{
+    background-color: $Corange;
+    @include skew(30deg);
+    a{
+      display:inline-block;
+      @include skew(-30deg);
+    }
+  }
+}
+//home
+.home{
+  display: inline-block;
+  width: 27px;
+  height: 27px;
+  background: url(#{$imgPath}/icon.png) 0 0 no-repeat;
+  vertical-align: middle;
+}
+/*===========页脚===========*/
+.footer{
+  background-color: $Cblack;
+  color: $Cwhite;
+  text-align: center;
+  padding: 20px;
 }

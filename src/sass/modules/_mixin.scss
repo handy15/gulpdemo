@@ -1,6 +1,6 @@
 //sass中可用mixin定义一些代码片段，且可传参数，方便日后根据需求调用。从此处理css3的前缀兼容轻松便捷。
 //body的字体大小设置：$select -> 样式选择器
-@mixin body-size($select){
+@mixin body-size($select:body){
   #{$select}{
     font-size:$baseFontSize;
   }
@@ -21,7 +21,7 @@
   }
 }
 //整体框架屏幕自适应：$select -> 样式选择器
-@mixin container-width($select){
+@mixin container-width($select:body){
   #{$select}{
     width:1000px;
     margin-left:auto;
@@ -52,7 +52,7 @@
 
 //盒模型
 //margin(margin的方向，margin的大小)
-@mixin box-margin-padding($boxType,$size){
+@mixin box-margin-padding($boxType:'margin',$size:5px){
   @if $boxType == margin {
     .m#{$size}{
       margin:$size;
@@ -87,4 +87,18 @@
     }
   }
 }
-//border
+//一行显示，超出范围显示省略号
+@mixin ellipsis {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+//变换-倾斜
+@mixin skew($deg:30deg){
+  transform:skew($deg);
+  -ms-transform:skew($deg); 	/* IE 9 */
+  -moz-transform:skew($deg); 	/* Firefox */
+  -webkit-transform:skew($deg); /* Safari 和 Chrome */
+  -o-transform:skew($deg); 	/* Opera */
+}

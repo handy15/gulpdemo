@@ -41,6 +41,7 @@ gulp
 |__node_modules     # gulp插件，通过在gulp文件夹下执行npm install，读取package.json中的dependencies和devDependencies配置安装插件
 |__gulpfile.js      # gulp通过gulpfile文件来完成相关任务，因此项目中必须包含gulpfile.js
 |__README.MD        # 工程说明
+|__design           # 设计图
 |__dist             # 经过gulp编译压缩，生成发布包的目录
 |__src              # 前端代码的源码目录
     |__css          # css文件目录
