@@ -15,9 +15,14 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     minifyHTML = require('gulp-htmlmin'),
     contentIncluder = require('gulp-content-includer'),
-    connect = require('gulp-connect');
+    connect = require('gulp-connect'),
+    rev = require('gulp-rev'),  //版本控制
+    revCollector = require('gulp-rev-collector')
+    //串行任务
+    ,runSequence = require('gulp-run-sequence');
 
 var PATH = {
+    //源码目录
     src: {
         html: 'src/html',
         css: 'src/css',
@@ -27,12 +32,29 @@ var PATH = {
         img: 'src/img',
         font: 'src/font'
     },
+    //调试目录
     dest: {
         html: 'dest/html',
         css: 'dest/css',
         js: 'dest/js',
         img: 'dest/img',
         font: 'dest/font'
+    }
+    //MD5版本号目录
+    ,MD5:{
+        html: 'dest/rev/html',
+        css: 'dest/rev/css',
+        js: 'dest/rev/js',
+        img: 'dest/rev/img',
+        font: 'dest/rev/font'
+    }
+    //发版目录
+    ,rev:{
+        html: 'release/html',
+        css: 'release/css',
+        js: 'release/js',
+        img: 'release/img',
+        font: 'release/font'
     }
 }
 
@@ -66,9 +88,9 @@ gulp.task('styles', function() {
         //.pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
         .pipe(gulp.dest(PATH.dest.css))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(minifycss())
-        .pipe(gulp.dest(PATH.dest.css))
+        //.pipe(rename({ suffix: '.min' }))
+        //.pipe(minifycss())
+        //.pipe(gulp.dest(PATH.dest.css))
         //.pipe(notify({ message: 'Styles task for sass complete' }));
     //less
     //gulp.src([PATH.src.less + '/*.less','!' + PATH.src.less +'/modules/**/*.less'])
@@ -81,22 +103,22 @@ gulp.task('styles', function() {
     //    //.pipe(notify({ message: 'Styles task for less complete' }));
 
     //css
-    gulp.src([PATH.src.css + '/**/*.css'])
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(minifycss())
-        .pipe(gulp.dest(PATH.dest.css));
+    //gulp.src([PATH.src.css + '/**/*.css'])
+    //    .pipe(rename({ suffix: '.min' }))
+    //    .pipe(minifycss())
+    //    .pipe(gulp.dest(PATH.dest.css));
 });
 
 //组件化的css生成
 gulp.task('renderCommon', function() {
     //common.scss
-    gulp.src([PATH.src.sass + 'common.scss'])
-        .pipe(sass().on('error', sass.logError))
+    gulp.src([PATH.src.sass + '/common.scss'])
+        .pipe(sass({outputStyle: 'expended'}).on('error', sass.logError))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-        .pipe(gulp.dest(PATH.dest.css+'common.css'))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(minifycss())
-        .pipe(gulp.dest(PATH.dest.css+'common.css'));
+        .pipe(gulp.dest(PATH.dest.css))
+        //.pipe(rename({ suffix: '.min' }))
+        //.pipe(minifycss())
+        //.pipe(gulp.dest(PATH.dest.css));
     //common.less
     //gulp.src([PATH.src.less + '/common.less'])
     //    .pipe(less({ style: 'expanded'}))
@@ -116,10 +138,10 @@ gulp.task('scripts', function() {
         .pipe(jshint.reporter('default'))
         .pipe(concat('main.js'))
         .pipe(gulp.dest(PATH.dest.js))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
-        .pipe(gulp.dest(PATH.dest.js))
-        .pipe(notify({ message: 'Scripts task complete' }));
+        //.pipe(rename({ suffix: '.min' }))
+        //.pipe(uglify())
+        //.pipe(gulp.dest(PATH.dest.js))
+        //.pipe(notify({ message: 'Scripts task complete' }));
 });
 
 // 图片
@@ -153,9 +175,9 @@ gulp.task('html', function(){
             includerReg:/<!\-\-include\s+"([^"]+)"\-\->/g
         }))
         .pipe(gulp.dest(PATH.dest.html))
-        .pipe(minifyHTML(opts))
+        //.pipe(minifyHTML(opts))
         //.pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest(PATH.dest.html + '/min'));
+        //.pipe(gulp.dest(PATH.dest.html + '/min'));
 });
 
 //copy images
@@ -178,7 +200,8 @@ gulp.task('webserver', function () {
         livereload: true,
         port: 8090//,
         //host: 'gulp.dev'
-        ,root: ['./dest', PATH.dest.html, '.tmp']
+        //,root: ['./dest', PATH.dest.html, '.tmp']
+        ,root: ['./dest', '.tmp']
     });
 });
 
@@ -212,6 +235,88 @@ gulp.task('watch', function() {
     gulp.watch(['dest/**']).on('change', function(file) {
         server.changed(file.path);
     });
+});
+
+///////////////////////////发版，添加版本号
+gulp.task('cleanRelease', function() {
+    return gulp.src(['release'], {read: false})
+        .pipe(clean());
+});
+gulp.task('cleanRev',function(){
+    return gulp.src('dest/rev',{read:false})
+        .pipe(clean());
+});
+// 样式 添加版本号
+//经过优化和版本控制的css输出到rev文件夹里。最后再用rev.manifest，将对应的版本号用json表示出来
+gulp.task('revStyles', function() {
+    //css
+    gulp.src(['dest/rev/**/*.json',PATH.dest.css + '/**/*.css'])
+        .pipe(rev())
+        .pipe(revCollector({
+            replaceReved: true
+        }))
+        .pipe(minifycss())
+        .pipe(gulp.dest(PATH.rev.css))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.css));
+    return console.log(PATH.dest.css + '下样式生成成功');
+});
+
+// 脚本
+gulp.task('revScripts', function() {
+    gulp.src(PATH.dest.js + '/**/*.js')
+        .pipe(rev())
+        .pipe(uglify())
+        .pipe(gulp.dest(PATH.rev.js))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.js));
+    return console.log(PATH.dest.src + '下脚本生成成功');
+});
+//copy images
+gulp.task('revCopyImages',function(){
+    gulp.src([PATH.dest.img+'/**/*'])
+        .pipe(rev())
+        .pipe(gulp.dest(PATH.rev.img))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.img));
+    return console.log(PATH.dest.img + '下图片复制成功');
+});
+
+//copy fonts
+gulp.task('revCopyFonts',function(){
+    gulp.src([PATH.dest.font+'/**/*'])
+        .pipe(rev())
+        .pipe(gulp.dest(PATH.rev.font))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.font));
+    return console.log(PATH.dest.font + '下字体复制成功');
+});
+
+//合并压缩HTML、更新引入文件版本
+gulp.task('revHtml', function(){
+    var opts = {
+        removeComments: true,//清除HTML注释
+        collapseWhitespace: true,//压缩HTML
+        //collapseBooleanAttributes: true,//省略布尔属性的值 <input checked="true"/> ==> <input />
+        //removeEmptyAttributes: true,//删除所有空格作属性值 <input id="" /> ==> <input />
+        //removeScriptTypeAttributes: true,//删除<script>的type="text/javascript"
+        //removeStyleLinkTypeAttributes: true,//删除<style>和<link>的type="text/css"
+        minifyJS: true,//压缩页面JS
+        minifyCSS: true//压缩页面CSS
+    };
+    //src引入一个数组，前一个是引入刚才生成的json文件，后一个是需要更改的html模板，当然我这里是jsp。然后replaceReved: true就可以成功替换了。
+    // 最后将替换过的文件输出即可，这里我输出到了原来引入的路径，这样就可以成功替换了。
+    // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
+    gulp.src(['dest/rev/**/*.json',PATH.dest.html + '/**/*.html'])
+        .pipe(revCollector({
+            replaceReved: true
+        }))
+        .pipe(minifyHTML(opts))
+        .pipe(gulp.dest(PATH.rev.html));
+    return console.log(PATH.dest.html + '下html生成成功');
+});
+gulp.task('release', ['clean','cleanRelease'], function() {
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml']);
 });
 
 // 监听任务 运行语句 gulp watch
