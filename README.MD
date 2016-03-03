@@ -38,12 +38,10 @@ gulp.task('default', ['clean'], function() {
     gulp.start('styles', 'scripts','html','watch');
 });
 ```
-如果执行gulp，则执行开发调试预设的任务：
+如果要增量发版，则执行gulp release：
 ```javascript
-// 预设任务
-gulp.task('default', ['clean'], function() {
-    //gulp.start('styles', 'scripts', 'images');
-    gulp.start('styles', 'scripts','html','watch');
+gulp.task('release', ['clean','cleanRelease'], function() {
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml'],'cleanRev');
 });
 ```
 

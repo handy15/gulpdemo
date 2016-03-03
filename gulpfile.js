@@ -243,7 +243,7 @@ gulp.task('cleanRelease', function() {
         .pipe(clean());
 });
 gulp.task('cleanRev',function(){
-    return gulp.src('dest/rev',{read:false})
+    return gulp.src(['dest/rev'],{read:false})
         .pipe(clean());
 });
 // 样式 添加版本号
@@ -270,7 +270,7 @@ gulp.task('revScripts', function() {
         .pipe(gulp.dest(PATH.rev.js))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.js));
-    return console.log(PATH.dest.src + '下脚本生成成功');
+    return console.log(PATH.dest.js + '下脚本生成成功');
 });
 //copy images
 gulp.task('revCopyImages',function(){
