@@ -133,15 +133,21 @@ gulp.task('renderCommon', function() {
 
 // 脚本
 gulp.task('scripts', function() {
-    return gulp.src(PATH.src.js + '/**/*.js')
+    gulp.src([PATH.src.js + '/utility.js'])
         .pipe(jshint())
-        .pipe(jshint.reporter('default'))
+        //.pipe(jshint.reporter('default'))
         .pipe(concat('main.js'))
         .pipe(gulp.dest(PATH.dest.js))
         //.pipe(rename({ suffix: '.min' }))
         //.pipe(uglify())
         //.pipe(gulp.dest(PATH.dest.js))
         //.pipe(notify({ message: 'Scripts task complete' }));
+    gulp.src([PATH.src.js + '/**/*.js','!'+PATH.src.js+'/*.js'])
+        .pipe(jshint())
+        .pipe(gulp.dest(PATH.dest.js));
+    gulp.src([PATH.src.js+'/jquery-1.12.1.js'])
+        .pipe(jshint())
+        .pipe(gulp.dest(PATH.dest.js));
 });
 
 // 图片
@@ -158,40 +164,27 @@ gulp.task('clean', function() {
         .pipe(clean());
 });
 
-//合并压缩HTML
+//解析嵌套HTML
 gulp.task('html', function(){
-    var opts = {
-        removeComments: true,//清除HTML注释
-        collapseWhitespace: true,//压缩HTML
-        //collapseBooleanAttributes: true,//省略布尔属性的值 <input checked="true"/> ==> <input />
-        //removeEmptyAttributes: true,//删除所有空格作属性值 <input id="" /> ==> <input />
-        //removeScriptTypeAttributes: true,//删除<script>的type="text/javascript"
-        //removeStyleLinkTypeAttributes: true,//删除<style>和<link>的type="text/css"
-        minifyJS: true,//压缩页面JS
-        minifyCSS: true//压缩页面CSS
-    };
     return gulp.src([PATH.src.html + '/**/*.html','!' + PATH.src.html + '/modules/**/*.html'])
         .pipe(contentIncluder({
             includerReg:/<!\-\-include\s+"([^"]+)"\-\->/g
         }))
-        .pipe(gulp.dest(PATH.dest.html))
-        //.pipe(minifyHTML(opts))
-        //.pipe(rename({ suffix: '.min' }))
-        //.pipe(gulp.dest(PATH.dest.html + '/min'));
+        .pipe(gulp.dest(PATH.dest.html));
 });
 
 //copy images
 gulp.task('copyImages',function(){
     gulp.src([PATH.src.img+'/**/*'])
         .pipe(gulp.dest(PATH.dest.img));
-    return console.log(PATH.src.img + '下图片复制成功');
+    return console.log(PATH.src.img + '下图片复制开始');
 });
 
 //copy fonts
 gulp.task('copyFonts',function(){
     gulp.src([PATH.src.font+'/**/*'])
         .pipe(gulp.dest(PATH.dest.font));
-    return console.log(PATH.src.font + '下字体复制成功');
+    return console.log(PATH.src.font + '下字体复制开始');
 });
 
 //web服务
@@ -259,7 +252,7 @@ gulp.task('revStyles', function() {
         .pipe(gulp.dest(PATH.rev.css))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.css));
-    return console.log(PATH.dest.css + '下样式生成成功');
+    return console.log(PATH.dest.css + '下样式生成开始');
 });
 
 // 脚本
@@ -270,7 +263,7 @@ gulp.task('revScripts', function() {
         .pipe(gulp.dest(PATH.rev.js))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.js));
-    return console.log(PATH.dest.js + '下脚本生成成功');
+    return console.log(PATH.dest.js + '下脚本生成开始');
 });
 //copy images
 gulp.task('revCopyImages',function(){
@@ -279,7 +272,7 @@ gulp.task('revCopyImages',function(){
         .pipe(gulp.dest(PATH.rev.img))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.img));
-    return console.log(PATH.dest.img + '下图片复制成功');
+    return console.log(PATH.dest.img + '下图片复制开始');
 });
 
 //copy fonts
@@ -289,7 +282,7 @@ gulp.task('revCopyFonts',function(){
         .pipe(gulp.dest(PATH.rev.font))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.font));
-    return console.log(PATH.dest.font + '下字体复制成功');
+    return console.log(PATH.dest.font + '下字体复制开始');
 });
 
 //合并压缩HTML、更新引入文件版本
@@ -313,10 +306,10 @@ gulp.task('revHtml', function(){
         }))
         .pipe(minifyHTML(opts))
         .pipe(gulp.dest(PATH.rev.html));
-    return console.log(PATH.dest.html + '下html生成成功');
+    return console.log(PATH.dest.html + '下html生成开始');
 });
 gulp.task('release', ['clean','cleanRelease'], function() {
-    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml']);
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml'],'cleanRev');
 });
 
 // 监听任务 运行语句 gulp watch
