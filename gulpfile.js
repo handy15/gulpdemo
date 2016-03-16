@@ -82,7 +82,7 @@ var PATH = {
 // 样式
 gulp.task('styles', function() {
     //sass
-    gulp.src([PATH.src.sass + '/*.scss','!' + PATH.src.sass + '/modules/**/*.scss'])
+    return gulp.src([PATH.src.sass + '/*.scss','!' + PATH.src.sass + '/modules/**/*.scss'])
     //Type: String Default: nested Values: nested, expanded, compact, compressed
         .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
         //.pipe(sass().on('error', sass.logError))
@@ -112,7 +112,7 @@ gulp.task('styles', function() {
 //组件化的css生成
 gulp.task('renderCommon', function() {
     //common.scss
-    gulp.src([PATH.src.sass + '/common.scss'])
+    return gulp.src([PATH.src.sass + '/common.scss'])
         .pipe(sass({outputStyle: 'expended'}).on('error', sass.logError))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
         .pipe(gulp.dest(PATH.dest.css))
@@ -127,8 +127,6 @@ gulp.task('renderCommon', function() {
     //    .pipe(rename({ suffix: '.min' }))
     //    .pipe(minifycss())
     //    .pipe(gulp.dest(PATH.dest.css));
-
-    return console.log('common.css生成成功！');
 });
 
 // 脚本
@@ -176,16 +174,14 @@ gulp.task('html', function(){
 
 //copy images
 gulp.task('copyImages',function(){
-    gulp.src([PATH.src.img+'/**/*'])
+    return gulp.src([PATH.src.img+'/**/*'])
         .pipe(gulp.dest(PATH.dest.img));
-    return console.log(PATH.src.img + '下图片复制开始');
 });
 
 //copy fonts
 gulp.task('copyFonts',function(){
-    gulp.src([PATH.src.font+'/**/*'])
+    return gulp.src([PATH.src.font+'/**/*'])
         .pipe(gulp.dest(PATH.dest.font));
-    return console.log(PATH.src.font + '下字体复制开始');
 });
 
 //web服务
