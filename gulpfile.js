@@ -160,17 +160,18 @@ gulp.task('scripts', function() {
 
 // 清理
 gulp.task('clean', function() {
-    return gulp.src([PATH.dest.css, PATH.dest.js, PATH.dest.html,PATH.dest.font,PATH.dest.img,'dest/rev'], {read: false})
+    //return gulp.src([PATH.dest.css, PATH.dest.js, PATH.dest.html,PATH.dest.font,PATH.dest.img,'dest/rev','dest/index.html'], {read: false})
+    return gulp.src(['dest'], {read: false})
         .pipe(clean());
 });
 
 //解析嵌套HTML
 gulp.task('html', function(){
-    return gulp.src([PATH.src.html + '/**/*.html','!' + PATH.src.html + '/modules/**/*.html'])
+    return gulp.src(['src/**/*.html','!' + PATH.src.html + '/modules/**/*.html'])
         .pipe(contentIncluder({
             includerReg:/<!\-\-include\s+"([^"]+)"\-\->/g
         }))
-        .pipe(gulp.dest(PATH.dest.html));
+        .pipe(gulp.dest('dest'));
 });
 
 //copy images
@@ -222,6 +223,7 @@ gulp.task('watch', function() {
 
     // 看守所有HTML档
     gulp.watch(PATH.src.html +'/**/*.html', ['html']);
+    gulp.watch('src/index.html', ['html']);
     // 建立即时重整伺服器
     var server = livereload();
     // 看守所有位在 dest/  目录下的档案，一旦有更动，便进行重整
@@ -243,7 +245,7 @@ gulp.task('cleanRev',function(){
 //经过优化和版本控制的css输出到rev文件夹里。最后再用rev.manifest，将对应的版本号用json表示出来
 gulp.task('revStyles', function() {
     //css
-    gulp.src(['dest/rev/**/*.json',PATH.dest.css + '/**/*.css'])
+    return gulp.src(['dest/rev/**/*.json',PATH.dest.css + '/**/*.css'])
         .pipe(rev())
         .pipe(revCollector({
             replaceReved: true
@@ -252,37 +254,33 @@ gulp.task('revStyles', function() {
         .pipe(gulp.dest(PATH.rev.css))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.css));
-    return console.log(PATH.dest.css + '下样式生成开始');
 });
 
 // 脚本
 gulp.task('revScripts', function() {
-    gulp.src(PATH.dest.js + '/**/*.js')
+    return gulp.src(PATH.dest.js + '/**/*.js')
         .pipe(rev())
         .pipe(uglify())
         .pipe(gulp.dest(PATH.rev.js))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.js));
-    return console.log(PATH.dest.js + '下脚本生成开始');
 });
 //copy images
 gulp.task('revCopyImages',function(){
-    gulp.src([PATH.dest.img+'/**/*'])
+    return gulp.src([PATH.dest.img+'/**/*'])
         .pipe(rev())
         .pipe(gulp.dest(PATH.rev.img))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.img));
-    return console.log(PATH.dest.img + '下图片复制开始');
 });
 
 //copy fonts
 gulp.task('revCopyFonts',function(){
-    gulp.src([PATH.dest.font+'/**/*'])
+    return gulp.src([PATH.dest.font+'/**/*'])
         .pipe(rev())
         .pipe(gulp.dest(PATH.rev.font))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.font));
-    return console.log(PATH.dest.font + '下字体复制开始');
 });
 
 //合并压缩HTML、更新引入文件版本
@@ -300,16 +298,75 @@ gulp.task('revHtml', function(){
     //src引入一个数组，前一个是引入刚才生成的json文件，后一个是需要更改的html模板，当然我这里是jsp。然后replaceReved: true就可以成功替换了。
     // 最后将替换过的文件输出即可，这里我输出到了原来引入的路径，这样就可以成功替换了。
     // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
-    gulp.src(['dest/rev/**/*.json',PATH.dest.html + '/**/*.html'])
+    gulp.src(['dest/rev/**/*.json','dest/**/*.html'])
         .pipe(revCollector({
             replaceReved: true
+            //,dirReplacements: {
+            //    'css': '/dist/css/',
+            //    'js/': '/dist/js/',
+            //    'cdn/': function(manifest_value) {
+            //        return '//cdn' + (Math.floor(Math.random() * 9) + 1) + '.' + 'exsample.dot' + '/img/' + manifest_value;
+            //    }
+            //}
         }))
         .pipe(minifyHTML(opts))
-        .pipe(gulp.dest(PATH.rev.html));
+        .pipe(gulp.dest('release'));
+
     return console.log(PATH.dest.html + '下html生成开始');
 });
 gulp.task('release', ['clean','cleanRelease'], function() {
-    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml'],'cleanRev');
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml']);
+});
+
+///////////////////////////发版，初始化
+gulp.task('revStylesInit', function() {
+    //css
+    return gulp.src([PATH.dest.css + '/**/*.css'])
+        .pipe(minifycss())
+        .pipe(gulp.dest(PATH.rev.css));
+});
+
+// 脚本
+gulp.task('revScriptsInit', function() {
+    return gulp.src(PATH.dest.js + '/**/*.js')
+        .pipe(uglify())
+        .pipe(gulp.dest(PATH.rev.js));
+});
+//copy images
+gulp.task('revCopyImagesInit',function(){
+    return gulp.src([PATH.dest.img+'/**/*'])
+        .pipe(gulp.dest(PATH.rev.img));
+});
+
+//copy fonts
+gulp.task('revCopyFontsInit',function(){
+    return gulp.src([PATH.dest.font+'/**/*'])
+        .pipe(gulp.dest(PATH.rev.font));
+});
+
+//合并压缩HTML、更新引入文件版本
+gulp.task('revHtmlInit', function(){
+    var opts = {
+        removeComments: true,//清除HTML注释
+        collapseWhitespace: true,//压缩HTML
+        //collapseBooleanAttributes: true,//省略布尔属性的值 <input checked="true"/> ==> <input />
+        //removeEmptyAttributes: true,//删除所有空格作属性值 <input id="" /> ==> <input />
+        //removeScriptTypeAttributes: true,//删除<script>的type="text/javascript"
+        //removeStyleLinkTypeAttributes: true,//删除<style>和<link>的type="text/css"
+        minifyJS: true,//压缩页面JS
+        minifyCSS: true//压缩页面CSS
+    };
+    //src引入一个数组，前一个是引入刚才生成的json文件，后一个是需要更改的html模板，当然我这里是jsp。然后replaceReved: true就可以成功替换了。
+    // 最后将替换过的文件输出即可，这里我输出到了原来引入的路径，这样就可以成功替换了。
+    // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
+    gulp.src(['dest/rev/**/*.json','dest/**/*.html'])
+        .pipe(minifyHTML(opts))
+        .pipe(gulp.dest('release'));
+
+    return console.log(PATH.dest.html + '下html生成开始');
+});
+gulp.task('releaseInit', ['clean','cleanRelease'], function() {
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFontsInit','revCopyImagesInit','revScriptsInit','revStylesInit','revHtmlInit']);
 });
 
 // 监听任务 运行语句 gulp watch

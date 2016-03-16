@@ -13,6 +13,7 @@
 //布局
 .clear {
   clear: both;
+  zoom:1;
   &:after{
     display: block;
     content: '';
