@@ -88,6 +88,10 @@ localhost:8090/index.html
 2. 打开 nodemodules\gulp-rev\nodemodules\rev-path\index.js，10行 return filename + '-' + hash + ext; 更新为: return filename + ext;
 3. 打开 node_modules\gulp-rev-collector\index.js，31行 if ( path.basename(json[key]).replace(new RegExp( opts.revSuffix ), '' ) !== path.basename(key) ) {，更新为: if ( path.basename(json[key]).split('?')[0] !== path.basename(key) ) {
 
+###gulp
+gulp需要全局安装：npm install -g gulp，若提示不是内部命令...则是环境变量的问题
+npm config list 或 npm config list get prefix
+得到的prefix路径配置在path中
 
 ##关于作者
 
