@@ -64,10 +64,10 @@
       margin-right:$size;
     }
     .mb#{$size}{
-      margin-left:$size;
+      margin-bottom:$size;
     }
     .ml#{$size}{
-      margin-top:$size;
+      margin-left:$size;
     }
   }@else if $boxType == padding {
     .p#{$size}{
@@ -80,10 +80,10 @@
       padding-right:$size;
     }
     .pb#{$size}{
-      padding-left:$size;
+      padding-bottom:$size;
     }
     .pl#{$size}{
-      padding-top:$size;
+      padding-left:$size;
     }
   }
 }

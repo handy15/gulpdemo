@@ -154,7 +154,7 @@ gulp.task('scripts', function() {
 
 // 清理
 gulp.task('clean', function() {
-    return gulp.src([PATH.dest.css, PATH.dest.js, PATH.dest.html,PATH.dest.font,PATH.dest.img], {read: false})
+    return gulp.src([PATH.dest.css, PATH.dest.js, PATH.dest.html,PATH.dest.font,PATH.dest.img,'dest/rev'], {read: false})
         .pipe(clean());
 });
 
