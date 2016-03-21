@@ -1,0 +1,30 @@
+//变量
+@import "modules/_variables";
+//代码片段
+@import "modules/_mixin";
+
+.box{
+  float: left;
+  width: 200px;
+  height: 200px;
+  background-color: #faf1bb;
+  margin: 10px;
+  text-align: center;
+  font-size: 0;
+  *font-size: 200px;
+}
+.box:after{
+  content: '';
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.box-con{
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  *font-size: 14px;
+  padding: 0 20px;
+}

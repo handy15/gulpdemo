@@ -3,8 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>垂直居中</title>
+    <!--include "../modules/header_import.html"-->
+    <link rel="stylesheet" type="text/css" href="/css/layout.css">
 </head>
 <body>
+<!--include "../modules/header_layout.html"-->
+<div class="container">
+    <div class="clear">
+        <div class="box">
+            <div class="box-con">
+                <img src="/img/pic/img01.jpg" width="150" height="104" alt="">
+                <p>我的第一张图片</p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-con">
+                <img src="/img/pic/img01.jpg" width="150" height="104" alt="">
+                <p>我的第二张图片我的第二张图片我的第二张图片我的第二张图片</p>
+            </div>
+        </div>
+    </div>
+    <h1>html</h1>
+    <pre class="brush:xml;">
+        <div class="box">
+            <div class="box-con">
+                <img src="/img/pic/img01.jpg" width="150" height="104" alt="">
+                <p>我的第一张图片</p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-con">
+                <img src="/img/pic/img01.jpg" width="150" height="104" alt="">
+                <p>我的第二张图片我的第二张图片我的第二张图片我的第二张图片</p>
+            </div>
+        </div>
+    </pre>
+    <h1>css</h1>
+    <pre class="brush:css">
+    .box{
+      float: left;
+      width: 200px;
+      height: 200px;
+      background-color: #faf1bb;
+      margin: 10px;
+      text-align: center;
+      font-size: 0;     /*需要*/
+      *font-size: 200px;    /*兼容IE7*/
+    }
+    /*需要*/
+    .box:after{
+      content: '';
+      display: inline-block;
+      height: 100%;
+      width: 0;
+      overflow: hidden;
+      vertical-align: middle;
+    }
+    .box-con{
+      display: inline-block;
+      vertical-align: middle;   /*垂直居中*/
+      font-size: 14px;      /*重置字体大小*/
+      *font-size: 14px;
+      padding: 0 20px;
+    }
+    </pre>
 
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<!--include "../modules/syntax_highlighter.html"-->
+<script type="text/javascript">
+//    SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
 </body>
 </html>
