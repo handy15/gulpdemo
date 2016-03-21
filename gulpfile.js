@@ -30,7 +30,8 @@ var PATH = {
         sass: 'src/sass',
         js: 'src/js',
         img: 'src/img',
-        font: 'src/font'
+        font: 'src/font',
+        plugin: 'src/plugin'
     },
     //调试目录
     dest: {
@@ -38,7 +39,8 @@ var PATH = {
         css: 'dest/css',
         js: 'dest/js',
         img: 'dest/img',
-        font: 'dest/font'
+        font: 'dest/font',
+        plugin: 'dest/plugin'
     }
     //MD5版本号目录
     ,MD5:{
@@ -46,7 +48,8 @@ var PATH = {
         css: 'dest/rev/css',
         js: 'dest/rev/js',
         img: 'dest/rev/img',
-        font: 'dest/rev/font'
+        font: 'dest/rev/font',
+        plugin: 'dest/rev/plugin'
     }
     //发版目录
     ,rev:{
@@ -54,7 +57,8 @@ var PATH = {
         css: 'release/css',
         js: 'release/js',
         img: 'release/img',
-        font: 'release/font'
+        font: 'release/font',
+        plugin: 'release/plugin'
     }
 }
 
@@ -143,9 +147,14 @@ gulp.task('scripts', function() {
     gulp.src([PATH.src.js + '/**/*.js','!'+PATH.src.js+'/*.js'])
         .pipe(jshint())
         .pipe(gulp.dest(PATH.dest.js));
+    //jquery
     gulp.src([PATH.src.js+'/jquery-1.12.1.js'])
         .pipe(jshint())
         .pipe(gulp.dest(PATH.dest.js));
+    //插件
+    gulp.src([PATH.src.plugin+'/**/*'])
+        .pipe(jshint())
+        .pipe(gulp.dest(PATH.dest.plugin));
 });
 
 // 图片
@@ -254,12 +263,19 @@ gulp.task('revStyles', function() {
 
 // 脚本
 gulp.task('revScripts', function() {
-    return gulp.src(PATH.dest.js + '/**/*.js')
+    gulp.src(PATH.dest.js + '/**/*.js')
         .pipe(rev())
         .pipe(uglify())
         .pipe(gulp.dest(PATH.rev.js))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.js));
+    //插件
+    gulp.src(PATH.dest.plugin + '/**/*.js')
+        .pipe(rev())
+        .pipe(uglify())
+        .pipe(gulp.dest(PATH.rev.plugin))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.plugin));
 });
 //copy images
 gulp.task('revCopyImages',function(){
@@ -324,9 +340,13 @@ gulp.task('revStylesInit', function() {
 
 // 脚本
 gulp.task('revScriptsInit', function() {
-    return gulp.src(PATH.dest.js + '/**/*.js')
+    gulp.src(PATH.dest.js + '/**/*.js')
         .pipe(uglify())
         .pipe(gulp.dest(PATH.rev.js));
+    //插件
+    gulp.src(PATH.dest.plugin + '/**/*.js')
+        .pipe(uglify())
+        .pipe(gulp.dest(PATH.rev.plugin));
 });
 //copy images
 gulp.task('revCopyImagesInit',function(){
