@@ -93,6 +93,10 @@ gulp需要全局安装：npm install -g gulp，若提示不是内部命令...则
 npm config list 或 npm config list get prefix
 得到的prefix路径配置在path中
 
+##目前问题
+执行gulp release时，发布的版本中有时候gulp\release\plugin\bootstrap-3.3.5\js\bootstrap.js未生成
+插件文件夹gulp\src\plugin未添加watch，修改后需要重新执行gulp的默认任务
+
 ##关于作者
 
 ```javascript

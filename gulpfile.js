@@ -151,7 +151,9 @@ gulp.task('scripts', function() {
     gulp.src([PATH.src.js+'/jquery-1.12.1.js'])
         .pipe(jshint())
         .pipe(gulp.dest(PATH.dest.js));
-    //插件
+});
+//插件
+gulp.task('plugin',function(){
     gulp.src([PATH.src.plugin+'/**/*'])
         .pipe(jshint())
         .pipe(gulp.dest(PATH.dest.plugin));
@@ -207,7 +209,7 @@ gulp.task('webserver', function () {
 // 预设任务
 gulp.task('default', ['clean'], function() {
     //gulp.start('styles', 'scripts', 'images');
-    gulp.start('styles', 'scripts','html','copyImages','copyFonts','watch','webserver');
+    gulp.start('styles', 'scripts','plugin','html','copyImages','copyFonts','watch','webserver');
 });
 
 // 看守
@@ -250,7 +252,7 @@ gulp.task('cleanRev',function(){
 //经过优化和版本控制的css输出到rev文件夹里。最后再用rev.manifest，将对应的版本号用json表示出来
 gulp.task('revStyles', function() {
     //css
-    return gulp.src(['dest/rev/**/*.json',PATH.dest.css + '/**/*.css'])
+    gulp.src(['dest/rev/**/*.json',PATH.dest.css + '/**/*.css'])
         .pipe(rev())
         .pipe(revCollector({
             replaceReved: true
@@ -259,6 +261,16 @@ gulp.task('revStyles', function() {
         .pipe(gulp.dest(PATH.rev.css))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.css));
+    //插件css
+    gulp.src(['dest/rev/**/*.json',PATH.dest.plugin + '/**/*.css'])
+        .pipe(rev())
+        .pipe(revCollector({
+            replaceReved: false
+        }))
+        .pipe(minifycss())
+        .pipe(gulp.dest(PATH.rev.plugin))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.plugin));
 });
 
 // 脚本
@@ -277,13 +289,20 @@ gulp.task('revScripts', function() {
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.plugin));
 });
+
 //copy images
 gulp.task('revCopyImages',function(){
-    return gulp.src([PATH.dest.img+'/**/*'])
+    gulp.src([PATH.dest.img+'/**/*'])
         .pipe(rev())
         .pipe(gulp.dest(PATH.rev.img))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.img));
+    //插件其他
+    gulp.src([PATH.dest.plugin+'/**/*',!PATH.dest.plugin + '/**/*.js',!PATH.dest.css + '/**/*.css'])
+        .pipe(rev())
+        .pipe(gulp.dest(PATH.rev.plugin))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.plugin));
 });
 
 //copy fonts
@@ -327,7 +346,7 @@ gulp.task('revHtml', function(){
     return console.log(PATH.dest.html + '下html生成开始');
 });
 gulp.task('release', ['clean','cleanRelease'], function() {
-    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFonts','revCopyImages','revScripts'],'revStyles',['revHtml']);
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts','plugin'],['revCopyFonts','revCopyImages','revScripts'],['revStyles'],['revHtml']);
 });
 
 ///////////////////////////发版，初始化
@@ -343,9 +362,19 @@ gulp.task('revScriptsInit', function() {
     gulp.src(PATH.dest.js + '/**/*.js')
         .pipe(uglify())
         .pipe(gulp.dest(PATH.rev.js));
-    //插件
+});
+//插件
+gulp.task('revPluginInit', function() {
+    //css
+    gulp.src([PATH.dest.plugin + '/**/*.css'])
+        .pipe(minifycss())
+        .pipe(gulp.dest(PATH.rev.plugin));
+    //脚本
     gulp.src(PATH.dest.plugin + '/**/*.js')
         .pipe(uglify())
+        .pipe(gulp.dest(PATH.rev.plugin));
+    //其他
+    gulp.src([PATH.dest.plugin+'/**/*',!PATH.dest.plugin + '/**/*.js',!PATH.dest.plugin + '/**/*.css'])
         .pipe(gulp.dest(PATH.rev.plugin));
 });
 //copy images
@@ -382,7 +411,7 @@ gulp.task('revHtmlInit', function(){
     return console.log(PATH.dest.html + '下html生成开始');
 });
 gulp.task('releaseInit', ['clean','cleanRelease'], function() {
-    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts'],['revCopyFontsInit','revCopyImagesInit','revScriptsInit','revStylesInit','revHtmlInit']);
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts','plugin'],['revCopyFontsInit','revCopyImagesInit','revScriptsInit','revPluginInit','revStylesInit','revHtmlInit']);
 });
 
 // 监听任务 运行语句 gulp watch
