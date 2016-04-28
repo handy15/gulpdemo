@@ -15,7 +15,7 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     minifyHTML = require('gulp-htmlmin'),
     contentIncluder = require('gulp-content-includer'),
-    connect = require('gulp-connect'),
+    connect = require('gulp-connect'),//gulp-webserver
     rev = require('gulp-rev'),  //版本控制
     revCollector = require('gulp-rev-collector')
     //串行任务

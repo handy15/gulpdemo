@@ -1,5 +1,20 @@
 <link rel="stylesheet" type="text/css" href="/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css" />
 <script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shCore.js"></script>
-<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"></script>
-<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"></script>
-<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"></script>
+<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script>
+<!--<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"></script>-->
+<!--<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"></script>-->
+<!--<script type="text/javascript" src="/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"></script>-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        SyntaxHighlighter.autoloader(
+                ['js','jscript','javascript','/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js'],
+//                ['bash','shell','scripts/shBrushBash.js'],
+                ['css','/plugin/syntaxhighlighter_3.0.83/shBrushCss.js'],
+                ['xml','html','/plugin/syntaxhighlighter_3.0.83/shBrushXml.js']
+//                ['sql','scripts/shBrushSql.js'],
+//                ['php','scripts/shBrushPhp.js']
+        );
+        //    SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+        SyntaxHighlighter.all();
+    })
+</script>
