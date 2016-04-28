@@ -96,6 +96,7 @@ npm config list 或 npm config list get prefix
 ##目前问题
 执行gulp release时，发布的版本中有时候gulp\release\plugin\bootstrap-3.3.5\js\bootstrap.js未生成
 插件文件夹gulp\src\plugin未添加watch，修改后需要重新执行gulp的默认任务
+gulp task 对应需要添加版本的，task必须是return，否则发布的版本中不带版本号，脚本的除外
 
 ##关于作者
 
