@@ -135,7 +135,7 @@ gulp.task('renderCommon', function() {
 
 // 脚本
 gulp.task('scripts', function() {
-    gulp.src([PATH.src.js + '/utility.js'])
+    gulp.src([PATH.src.js + '/utility.js',PATH.src.js + '/common.js'])
         .pipe(jshint())
         //.pipe(jshint.reporter('default'))
         .pipe(concat('main.js'))
