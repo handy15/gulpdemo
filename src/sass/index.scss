@@ -58,3 +58,94 @@
     display: block;
   }
 }
+//进入
+.entrance{
+  height: 100%;
+  position: relative;
+  &:after{
+    border-right:1px solid #cccccc;
+    border-bottom:1px solid #cccccc;
+    position: absolute;
+    left:50%;
+    top: 100px;
+    width: 10px;
+    height: 10px;
+    color: #cccccc;
+    content: '';
+    transform: rotate(45deg) translate(-50%, 0px);
+    //transform-origin:  center bottom;
+    animation: 5s steps(10, end) 0s normal none infinite running arrowGo;
+    //animation: animation-duration animation-timing-function animation-delay animation-direction animation-fill-mode animation-iteration-count animation-play-state animation-name;
+  }
+  &:before{
+    @extend .entrance:after;
+    //left:calc(50% - 10px);
+    transform: rotate(45deg) translate(0px, 10px);
+    animation: 5s steps(10, end) 0s normal none infinite running arrowGo1;
+  }
+}
+@keyframes arrowGo {
+  0% {
+    opacity: 0.5;
+    transform: rotate(45deg) translate(-50%, 0px);
+    transform-origin: center center 0;
+  }
+  100% {
+    opacity: 1;
+    top: 280px;
+    transform: rotate(45deg) translate(-50%, 0) scale(2);
+    transform-origin: center center 0;
+  }
+}
+@keyframes arrowGo1 {
+  0% {
+    opacity: 0.5;
+    transform: rotate(45deg) translate(0px, 10px);
+    transform-origin: center bottom 0;
+  }
+  100% {
+    opacity: 1;
+    top: 280px;
+    transform: rotate(45deg) translate(3px, 20px) scale(2);
+    transform-origin: center bottom 0;
+  }
+}
+
+//sprite精灵动画
+$spriteWidth: 140px; // 精灵宽度
+@keyframes run {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -($spriteWidth * 12) 0; // 12帧
+  }
+}
+#sprite {
+  width: $spriteWidth;
+  height: 144px;
+  background: url("../images/sprite.png") 0 0 no-repeat;
+  animation: run 0.6s steps(12) infinite;
+}
+
+//定时遮罩
+$precent: 5; // 进度百分比
+$duration: 2s; // 动画时长
+@keyframes toggle {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.progress-right {
+  // 初态为 opacity: 0; 动画周期结束后为 opacity: 1;
+  opacity: 1;
+  animation: toggle ($duration * 50 / $precent) step-end; // step-end = steps(1, end)
+}
+.progress-cover {
+  // 初态为 opacity: 1; 动画周期结束后为 opacity: 0;
+  opacity: 0;
+  animation: toggle ($duration * 50 / $precent) step-start; // step-start = steps(1, start)
+}

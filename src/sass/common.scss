@@ -66,7 +66,19 @@ body{
   padding-top: 60px;
   padding-bottom: 20px;
 }
-
+//左右布局
+.container01{
+  padding-top: 60px;
+  padding-bottom: 20px;
+  @extend .clear;
+}
+.c-left{
+  float: left;
+  width: 25%;
+}
+.c-right{
+  margin-left: 28%;
+}
 /*===========导航菜单===========*/
 .header{
   height: 40px;
