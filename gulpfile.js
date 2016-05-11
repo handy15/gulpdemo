@@ -19,7 +19,9 @@ var gulp = require('gulp'),
     rev = require('gulp-rev'),  //版本控制
     revCollector = require('gulp-rev-collector')
     //串行任务
-    ,runSequence = require('gulp-run-sequence');
+    ,runSequence = require('gulp-run-sequence')
+    //替换路径
+    ,replace = require('gulp-replace');
 
 var PATH = {
     //源码目录
@@ -61,6 +63,7 @@ var PATH = {
         plugin: 'release/plugin'
     }
 }
+var finallyPath = '/gulpdemo';
 
 //var watch = require('gulp-watch'),
 //    coffee = require('gulp-coffee');
@@ -349,6 +352,7 @@ gulp.task('revHtml', function(){
             //}
         }))
         .pipe(minifyHTML(opts))
+        .pipe(replace(/\/(html|img|css|plugin)\//g, finallyPath + '$&'))
         .pipe(gulp.dest('release'));
 
     return console.log(PATH.dest.html + '下html生成开始');
@@ -414,6 +418,7 @@ gulp.task('revHtmlInit', function(){
     // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
     gulp.src(['dest/rev/**/*.json','dest/**/*.html'])
         .pipe(minifyHTML(opts))
+        .pipe(replace(/\/(html|img|css|plugin)\//g, finallyPath + '$&'))
         .pipe(gulp.dest('release'));
 
     return console.log(PATH.dest.html + '下html生成开始');
