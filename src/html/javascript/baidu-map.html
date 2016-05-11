@@ -1,0 +1,309 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>百度地图</title>
+	<!--include "../modules/header_import.html"-->
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+	<style>
+		#container{
+			width: 98%;
+			height: 550px;
+		}
+		.btn-ok{
+			display: inline-block;
+			height: 32px;
+			width: 80px;;
+			margin-bottom: 10px;
+			background-color: #0b97c4;
+			border-radius: 6px;
+			color: #ffffff;
+			text-align: center;
+			line-height: 32px;
+			cursor: pointer;
+		}
+		.uhide{
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+	<!--include "../modules/left_javascript.html"-->
+	<div class="c-right">
+		<!--<h1>暂时不可用，因通过微信取得经纬度</h1>-->
+		<header class="uhide">
+			<div class="search-input-wrapper">
+				<input id="searchKeys" type="text" placeholder="请输入地址" readonly="readonly">
+			</div>
+		</header>
+
+		<div>
+			<span class="btn-ok" onclick="selectThisPoi(event)">确定</span>
+		</div>
+		<!--定位当前位置-->
+		<!--<div style="position: absolute;bottom: 20px;right:20px; z-index: 1; padding: 5px;">-->
+			<!--<img src="/img/icon-map-position.png" class="icon-position" onclick="positionUserLocation();"/>-->
+		<!--</div>-->
+		<div id="container"></div>
+
+		<!--<div id="loadingBox" class="cd-popup" role="alert">-->
+			<!--<div class="cd-popup-container">-->
+				<!--<p>-->
+					<!--<img src="/img/loadding.gif">正在定位中，请稍等-->
+				<!--</p>-->
+			<!--</div>-->
+		<!--</div>-->
+	</div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&s=1&ak=9eQUU2A8MQQx4yF0y3pQVIBr"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+<!--<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>-->
+<script type="text/javascript">
+//	var str = '2016-05-09 8:30:00';
+//	str =  str.replace(/-/g,"/");
+//	console.log(new Date(str));
+	var lngParam = utilities.getQueryString("lng");
+	var latParam = utilities.getQueryString("lat");
+	var isPos = utilities.getQueryString("isPos");
+	var posPoi; // 根据上面三个参数内容得出结果
+	if( isPos==1 && lngParam && latParam ) {
+		posPoi = true;
+	}
+
+	var $searchInput; // 搜索框组件
+	var initMapZoom = 13; // 取值范围1-18，18最大化
+	var userGPSPosition = {"lng":"", "lat":""}; // 用户当前所在GPS的坐标
+	var userBPosition = {"lng":"", "lat":""}; // 用户当前所在百度地图的坐标
+	var bjPosition = {"lng":"116.404068", "lat":"39.914832"}; // 北京天安门所在的坐标
+	var xianPosition = {"lng":"108.953492", "lat":"34.276411"}; // 西安北大街所在的坐标
+
+	//object={ address: "市区街道号牌", addressComponents: {city:"市",district: "区",province: "省",street: "街道",streetNumber: "号牌"},point: {lat: 39.910232,lng: 116.458739 },surroundingPois: [Array] }
+	var markerData;// 当前选择点的地图数据信息。
+
+	$(function() {
+		$searchInput = $("#pileSearchKeys");
+	});
+
+	// 百度地图API功能
+	var map = new BMap.Map("container", {enableMapClick:false});	//构造底图时，关闭底图可点功能
+	//map.centerAndZoom(new BMap.Point(xianPosition["lng"], xianPosition["lat"]), 5); // 显示中国地图
+	map.centerAndZoom(new BMap.Point(bjPosition["lng"], bjPosition["lat"]), initMapZoom); // 显示北京地图
+	map.enableScrollWheelZoom();	//启用滚轮放大缩小
+	// 地图添加点击事件
+	map.addEventListener( "click", function( event ) {
+		if( !event.overlay ) {
+			//alert(event.point.lng + "," + event.point.lat);
+			map.clearOverlays();    //清除地图上所有覆盖物
+			//showPositionPoint(event.point, false);
+			markerData = null;
+			console.log(event.point);
+			regeocoder(event.point);
+		} else {
+			console.log("overlay");
+		}
+	});
+
+	// 创建地址解析器实例
+	var geoc = new BMap.Geocoder();
+	function regeocoder( point, isCenter ) {
+		if( !isCenter ) isCenter = false;
+		geoc.getLocation(point, function(rs) {
+			markerData = rs;
+			showPositionPoint(point, isCenter);
+		});
+	}
+
+	// 搜索功能工具
+	var geolocationControl = new BMap.GeolocationControl();
+	map.addControl(geolocationControl);
+	var ac = new BMap.Autocomplete({
+		"input" : "searchKeys",
+		"location" : map
+	});
+	// 搜索下拉框中内容选中时的事件
+	var myValue;
+	ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+		myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		setPlace();
+	});
+	function setPlace() {
+		function myFun() {
+			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+			//map.centerAndZoom(pp, initMapZoom);
+			//loadPiles( pp, 2 );
+		}
+		//智能搜索
+		var local = new BMap.LocalSearch(map, { onSearchComplete: myFun });
+		local.search(myValue);
+	}
+
+	// 创建地址解析器实例
+	function searchTextAddr() {
+		var addrStr = $("#searchKeys").val();
+		if( addrStr ) {
+			// 将地址解析结果显示在地图上,并调整地图视野
+			geoc.getPoint(addrStr, function(point) {
+				if (point) {
+					//loadPiles( point, 2 );
+				} else {
+					//alert("您选择地址没有解析到结果!");
+				}
+			}, "北京市");
+		}
+	}
+
+//	var wxReady;
+//	wx.ready(function() {
+//		wxReady = true;
+//		getWXJSLocation();
+//	});
+//	// 定位用户所在的坐标信息
+//	function positionUserLocation() {
+//		//$("#loadingBox").addClass("is-visible");
+//		if( wxReady==true ) {
+//			getWXJSLocation();
+//		} else {
+//			var callWXApiList = ["getLocation"];
+//			getWXJSTicket( callWXApiList );
+//		}
+//	}
+//	// 获取用户当前所在的坐标点
+//	function getWXJSLocation() {
+//		wx.getLocation({
+//			success: function (res) {
+//				var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+//				var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+//				var speed = res.speed; // 速度，以米/每秒计
+//				var accuracy = res.accuracy; // 位置精度
+//
+//				userGPSPosition.lng = longitude;
+//				userGPSPosition.lat = latitude;
+//				userBPosition.lng = longitude;
+//				userBPosition.lat = latitude;
+//
+//				setTimeout(function() {
+//					var currentPoint = new BMap.Point( longitude , latitude );
+//					var convertor = new BMap.Convertor();
+//					var pointArr = [];
+//					pointArr.push(currentPoint);
+//					convertor.translate(pointArr, 1, 5, translateCallback);
+//					//convertor.translate(currentPoint, 0, translateCallback); // GPS地址转换成百度坐标
+//				}, 500);
+//			},
+//			fail: function() {
+//				userBPosition = bjPosition;
+//			}
+//		});
+//	}
+	//坐标转换完之后的回调函数
+	function translateCallback( data ) {
+		if( data.status==0 ) {
+			var point = data.points[0];
+			userBPosition.lng = point["lng"];
+			userBPosition.lat = point["lat"];
+			// 判断是否定位到某个固定点上
+			var showPoint = userBPosition;
+			if( posPoi==true ) {
+				showPoint = {"lng": lngParam, "lat":latParam};
+			}
+			regeocoder( new BMap.Point( showPoint.lng , showPoint.lat ) , true);
+		} else {
+		}
+	}
+	// 页面加载后，定位用户所在的位置
+//	positionUserLocation();
+
+	/**
+	 * 地图加载展示当前用户的图标
+	 * @PARAM position 当前用户的地址坐标。格式{"lng": "116.421064", "lat": "39.933058"}
+	 * @PARAM isCenter 是否将用户所在点设置地图的中心点，true为设置中心点；false为不需要设置中心点。默认为true
+	 */
+	function showPositionPoint( position, isCenter ) {
+		var currentPoint = new BMap.Point( position.lng , position.lat );
+		//var myIcon = new BMap.Icon("../../static/images/map/current-position.png", new BMap.Size(20, 20));
+		//var marker2 = new BMap.Marker(currentPoint, {icon:myIcon});  // 创建标注
+		var marker = new BMap.Marker( currentPoint );
+
+		var opts = {
+			isCustom: true,  //使用自定义窗体
+			width : 300,     // 信息窗口宽度
+			title : ""// 信息窗口标题
+		};
+		var content = "<div style='overflow: hidden;height: auto;line-height: 24px;width: auto;'>";
+		content += "<span style='font-weight:900;'>地址</span> : "+markerData.address;
+		content += "</div>";
+		var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+		marker.addEventListener("click", function() {
+			showMyInfoWin( this, infoWindow );
+		});
+		map.addOverlay( marker );  // 将标注添加到地图中
+
+		showMyInfoWin( marker, infoWindow );
+
+		if( isCenter==true ) {
+			map.centerAndZoom(currentPoint, initMapZoom);
+		}
+		$("#loadingBox").removeClass("is-visible");
+	}
+	function showMyInfoWin( marker, infoWin ) {
+		marker.openInfoWindow(infoWin);
+	}
+
+	// 确定选择当前点
+	function selectThisPoi(event) {
+		event.stopPropagation();
+		if( !markerData ) {
+			alert("对不起，没有坐标点或坐标点数据加载异常，请重新尝试！");
+			return;
+		}
+
+		//markerData={ address: "市区街道号牌", addressComponents: {city:"市",district: "区",province: "省",street: "街道",streetNumber: "号牌"},point: {lat: 39.910232,lng: 116.458739 },surroundingPois: [Array] }
+		var datas = markerData.addressComponents;
+		var province = datas.province;
+		var city = datas.city;
+		var area = datas.district;
+		var street = datas.street;
+		var streetNumber = datas.streetNumber;
+		var detail = markerData.address; //返回地址描述
+		var positionJson = markerData.point;
+		//alert("省份："+province+"\n城市："+city+"\n区域："+area+"\n地址："+detail+"\n格式地址："+detail+"\n经纬度：["+positionJson["lng"]+", "+positionJson["lat"]+"]");
+
+		var resultJson = {};
+		resultJson["province"] = province;
+		resultJson["city"] = city;
+		resultJson["area"] = area;
+		resultJson["street"] = street;
+		resultJson["streetNumber"] = streetNumber;
+		resultJson["fulladdress"] = detail;
+		resultJson["positionJson"] = positionJson;
+		//detail
+		var reg = new RegExp('^' + province,'g');
+		detail = detail.replace(reg,'');
+		reg = new RegExp('^' + city,'g');
+		detail = detail.replace(reg,'');
+		reg = new RegExp('^' + area,'g');
+		resultJson["detail"] = detail.replace(reg,'');
+		var resultJsonStr = JSON.stringify(resultJson);
+
+		var parentPage = window.parent;
+		if( parentPage && parentPage.returnMapVal ) {
+			if(!parentPage.returnMapVal) {
+				//在不支持时，使用html5 的postMessage方法
+				parentPage.postMessage("returnMapVal", resultJsonStr);
+			} else {
+				parentPage.returnMapVal(resultJsonStr);
+			}
+		} else {
+			alert( resultJsonStr );
+		}
+	}
+
+</script>
+</body>
+</html>
