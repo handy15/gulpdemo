@@ -1,0 +1,1 @@
+.box-con,.box:after{display:inline-block;vertical-align:middle}.box{float:left;width:200px;height:200px;background-color:#faf1bb;margin:10px;text-align:center;font-size:0}.box:after{content:'';height:100%;width:0;overflow:hidden}.box-con{font-size:14px;padding:0 20px}
