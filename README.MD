@@ -105,4 +105,5 @@ gulp task 对应需要添加版本的，task必须是return，否则发布的版
     nickName  : "mysun",
     blog : "http://blog.csdn.net/jimmyhandy"
   }
+  browerUrl = http://handy15.github.io/gulpdemo
 ```
