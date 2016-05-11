@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>高德地图v1.3.11-用户自定义选择POI</title>
+	<!--include "../../modules/header_import.html"-->
+	<style type="text/css">
+		.uhide {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+<!--include "../../modules/header_webDesign.html"-->
+<div class="container01">
+	<!--include "../../modules/left_javascript.html"-->
+	<div class="c-right">
+		<div style="width: 100%; height: 400px;">
+			<input type="button" value="弹出地图" onclick="openMap()"/>
+			<br>
+			<hr>
+			您选择的地址：<span id="lvl1"></span>
+			<br>
+			具体街道：<span id="lvl2"></span>
+			<br>
+			经纬度：<span id="lnglat"></span>
+		</div>
+		<iframe id="mapSel" name="mapSel" src="" width="100%" height="100%" frameborder="0" scrolling="no" class="uhide" style="z-index: 999; position: absolute;top: 0; left: 0; background-color: rgba(255,255,255,1);"></iframe>
+	</div>
+</div>
+<!--include "../../modules/footer.html"-->
+<!--include "../../modules/scripts.html"-->
+<script type="text/javascript">
+	function openMap() {
+		$("#mapSel").removeClass("uhide");
+		if(!$("#mapSel").attr('src')){
+			$("#mapSel").attr('src','map.html');
+		}
+		// 如果当前页面有滚动条，则处理这行
+		$("body").css("overflow-y", "hidden");
+	}
+	function receiveMessage(e) {
+		var data = e.data;
+		if(data=="returnMapVal") {
+			returnMapVal() ;
+		}
+	}
+	if (typeof window.addEventListener != 'undefined') {//使用html5 的postMessage必须处理的
+		window.addEventListener('message', receiveMessage, false);
+	} else if (typeof window.attachEvent != 'undefined') {
+		window.attachEvent('onmessage', receiveMessage);
+	}
+	function returnMapVal(val) {
+		$("#mapSel").addClass("uhide");
+		// 如果当前页面有滚动条，则处理这行
+		$("body").css("overflow-y", "auto");
+		var mapSelResult = eval("("+val+")");
+		//mapSelResult = { "province": "省份", "city": "城市", "area": "地区", "detail": "具体街道", "fulladdress": ""}
+		$("#lvl1").html( mapSelResult["province"]+mapSelResult["city"]+mapSelResult["area"] );
+		$("#lvl2").html( mapSelResult["detail"] );
+		$("#lnglat").html( mapSelResult["positionJson"]["lng"]+", "+mapSelResult["positionJson"]["lat"] );
+	}
+</script>
+</body>
+</html>
