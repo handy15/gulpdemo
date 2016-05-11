@@ -64,6 +64,8 @@ var PATH = {
     }
 }
 var finallyPath = '/gulpdemo';
+var reg = new RegExp("((\"|'|url\\()" + finallyPath + "/plugin[^\"']*)" + finallyPath,'g');
+//'href="/gulpdemo/plugin/bootstrap-3.3.5/gulpdemo/css/bootstrap.css?v=957474c344">/gulpdemo/plugin/bootstrap-3.3.5/gulpdemo/css/'.replace(reg,"$1");
 
 //var watch = require('gulp-watch'),
 //    coffee = require('gulp-coffee');
@@ -352,7 +354,8 @@ gulp.task('revHtml', function(){
             //}
         }))
         .pipe(minifyHTML(opts))
-        .pipe(replace(/(\/(html|img|css|plugin|js)\/)|(\/index.html)/, finallyPath + '$&'))
+        .pipe(replace(/(\/(html|img|css|plugin|js)\/)|(\/index.html)/g, finallyPath + '$&'))
+        .pipe(replace(reg, '$1'))
         .pipe(gulp.dest('release'));
 
     return console.log(PATH.dest.html + '下html生成开始');
@@ -418,7 +421,8 @@ gulp.task('revHtmlInit', function(){
     // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
     gulp.src(['dest/rev/**/*.json','dest/**/*.html'])
         .pipe(minifyHTML(opts))
-        .pipe(replace(/(\/(html|img|css|plugin|js)\/)|(\/index.html)/, finallyPath + '$&'))
+        .pipe(replace(/(\/(html|img|css|plugin|js)\/)|(\/index.html)/g, finallyPath + '$&'))
+        .pipe(replace(reg, '$1'))
         .pipe(gulp.dest('release'));
 
     return console.log(PATH.dest.html + '下html生成开始');
