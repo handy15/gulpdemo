@@ -32,7 +32,7 @@
   width: 28px;
   height: 100%;
   cursor: pointer;
-  background:url(/img/form/icon-select.png)  center center no-repeat;
+  background:url(#{$imgPath}/form/icon-select.png)  center center no-repeat;
   float: right;
 }
 .cssSelect .selectLt{
@@ -107,7 +107,7 @@
   /*background: url(images/checkbox.gif) no-repeat;*/
 }
 .custom-radio label {
-  background: url(/img/form/bg-radio.png) no-repeat;
+  background: url(#{$imgPath}/form/bg-radio.png) no-repeat;
 }
 .custom-checkbox label,
 .custom-radio label {
