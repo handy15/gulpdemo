@@ -12,6 +12,8 @@
 <div class="container01">
     <!--include "../../modules/left_javascript.html"-->
     <div class="c-right">
+        <h1>说明</h1>
+        <p>选择下拉内容后，对应select的value值也会变化，提交表单时不用做特别处理。</p>
         <h1>效果</h1>
         <section>
             <select name="" id="province" class="beautify_select">
@@ -21,6 +23,138 @@
                 <option value="3">河北</option>
             </select>
         </section>
+        <div class="mt20px">
+            <h1>代码</h1>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" id="selectTabs">
+                <li role="presentation" class="active"><a href="#HTML" aria-controls="home" role="tab" data-toggle="tab">HTML</a></li>
+                <li role="presentation"><a href="#JS" aria-controls="profile" role="tab" data-toggle="tab">JS</a></li>
+                <li role="presentation"><a href="#CSS" aria-controls="messages" role="tab" data-toggle="tab">CSS</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="HTML">
+                    <pre class="brush:xml">
+                        <select name="" class="beautify_select">
+                            <option value="0" selected="selected">请选择</option>
+                            <option value="1">北京市</option>
+                            <option value="2">天津市</option>
+                            <option value="3">河北</option>
+                        </select>
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="JS">
+                    <pre class="brush:js">
+                        $('.beautify_select').cssSelect();
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="CSS">
+                    <pre class="brush:css">
+                        .cssSelect {
+                          white-space: nowrap;
+                          display: inline-block;
+                          vertical-align: middle;
+                        }
+
+                        .cssSelect * {
+                          display: block;
+                        }
+
+                        .cssSelect a {
+                          color: #666;
+                          outline-width: 0px;
+                          text-decoration: none;
+                        }
+
+                        .cssSelect .selectBox {
+                          cursor: pointer;
+                          border: solid 1px #e5e5e5;
+                          border-radius: 6px;
+                          float: left;
+                          width: 170px;
+                          height: 30px;
+                          background-color: #fafafa;
+                          box-shadow: inset 0 2px 2px #f1f1f1;
+                        }
+
+                        .cssSelect .selectRt {
+                          width: 28px;
+                          height: 100%;
+                          cursor: pointer;
+                          background: url(../img/form/icon-select.png) center center no-repeat;
+                          float: right;
+                        }
+
+                        .cssSelect .selectLt {
+                          overflow: hidden;
+                          height: 100%;
+                          width: 130px;
+                          line-height: 30px;
+                          padding: 0 0 0 10px;
+                          background: none transparent scroll repeat 0% 0%;
+                          color: #999999;
+                          cursor: pointer;
+                          float: left;
+                          text-align: left;
+                          /*text-overflow: ellipsis;*/
+                        }
+
+                        .cssSelect .sNormal {
+                          background-position: 0px 0px;
+                        }
+
+                        .cssSelect .sHover {
+                          background-position: 0px -50px;
+                        }
+
+                        .cssSelect .sPressDown {
+                          background-color: #ffffff;
+                          border-radius: 6px 6px 0 0;
+                          position: relative;
+                          z-index: 101;
+                          border-bottom-color: #ffffff;
+                        }
+
+                        .cssSelect .optionsBox {
+                          min-width: 170px;
+                          max-height: 250px;
+                          position: absolute;
+                          border: 1px solid #e5e5e5;
+                          /*border-top:none;*/
+                          border-radius: 0 0 6px 6px;
+                          margin: -2px 0 0 0px;
+                          background: #fff;
+                          z-index: 100;
+                        }
+
+                        .cssSelect .optionBox {
+                          cursor: pointer;
+                          padding: 2px 18px 2px 18px;
+                          margin: 0px;
+                          height: 25px;
+                          line-height: 25px;
+                        }
+
+                        .cssSelect .optionBox span {
+                          cursor: pointer;
+                          font-size: 13px;
+                        }
+
+                        .cssSelect .oHover {
+                          background: #fafafa;
+                          color: #e66b01;
+                          text-decoration: underline;
+                        }
+
+                        .cssSelect .selected {
+                          background: #e66b01;
+                          color: #fff;
+                          text-decoration: none;
+                        }
+                    </pre>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--include "../../modules/footer.html"-->
@@ -28,7 +162,10 @@
 <script type="text/javascript" src="/js/formBeauty/select-beautify.js"></script>
 <script type="text/javascript">
     //下拉框美化
-    $('.beautify_select').cssSelect();
+    $('#province').cssSelect();
+    //tab切换
+    $('#selectTabs').tab();
 </script>
+<!--include "../../modules/syntax_highlighter.html"-->
 </body>
 </html>
