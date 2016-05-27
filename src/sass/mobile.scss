@@ -1,0 +1,16 @@
+//变量
+@import "modules/_variables";
+//代码片段
+@import "modules/_mixin";
+
+/*===========css重置样式===========*/
+@import "modules/_css_reset";
+
+/*===========button===========*/
+@import "modules/_buttons";
+
+/*===========淘宝适配方案===========*/
+.list01{
+  list-style: decimal outside;
+  margin-left: 30px;
+}
