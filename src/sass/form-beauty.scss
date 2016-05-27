@@ -57,9 +57,9 @@
     /*text-overflow: ellipsis;*/
   }
   .sNormal{ background-position: 0px 0px}
-  /*.sNormal .selectRt { background-position: 100% 0px}*/
+  //.sNormal .selectRt { background-position: 100% 0px}
   .sHover{ background-position: 0px -50px}
-  /*.sHover .selectRt{ background: url('../images/skin_icons.png')  -49px -160px no-repeat #e6e6e6; }*/
+  //.sHover .selectRt{ background: url('../images/skin_icons.png')  -49px -160px no-repeat #e6e6e6; }
   .sPressDown{
     background-color: #ffffff;
     border-radius: 6px 6px 0 0;
@@ -67,7 +67,7 @@
     z-index: 101;
     border-bottom-color:#ffffff;
   }
-  /*.sPressDown .selectRt{ background: url('../images/skin_icons.png')  -49px -160px no-repeat #e6e6e6; }*/
+  //.sPressDown .selectRt{ background: url('../images/skin_icons.png')  -49px -160px no-repeat #e6e6e6; }
   .optionsBox{
     min-width: 170px;
     max-height:250px;
@@ -93,7 +93,7 @@
 .custom-radio {
   position: relative;
   float: left;
-  /* input, label positioning */
+  //input, label positioning
   input {
     position: absolute;
     left: 2px;
@@ -106,7 +106,7 @@
     display: block;
     position: relative;
     z-index: 1;
-    padding: 0 20px 0 20px;
+    padding: 0 20px 0 25px;
     cursor: pointer;
   }
   label.focus{
@@ -116,37 +116,41 @@
 
 /* ==复选框== */
 .custom-checkbox{
-  /* ==默认状态效果== */
+  ///* ==默认状态效果== */
   label{
-    /*background: url(images/checkbox.gif) no-repeat;*/
+    background: url(#{$imgPath}/form/bg-checkbox.png) 0 2px no-repeat;
   }
-  /*==鼠标悬停和得到焦点状态==*/
+  ///*==鼠标悬停和得到焦点状态==*/
   label.hover,
   label.focus{
-    /*background-position: -10px -114px;*/
+    background-position: 0 -98px;
   }
-  /*==选中状态==*/
+  ///*==选中状态==*/
  label.checked{
-    background-position: 0 -46px;
+    background-position: 0 -48px;
   }
-  label.checkedHover,
-  label.checkedFocus {
-    /*background-position: -10px -314px;*/
+  label.checked.hover,
+  label.checked.focus {
+    background-position: 0 -147px;
   }
 }
 /* ==单选按钮== */
 .custom-radio{
-  /* ==默认状态效果== */
+  ///* ==默认状态效果== */
   label{
     background: url(#{$imgPath}/form/bg-radio.png) 0 4px no-repeat;
   }
-  /*==鼠标悬停和得到焦点状态==*/
+  ///*==鼠标悬停和得到焦点状态==*/
   label.hover,
   label.focus {
-    /*background-position: -10px -114px;*/
+    background-position: 0px -98px;
   }
-  /*==选中状态==*/
+  ///*==选中状态==*/
   label.checked {
     background-position: 0 -46px;
+  }
+  ///*==选中状态鼠标移入==*/
+  label.checked.hover {
+    background-position: 0 -149px;
   }
 }

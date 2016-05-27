@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>radio&checkbox美化</title>
+    <!--include "../../modules/header_import.html"-->
+    <link rel="stylesheet" href="/css/form-beauty.css" />
+</head>
+
+<body>
+<!--include "../../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../../modules/left_javascript.html"-->
+    <div class="c-right">
+        <h1>效果</h1>
+        <section class="clear">
+            <h2>checkbox</h2>
+            <div class="cbkDiv clear">
+                <input type="checkbox" name="fruit" id="checkbox1" value="1" checked="checked" /><label for="checkbox1">香蕉</label>
+                <input type="checkbox" name="fruit" id="checkbox2" value="2" /><label for="checkbox2">苹果</label>
+                <input type="checkbox" name="fruit" id="checkbox3" value="3" /><label for="checkbox3">梨</label>
+            </div>
+            <h2>radio</h2>
+            <div class="radioDiv">
+                <input type="radio" name="fruit1" id="radio1" value="1" checked="checked" /><label for="radio1">香蕉</label>
+                <input type="radio" name="fruit1" id="radio2" value="2" /><label for="radio2">苹果</label>
+                <input type="radio" name="fruit1" id="radio3" value="3" /><label for="radio3">梨</label>
+            </div>
+        </section>
+        <div class="mt20px">
+            <h1>代码</h1>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" id="selectTabs">
+                <li role="presentation" class="active"><a href="#HTML" aria-controls="home" role="tab" data-toggle="tab">HTML</a></li>
+                <li role="presentation"><a href="#JS" aria-controls="profile" role="tab" data-toggle="tab">JS</a></li>
+                <li role="presentation"><a href="#CSS" aria-controls="messages" role="tab" data-toggle="tab">CSS</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="HTML">
+                    <pre class="brush:xml">
+                        <h2>checkbox</h2>
+                        <div>
+                            <input type="checkbox" name="fruit" id="checkbox01" value="1" checked="checked" /><label for="checkbox01">香蕉</label>
+                            <input type="checkbox" name="fruit" id="checkbox02" value="2" /><label for="checkbox02">苹果</label>
+                            <input type="checkbox" name="fruit" id="checkbox03" value="3" /><label for="checkbox03">梨</label>
+                        </div>
+                        <h2>radio</h2>
+                        <div>
+                            <input type="radio" name="fruit1" id="radio01" value="1" checked="checked" /><label for="radio01">香蕉</label>
+                            <input type="radio" name="fruit1" id="radio02" value="2" /><label for="radio02">苹果</label>
+                            <input type="radio" name="fruit1" id="radio03" value="3" /><label for="radio03">梨</label>
+                        </div>
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="JS">
+                    <pre class="brush:js">
+                        //js调用
+                        $('input').customInput();
+                        /**
+                         * 复选框、单选按钮美化
+                         */
+                        $.fn.customInput = function(){
+                            $(this).each(function(i){
+                                if($(this).is('[type=checkbox],[type=radio]')){
+                                    var input = $(this);
+                                    //get the associated label using the input's id
+                                    var label = $('label[for='+input.attr('id')+']');
+                                    //get type,for classname suffix
+                                    var inputType = (input.is('[type=checkbox]')) ? 'checkbox' : 'radio';
+                                    //wrap the input + label in a div
+                                    $('<div class="custom-'+ inputType +'"></div>').insertBefore(input).append(input,label);
+                                    //find all inputs in this set using the shared name attribute
+                                    var allInputs = $('input[name='+input.attr('name')+']');
+                                    //necessary for browsers that don't support the :hover pseudo class on labels
+                                    label.hover(function(){
+                                        $(this).addClass('hover');
+                                        if(inputType == 'checkbox' && input.is(':checked')) {
+                                            $(this).addClass('checkedHover');
+                                        }
+                                    },function(){
+                                        $(this).removeClass('hover checkedHover');
+                                    });
+
+                                    //bind custom event, trigger it, bind click,focus,blur events
+                                    input.bind('updateState',function(){
+                                            if(input.is(':checked')){
+                                                if(input.is(':radio')){
+                                                    allInputs.each(function(){
+                                                        $('label[for='+$(this).attr('id')+']').removeClass('checked');
+                                                    });
+                                                };
+                                                label.addClass('checked');
+                                            } else {
+                                                label.removeClass('checked checkedHover checkedFocus');
+                                            }
+                                        })
+                                        .trigger('updateState')
+                                        .click(function(){
+                                            $(this).trigger('updateState');
+                                        })
+                                        .focus(function(){
+                                            label.addClass('focus');
+                                            if(inputType == 'checkbox' && input.is(':checked')) {
+                                                $(this).addClass('checkedFocus');
+                                            }
+                                        })
+                                        .blur(function(){
+                                            label.removeClass('focus checkedFocus');
+                                        });
+                                }
+                            });
+                        }
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="CSS">
+                    <pre class="brush:css">
+                        /* wrapper divs */
+                        .custom-checkbox,
+                        .custom-radio {
+                          position: relative;
+                          float: left;
+                        }
+                        /*隐藏input*/
+                        .custom-checkbox input,
+                        .custom-radio input {
+                          position: absolute;
+                          left: 2px;
+                          top: 3px;
+                          margin: 0;
+                          z-index: 0;
+                          display: none;
+                        }
+
+                        .custom-checkbox label,
+                        .custom-radio label {
+                          display: block;
+                          position: relative;
+                          z-index: 1;
+                          padding: 0 20px 0 25px;
+                          cursor: pointer;
+                        }
+
+                        .custom-checkbox label.focus,
+                        .custom-radio label.focus {
+                          outline: none;
+                        }
+
+                        /* ==复选框== */
+                        /*未选中状态*/
+                        .custom-checkbox label {
+                          background: url(../img/form/bg-checkbox.png) 0 2px no-repeat;
+                        }
+                        /*鼠标移入状态*/
+                        .custom-checkbox label.hover,
+                        .custom-checkbox label.focus {
+                          background-position: 0 -98px;
+                        }
+                        /*选中状态*/
+                        .custom-checkbox label.checked {
+                          background-position: 0 -48px;
+                        }
+                        /*选中状态下鼠标移入状态*/
+                        .custom-checkbox label.checked.hover,
+                        .custom-checkbox label.checked.focus {
+                          background-position: 0 -147px;
+                        }
+
+                        /* ==单选按钮== */
+                        /*未选中状态*/
+                        .custom-radio label {
+                          background: url(../img/form/bg-radio.png) 0 4px no-repeat;
+                        }
+                        /*鼠标移入状态*/
+                        .custom-radio label.hover,
+                        .custom-radio label.focus {
+                          background-position: 0px -98px;
+                        }
+                        /*选中状态*/
+                        .custom-radio label.checked {
+                          background-position: 0 -46px;
+                        }
+                        /*选中状态下鼠标移入状态*/
+                        .custom-radio label.checked.hover {
+                          background-position: 0 -149px;
+                        }
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--include "../../modules/footer.html"-->
+<!--include "../../modules/scripts.html"-->
+<script type="text/javascript" src="/js/formBeauty/radio-beautify.js"></script>
+<script type="text/javascript">
+    //下拉框美化
+    $('.cbkDiv input,.radioDiv input').customInput();
+    //tab切换
+    $('#selectTabs').tab();
+</script>
+<!--include "../../modules/syntax_highlighter.html"-->
+</body>
+</html>
