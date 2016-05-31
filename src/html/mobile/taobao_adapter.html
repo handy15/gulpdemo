@@ -36,7 +36,11 @@
             <p>设备像素比简称为dpr，其定义了物理像素和设备独立像素的对应关系。它的值可以按下面的公式计算得到：</p>
             <div class="alert alert-success" role="alert">设备像素比 ＝ 物理像素 / 设备独立像素</div>
         </section>
-        http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html?plg_nld=1&plg_uin=1&plg_auth=1&plg_nld=1&plg_usr=1&plg_vkey=1&plg_dev=1
+        <h1>适配说明图</h1>
+        <section>
+            <p>这里盗用了<a href="http://www.nangongruiyang.com/" target="_blank">@南宮瑞揚</a>根据<a href="http://mir.aculo.us/2012/06/26/flowchart-how-to-retinafy-your-website/" target="_blank">mir.aculo.us</a>翻译的一张信息图：</p>
+            <img src="/img/mobile/retina-web-10.jpg" width="100%" alt="Flexible实现手淘H5页面的终端适配" title="Flexible实现手淘H5页面的终端适配" />
+        </section>
         <div class="mt20px">
             <h1>代码</h1>
             <!-- Nav tabs -->
@@ -49,21 +53,273 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="HTML">
                     <pre class="brush:xml">
-
+                      &lt;!DOCTYPE html&gt;
+                      &lt;html lang="en"&gt;
+                       &lt;head&gt;
+                            <meta charset="UTF-8">
+                            <meta content="yes" name="apple-mobile-web-app-capable">
+                            <meta content="yes" name="apple-touch-fullscreen">
+                            <meta content="telephone=no,email=no" name="format-detection">
+                            <title>flexible</title>
+                            <link rel="stylesheet" href="css/mobile.css">
+                            <script type="text/javascript" src="js/flexible.js"></script>
+                       &lt;/head&gt;
+                       &lt;body&gt;
+                        <div class="page">
+                            <header class="topImg"><img src="img/mobile/demo-top.jpg" alt="踏勘报告"></header>
+                            <div class="left-line"></div>
+                            <div class="items">
+                                <dl>
+                                    <dt></dt>
+                                    <dd>
+                                        <p>报告名称：山西太原10000平米工业屋顶</p>
+                                        <p>踏勘地点：<span>山西省太原市石楼县章林大街39号</span></p>
+                                        <p>提交时间：<span>2016-03-22</span></p>
+                                        <div class="clear"><a href="#" target="_self" class="btn-green">报告详情</a></div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd>
+                                        <p>报告名称：山西太原10000平米工业屋顶</p>
+                                        <p>踏勘地点：<span>山西省太原市石楼县章林大街39号</span></p>
+                                        <p>提交时间：<span>2016-03-22</span></p>
+                                        <div class="clear"><a href="#" target="_self" class="btn-green">报告详情</a></div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd>
+                                        <p>报告名称：山西太原10000平米工业屋顶</p>
+                                        <p>踏勘地点：<span>山西省太原市石楼县章林大街39号</span></p>
+                                        <p>提交时间：<span>2016-03-22</span></p>
+                                        <div class="clear"><a href="#" target="_self" class="btn-green">报告详情</a></div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd>
+                                        <p>报告名称：山西太原10000平米工业屋顶</p>
+                                        <p>踏勘地点：<span>山西省太原市石楼县章林大街39号</span></p>
+                                        <p>提交时间：<span>2016-03-22</span></p>
+                                        <div class="clear"><a href="#" target="_self" class="btn-green">报告详情</a></div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd>
+                                        <p>报告名称：山西太原10000平米工业屋顶</p>
+                                        <p>踏勘地点：<span>山西省太原市石楼县章林大街39号</span></p>
+                                        <p>提交时间：<span>2016-03-22</span></p>
+                                        <div class="clear"><a href="#" target="_self" class="btn-green">报告详情</a></div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd>
+                                        <p>报告名称：山西太原10000平米工业屋顶</p>
+                                        <p>踏勘地点：<span>山西省太原市石楼县章林大街39号</span></p>
+                                        <p>提交时间：<span>2016-03-22</span></p>
+                                        <div class="clear"><a href="#" target="_self" class="btn-green">报告详情</a></div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        &lt;/body&gt;
+                        &lt;/html&gt;
                     </pre>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="JS">
                     <pre class="brush:js">
-
+                        /**
+                         * Created by WYR on 2016/4/28.
+                         */
+                        !function(a, b) {
+                                function c() {
+                                    var b = f.getBoundingClientRect().width;
+                                    b / i > 540 && (b = 540 * i);
+                                    //b / i > 750 && (b = 750 * i);
+                                    var c = b / 10;
+                                    f.style.fontSize = c + "px",
+                                        k.rem = a.rem = c
+                                }
+                                var d, e = a.document,
+                                    f = e.documentElement,
+                                    g = e.querySelector('meta[name="viewport"]'),
+                                    h = e.querySelector('meta[name="flexible"]'),
+                                    i = 0,
+                                    j = 0,
+                                    k = b.flexible || (b.flexible = {});
+                                if (g) {
+                                    //console.warn("将根据已有的meta标签来设置缩放比例");
+                                    var l = g.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
+                                    l && (j = parseFloat(l[1]), i = parseInt(1 / j))
+                                } else if (h) {
+                                    var m = h.getAttribute("content");
+                                    if (m) {
+                                        var n = m.match(/initial\-dpr=([\d\.]+)/),
+                                            o = m.match(/maximum\-dpr=([\d\.]+)/);
+                                        n && (i = parseFloat(n[1]), j = parseFloat((1 / i).toFixed(2))),
+                                        o && (i = parseFloat(o[1]), j = parseFloat((1 / i).toFixed(2)))
+                                    }
+                                }
+                                if (!i && !j) {
+                                    var p = a.navigator.userAgent,
+                                        q = ( !! p.match(/android/gi), !!p.match(/iphone/gi)),
+                                        r = q && !!p.match(/OS 9_3/),
+                                        s = a.devicePixelRatio;
+                                    i = q && !r ? s >= 3 && (!i || i >= 3) ? 3 : s >= 2 && (!i || i >= 2) ? 2 : 1 : 1,
+                                        j = 1 / i
+                                }
+                                if (f.setAttribute("data-dpr", i), !g) if (g = e.createElement("meta"), g.setAttribute("name", "viewport"), g.setAttribute("content", "initial-scale=" + j + ", maximum-scale=" + j + ", minimum-scale=" + j + ", user-scalable=no"), f.firstElementChild) f.firstElementChild.appendChild(g);
+                                else {
+                                    var t = e.createElement("div");
+                                    t.appendChild(g),
+                                        e.write(t.innerHTML)
+                                }
+                                a.addEventListener("resize",
+                                    function() {
+                                        clearTimeout(d),
+                                            d = setTimeout(c, 300)
+                                    },
+                                    !1),
+                                    a.addEventListener("pageshow",
+                                        function(a) {
+                                            a.persisted && (clearTimeout(d), d = setTimeout(c, 300))
+                                        },
+                                        !1),
+                                    "complete" === e.readyState ? e.body.style.fontSize = 12 * i + "px": e.addEventListener("DOMContentLoaded",
+                                        function() {
+                                            e.body.style.fontSize = 12 * i + "px"
+                                        },
+                                        !1),
+                                    c(),
+                                    k.dpr = a.dpr = i,
+                                    k.refreshRem = c,
+                                    k.rem2px = function(a) {
+                                        var b = parseFloat(a) * this.rem;
+                                        return "string" == typeof a && a.match(/rem$/) && (b += "px"),
+                                            b
+                                    },
+                                    k.px2rem = function(a) {
+                                        var b = parseFloat(a) / this.rem;
+                                        return "string" == typeof a && a.match(/px$/) && (b += "rem"),
+                                            b
+                                    }
+                            } (window, window.lib || (window.lib = {}));
                     </pre>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="CSS">
                     <pre class="brush:css">
+                        .clear{
+                          zoom: 1;
+                        }
 
+                        .clear:after{
+                          display: block;
+                          content: '';
+                          zoom: 1;
+                          height: 0;
+                          visibility: hidden;
+                          clear: both;
+                        }
+                        .page {
+                          min-width: 320px;
+                          margin-left: auto;
+                          margin-right: auto;
+                          font-size: 14px;
+                          font-family: 'microsoft Yahei';
+                        }
+
+                        [data-dpr="2"] .page {
+                          font-size: 28px;
+                        }
+
+                        [data-dpr="3"] .page {
+                          font-size: 42px;
+                        }
+
+                        .topImg {
+                          position: relative;
+                          z-index: 1;
+                        }
+
+                        .topImg img {
+                          width: 100%;
+                          height: 6rem;
+                        }
+
+                        .left-line {
+                          position: fixed;
+                          top: 6rem;
+                          left: 0.53333rem;
+                          bottom: 0;
+                          width: 0.02667rem;
+                          background-color: #f2f2f2;
+                          z-index: 0;
+                        }
+
+                        .items {
+                          position: relative;
+                          z-index: 1;
+                        }
+
+                        .items dl {
+                          padding: 0.33333rem 0 0 0.41333rem;
+                        }
+
+                        .items dt {
+                          float: left;
+                          width: 0.26667rem;
+                          height: 0.26667rem;
+                          margin-top: 8px;
+                          background-color: #5bb431;
+                          border-radius: 50% 50%;
+                        }
+
+                        .items dd {
+                          margin-left: 0.78667rem;
+                          padding-bottom: 0.44rem;
+                          padding-right: 0.41333rem;
+                          border-bottom: 0.02667rem solid #e8e8e9;
+                          line-height: 2;
+                        }
+
+                        .items dd p {
+                          width: 100%;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                        }
+
+                        .items dd p span {
+                          color: #999999;
+                        }
+
+                        .items .btn-green {
+                          float: right;
+                          width: 2.21333rem;
+                          height: 0.68rem;
+                          border: 1px solid #5bb431;
+                          border-radius: 0.68rem;
+                          line-height: 0.66667rem;
+                          color: #5bb431;
+                          text-align: center;
+                        }
+
+                        [data-dpr='2'] .items dt {
+                          margin-top: 19px;
+                        }
+
+                        [data-dpr='3'] .items dt {
+                          margin-top: 24px;
+                        }
                     </pre>
                 </div>
             </div>
         </div>
+        <div>演示地址：<a href="taobao_demo.html" target="_blank">DEMO</a></div>
+        资料参考地址：<a href="http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html?plg_nld=1&plg_uin=1&plg_auth=1&plg_nld=1&plg_usr=1&plg_vkey=1&plg_dev=1" target="_blank">http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html?plg_nld=1&plg_uin=1&plg_auth=1&plg_nld=1&plg_usr=1&plg_vkey=1&plg_dev=1</a>
     </div>
 </div>
 <!--include "../modules/footer.html"-->

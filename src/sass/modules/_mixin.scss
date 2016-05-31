@@ -102,3 +102,44 @@
   -webkit-transform:skew($deg); /* Safari 和 Chrome */
   -o-transform:skew($deg); 	/* Opera */
 }
+//px转换为rem
+@mixin px2rem($property,$px-values,$baseline-px:75px,$support-for-ie:false){
+  //Convert the baseline into rems
+  $baseline-rem: $baseline-px / 1rem * 1;
+  //Print the first line in pixel values
+  @if $support-for-ie {
+    #{$property}: $px-values;
+  }
+  //if there is only one (numeric) value, return the property/value line for it.
+  @if type-of($px-values) == "number"{
+    #{$property}: $px-values / $baseline-rem;
+  }
+  @else {
+    //@warn 'in';
+    //Create an empty list that we can dump values into
+    $rem-values:();
+    @each $value in $px-values{
+      // If the value is zero or not a number, return it
+      @if $value == 0 or type-of($value) != "number"{
+        //@warn $value + '5';
+        $rem-values: append($rem-values, $value);
+      }@else if(type-of($value) == "number"){
+        $rem-values: append($rem-values, $value / $baseline-rem);
+      }
+    }
+    // Return the property and its list of converted values
+    #{$property}: $rem-values;
+  }
+}
+//移动端字体大小适配
+@mixin font-dpr($font-size){
+  font-size: $font-size;
+
+  [data-dpr="2"] & {
+    font-size: $font-size * 2;
+  }
+
+  [data-dpr="3"] & {
+    font-size: $font-size * 3;
+  }
+}

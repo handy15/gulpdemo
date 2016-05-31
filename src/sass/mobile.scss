@@ -14,3 +14,71 @@
   list-style: decimal outside;
   margin-left: 30px;
 }
+.page{
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  @include font-dpr(14px);
+  font-family: 'microsoft Yahei';
+}
+.topImg{
+  position: relative;
+  z-index: 1;
+  img{
+    width: 100%;
+    @include px2rem(height,450px);
+  }
+}
+.left-line{
+  position: fixed;
+  top:0;
+  @include px2rem(left,40px);
+  bottom:0;
+  @include px2rem(width,2px);
+  background-color: #f2f2f2;
+  z-index: 0;
+}
+.items{
+  position: relative;
+  z-index: 1;
+  dl{
+    @include px2rem(padding,25px 0 0 31px);
+  }
+  dt{
+    float: left;
+    @include px2rem(width,20px);
+    @include px2rem(height,20px);
+    margin-top: 8px;
+    background-color: #5bb431;
+    border-radius: 50% 50%;
+  }
+  dd{
+    @include px2rem(margin-left,59px);
+    @include px2rem(padding-bottom,33px);
+    @include px2rem(padding-right,31px);
+    @include px2rem(border-bottom,2px solid #e8e8e9);
+    line-height: 2;
+    p{
+      @include ellipsis();
+      span{
+        color: #999999;
+      }
+    }
+  }
+  .btn-green{
+    float: right;
+    @include px2rem(width,166px);
+    @include px2rem(height,51px);
+    border: 1px solid #5bb431;
+    @include px2rem(border-radius,51px);
+    @include px2rem(line-height,50px);
+    color: #5bb431;
+    text-align: center;
+  }
+}
+[data-dpr='2'] .items dt{
+  margin-top: 19px;
+}
+[data-dpr='3'] .items dt{
+  margin-top: 24px;
+}
