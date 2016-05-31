@@ -82,3 +82,35 @@
 [data-dpr='3'] .items dt{
   margin-top: 24px;
 }
+/*===========select转分段选择===========*/
+$segmentColor:#007aff;
+.ui-segment{
+  color: rgb(0, 122, 255);
+  border: 1px solid $segmentColor;
+  border-radius: 4px;
+  display:inline-block;
+  font-family: 'Lato',Georgia, Serif;
+  span.option{
+    font-size: 13px;
+    padding-left: 23px;
+    padding-right: 23px;
+    height: 25px;
+    text-align:center;
+    display:inline-block;
+    line-height: 25px;
+    margin: 0px;
+    float:left;
+    cursor:pointer;
+    border-right:1px solid $segmentColor;
+    &.active{
+      background-color: $segmentColor;
+      color: white;
+    }
+    &:last-child{
+      border-right: none;
+    }
+  }
+}
+.segment-select{
+  /*display:none;*/
+}
