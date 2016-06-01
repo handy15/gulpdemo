@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Mobiscroll-2.6.2</title>
+    <!--include "../modules/header_import.html"-->
+    <link href="/plugin/mobiscroll-2.6.2/dev/css/mobiscroll.core-2.6.2.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/css/mobile.css">
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_mobile.html"-->
+    <div class="c-right">
+        <div class="mobiscroll-header">
+            <h1><a href="javascript:location.reload(true);">Mobiscroll 2.6.2</a></h1>
+        </div>
+
+        <ul class="content peak" style="min-height: 500px;">
+            <li>
+                <label>峰<span>（时间段）</span></label>
+            </li>
+            <!--<li class="time">10:00 至 15:00<span class="btn-del01">&times;</span></li>-->
+            <li class="addTxt"><em for="peak">＋添加</em></li>
+        </ul>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script src="/plugin/mobiscroll-2.6.2/dev/js/mobiscroll.core-2.6.2.js" type="text/javascript"></script>
+<script src="/plugin/mobiscroll-2.6.2/dev/js/mobiscroll.core-2.6.2-zh.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        myobj.init();
+    });
+    var myobj = {
+        init: function(){
+            var that = this;
+            var objTime = that.renderTime();
+            var optionsHours = {
+                lang: 'zh',
+                theme: 'time-interval',
+                display: 'bottom',
+                headerText: '',
+                setText:'完成',
+                rows:5,
+                invalid:[objTime.keys[1],objTime.keys[0]],
+                validate: function (dw, i, time) {
+                    //return false;
+                },
+                onBeforeShow: function (dw) {
+                    var $this = $(this);
+                    var inst = $this.scroller('getInst');
+                    //重置时间
+                    inst.val = objTime.keys[0] + ' ' + objTime.keys[1];
+                    inst.temp = [objTime.keys[0],objTime.keys[1]];
+                    optionsHours.invalid = [objTime.keys[1],objTime.keys[0]];
+                },
+                onShow: function(dw,v){
+                    var $this = $(this);
+                    var inst = $this.scroller('getInst');
+                    //td中间添加文字
+                    $(dw).find('table td').eq(0).after('<td class="betweenText"><div>至</div></td>');
+                    //点击蒙版关闭
+                    $(dw).off('touchend','.dwo').on('touchend','.dwo',function(){
+                        inst.cancel();
+                    });
+                    //不可选择设置
+                    if(optionsHours.invalid.length){
+                        $('.dwwl0 .dw-li[data-val="' + optionsHours.invalid[0] + '"]').removeClass('dw-v');
+                        $('.dwwl1 .dw-li[data-val="' + optionsHours.invalid[1] + '"]').removeClass('dw-v');
+                    }
+                },
+                onChange: function(v){
+                    var $this = $(this);
+                    var selectedValues = v.split(' ');
+                    optionsHours.invalid = [selectedValues[1],selectedValues[0]];
+                    $('.dwwl .dw-li').addClass('dw-v');
+                    //不可选择设置
+                    if(optionsHours.invalid.length){
+                        $('.dwwl0 .dw-li[data-val="' + optionsHours.invalid[0] + '"]').removeClass('dw-v');
+                        $('.dwwl1 .dw-li[data-val="' + optionsHours.invalid[1] + '"]').removeClass('dw-v');
+                    }
+                },
+                onSelect: function (v) {
+                    var $this = $(this);
+                    var selectedValues = v.split(' ');
+                    var startTime = parseInt(selectedValues[0]);
+                    var endTime = parseInt(selectedValues[1]);
+                    //对应的峰平谷、尖峰
+                    var range = that.timeInterval[$this.attr('for')];
+                    if(startTime < endTime){
+                        for(var sv=startTime+0.5;sv<endTime;sv++){
+                            range.push(sv);
+                        }
+                    }else{
+                        for(var sv=startTime+0.5;sv<24;sv++){
+                            range.push(sv);
+                        }
+                        for(var sv=0.5;sv<endTime;sv++){
+                            range.push(sv);
+                        }
+                    }
+                    //添加时间段
+                    $this.parent().before('<li class="time">' + that.renderCertainTime(startTime) +' 至 ' + that.renderCertainTime(endTime) +'<span class="btn-del01" data-start="'+startTime+'"  data-end="'+endTime+'">&times;</span></li>');
+
+                    //储存提交表单需要的数据
+                    that.timeInterval[$this.attr('for')+'0'].push({
+                        startTime:that.renderCertainTime(startTime),
+                        endTime:that.renderCertainTime(endTime)
+                    })
+                    //恢复点击“添加”，弹出时间段选择
+                    if($this.parent().siblings('li.time').length >= 3){
+                        $this.scroller('destroy').off('click').on('click',function(){
+                            $this.attr('hasDestroy','1');
+                            alert('至多添加3个时间段');
+                        });
+                    }
+                },
+                onClose: function (v,btn) {
+                    //点击“完成”时
+                    if('set' == btn){
+                        var $this = $(this);
+                        var selectedValues = v.split(' ');
+                        var startTime = parseInt(selectedValues[0]);
+                        var endTime = parseInt(selectedValues[1]);
+                        //开始和结束时间是否相等
+                        if(startTime == endTime){
+                            alert('开始时间和结束时间不能为同一时间');
+                            return false;
+                        }
+                        //判断是否有重复的时间段
+                        //对应的峰平谷、尖峰
+                        var range = that.timeInterval[$this.attr('for')];
+                        var flag = true;
+                        if(range.length){
+                            if(startTime < endTime){
+                                for(var sv=startTime+0.5;sv<endTime && flag;sv++){
+                                    if('-1' != $.inArray(sv, range)){
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                for(var sv=startTime+0.5;sv<24&&flag;sv++){
+                                    if('-1' != $.inArray(sv, range)){
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                                for(var sv=0.5;sv<endTime&&flag;sv++){
+                                    if(flag && '-1' != $.inArray(sv, range)){
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if(!flag){
+                            alert('时间段不允许有交叉');
+                        }
+                        return flag;
+                    }
+                },
+                wheels:[[{
+                    label:'开始时间'
+                    ,keys: objTime.keys
+                    ,values: objTime.values
+                },{
+                    label:'结束时间'
+                    ,keys: objTime.keys
+                    ,values: objTime.values
+                }]]
+            }
+            $('.addTxt em').scroller('destroy').scroller(optionsHours);
+            //删除时间段
+            $('.peak').on('click','.time .btn-del01',function(){
+                var $this = $(this);
+                var startTime = parseInt($this.attr('data-start'));
+                var endTime = parseInt($this.attr('data-end'));
+                var $parent = $this.parent();
+                var objName = $parent.siblings('.addTxt').find('[for]').attr('for');
+                var range = that.timeInterval[objName];
+                var startIndex = $.inArray(startTime+0.5,range);
+                if('-1' != startIndex){
+                    var account = endTime-startTime;
+                    if(account < 0){
+                        account = 24-startTime+endTime;
+                    }
+                    range.splice(startIndex,account);
+                }
+                //删除提交表单需要的数据
+                that.timeInterval[objName+'0'].splice($parent.parent().find('.time-interval').index($parent),1);
+                //至多添加3个时间段
+                var $add = $parent.siblings('.addTxt').find('[for]');
+                if('1' == $add.attr('hasDestroy')){
+                    $add.off('click').scroller(optionsHours);
+                }
+                //删除时间段
+                $parent.remove();
+            });
+        },
+        //生成数据
+        renderTime: function(){
+            var starHours = 0;
+            var endHours = 23;
+            var keys = [];
+            var values = [];
+            for(var i=starHours;i<=endHours;i++){
+                var time = i + ':00';
+                if(i<10){
+                    time = '0' + time;
+                }
+                keys.push(i);
+                values.push(time);
+            }
+            return {keys:keys,values: values};
+        },
+        //峰谷平、尖峰时间段全局存储
+        timeInterval: {
+            peak: [],//峰
+            cereal: [],//谷
+            flat: [],//平
+            tip: [],//尖峰
+            //对应的时间段
+            peak0: [],//峰
+            cereal0: [],//谷
+            flat0: [],//平
+            tip0: [],//尖峰
+            //时间段转化为时间点,时间段数组[{starTime:'01:00',endTime:'10:00'},{starTime:'01:00',endTime:'10:00'}]
+            periodConvertToPoint: function(arr){
+                var range = [];
+                if(arr && '' != arr){
+                    for(var i= 0,len=arr.length;i<len;i++){
+                        var obj = arr[i];
+                        var startTime = parseInt(obj.startTime.match(/\d{2}(?=:00)/g)[0].replace(/^0/g,''));
+                        var endTime = parseInt(obj.endTime.match(/\d{2}(?=:00)/g)[0].replace(/^0/g,''));
+                        //遍历时间段
+                        if(startTime < endTime){
+                            for(var sv=startTime+0.5;sv<endTime;sv++){
+                                range.push(sv);
+                            }
+                        }else{
+                            for(var sv=startTime+0.5;sv<24;sv++){
+                                range.push(sv);
+                            }
+                            for(var sv=0.5;sv<endTime;sv++){
+                                range.push(sv);
+                            }
+                        }
+                    }
+                }
+                return range;
+            }
+        },
+        //根据value值生成时间字符串
+        renderCertainTime: function(val){
+            var j = parseInt(val);
+            var time = j + ':00';
+            if(j<10){
+                time = '0' + time;
+            }
+            return time;
+        }
+    }
+</script>
+</body>
+</html>
