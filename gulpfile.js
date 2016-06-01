@@ -302,7 +302,7 @@ gulp.task('revPluginStyles', function() {
 });
 gulp.task('revPluginCopyOthers',function(){
     //插件其他
-    return gulp.src([PATH.dest.plugin+'/**/*',!PATH.dest.plugin + '/**/*.js',!PATH.dest.css + '/**/*.css'])
+    return gulp.src([PATH.dest.plugin+'/**/*','!' + PATH.dest.plugin + '/**/*.js','!' + PATH.dest.plugin + '/**/*.css'])
         .pipe(rev())
         .pipe(gulp.dest(PATH.rev.plugin))
         .pipe(rev.manifest())
