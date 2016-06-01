@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>select转分段按钮</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=957474c344"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=42ede076c9"><link rel="stylesheet" href="/gulpdemo/css/mobile.css?v=42edf902e8"></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="1" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="/gulpdemo/html/mobile/taobao_adapter.html"><i class="icon-blank"></i>淘宝手机适配解决方案</a></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>特效插件</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/mobile/select_to_segment.html">select转分段按钮</a></li><li><a href="/gulpdemo/html/mobile/repeat_play_img.html" target="_blank">滑动图片</a></li><li><a href="/gulpdemo/html/mobile/delete_demo.html" target="_blank">滑动删除</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>基于mobiscroll的滚动</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/mobile/mobiscroll_demo.html">综合演示</a></li><li><a href="/gulpdemo/html/mobile/mobiscroll_mydemo.html">自定义</a></li></ul></li></ul></div></div><div class="c-right"><h1>概述</h1><p>此插件应用于select转分段按钮，点击按钮进行选择时，select对应的value值相应变化，提交表单时无需另外处理。</p><h1>效果</h1><select id="select" class="segment-select"><option value="1">None</option><option value="2">First</option><option value="3">Second</option></select><div class="mt20px"><h1>代码</h1><ul class="nav nav-tabs" role="tablist" id="selectTabs"><li role="presentation" class="active"><a href="#HTML" aria-controls="home" role="tab" data-toggle="tab">HTML</a></li><li role="presentation"><a href="#JS" aria-controls="profile" role="tab" data-toggle="tab">JS</a></li><li role="presentation"><a href="#CSS" aria-controls="messages" role="tab" data-toggle="tab">CSS</a></li></ul><div class="tab-content"><div role="tabpanel" class="tab-pane active" id="HTML"><pre class="brush:xml">
+                        <select class="segment-select">
+                            <option value="1">None</option>
+                            <option value="2">First</option>
+                            <option value="3">Second</option>
+                        </select>
+                    </pre></div><div role="tabpanel" class="tab-pane" id="JS"><pre class="brush:js">
+                        (function( $ ){
+                            $.fn.extend({
+                                Segment: function ( ) {
+                                    $(this).each(function (){
+                                        var self = $(this);
+                                        var wrapper = $('&lt;div&gt;',{'class': "ui-segment"});
+                                                $(this).find("option").each(function (){
+                                                var option = $('&lt;span&gt;',{'class': 'option','text': $(this).text(),'value': $(this).val()});
+                                            if ($(this).is(":selected")){
+                                                option.addClass("active");
+                                            }
+                                            wrapper.append(option);
+                                        });
+                                        wrapper.find("span.option").click(function (){
+                                            wrapper.find("span.option").removeClass("active");
+                                            $(this).addClass("active");
+                                            self.val($(this).attr('value'));
+                                        });
+                                        $(this).after(wrapper);
+                                        $(this).hide();
+                                    });
+                                }
+                            });
+                        })(jQuery);
+                        //调用
+                        $(function ($){
+                            $(".segment-select").Segment();
+                        });
+                    </pre></div><div role="tabpanel" class="tab-pane" id="CSS"><pre class="brush:css">
+                        .ui-segment{
+                          color: rgb(0, 122, 255);
+                          border: 1px solid rgb(0, 122, 255);
+                          border-radius: 4px;
+                          display:inline-block;
+                          font-family: 'Lato',Georgia, Serif;
+                        }
+                        .ui-segment span.option.active{
+                          background-color: rgb(0, 122, 255);
+                          color: white;
+                        }
+                        .ui-segment span.option{
+                          font-size: 13px;
+                          padding-left: 23px;
+                          padding-right: 23px;
+                          height: 25px;
+                          text-align:center;
+                          display:inline-block;
+                          line-height: 25px;
+                          margin: 0px;
+                          float:left;
+                          cursor:pointer;
+                          border-right:1px solid rgb(0, 122, 255);
+                        }
+                        .ui-segment span.option:last-child{
+                          border-right: none;
+                        }
+                    </pre></div></div></div></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=62f69d29b6"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=04b692f78d"></script><script type="text/javascript" src="/gulpdemo/js/mobile/segment.js?v=ec615b0d2f"></script><script type="text/javascript">$(function(e){e("#select").Segment()})</script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=a4cebfe354"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"]),SyntaxHighlighter.all()})</script></body></html>

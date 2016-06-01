@@ -1,0 +1,383 @@
+<!DOCTYPE HTML><html><head><meta charset="utf-8"><title>select美化</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=957474c344"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=42ede076c9"><link rel="stylesheet" href="/gulpdemo/css/form-beauty.css?v=4d74e8e76e"></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="3" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>地图</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/chinamap.html">中国地图</a></li><li><a href="/gulpdemo/html/javascript/gaode/gdMap.html">高德地图</a></li><li><a href="/gulpdemo/html/javascript/gaode/map.html">高德地图-搜索结果列表</a></li><li><a href="/gulpdemo/html/javascript/gaode/poi.html">高德地图-iframe传参</a></li><li><a href="/gulpdemo/html/javascript/baidu-map.html">百度地图</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>form元素美化</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/formBeauty/select.html">select美化</a></li><li><a href="/gulpdemo/html/javascript/formBeauty/radio.html">radio & checkbox美化</a></li></ul></li><li><a href="/gulpdemo/html/javascript/date_compare.html"><i class="icon-blank"></i>时间跨时区比较</a></li></ul></div></div><div class="c-right"><h1>说明</h1><p>选择下拉内容后，对应select的value值也会变化，提交表单时不用做特别处理。</p><h1>效果</h1><section><select name="" id="province" class="beautify_select"><option value="0" selected="selected">请选择</option><option value="1">北京市</option><option value="2">天津市</option><option value="3">河北</option></select></section><div class="mt20px"><h1>代码</h1><ul class="nav nav-tabs" role="tablist" id="selectTabs"><li role="presentation" class="active"><a href="#HTML" aria-controls="home" role="tab" data-toggle="tab">HTML</a></li><li role="presentation"><a href="#JS" aria-controls="profile" role="tab" data-toggle="tab">JS</a></li><li role="presentation"><a href="#CSS" aria-controls="messages" role="tab" data-toggle="tab">CSS</a></li></ul><div class="tab-content"><div role="tabpanel" class="tab-pane active" id="HTML"><pre class="brush:xml">
+                        <select name="" class="beautify_select">
+                            <option value="0" selected="selected">请选择</option>
+                            <option value="1">北京市</option>
+                            <option value="2">天津市</option>
+                            <option value="3">河北</option>
+                        </select>
+                    </pre></div><div role="tabpanel" class="tab-pane" id="JS"><pre class="brush:js">
+//js调用
+$('.beautify_select').cssSelect();
+//插件
+(function($){
+    var	$View = function( str ){
+            return  $( eval( '\'' + str.replace( / <%=([\w]+)\%> /g, '\' + $1 + \'' ) + '\'' ) );
+        },
+        createUiId = function( el, prefix ){
+            var prefix = ( !prefix && typeof prefix != 'string' )? 'form' : prefix;
+            if( el.attr('id') ){
+                return prefix + '_ui_id_' + el.attr('id');
+            }
+            else if( el.attr('name') ){
+                return	prefix + '_ui_name_' + el.attr('name')
+                        .replace('[]', '')
+                        .replace('[', '_')
+                        .replace('\']', '')
+                        .replace(']', '')
+                        .replace('\'', '')
+                        .replace('"', '');
+            }
+            else{
+                return prefix + '_ui_the_' + 'n';
+            }
+        },
+        cssSelect = function (config) {
+            var optionsPosition;
+            if(config){
+                optionsPosition = config.position;
+            }
+
+            
+                
+            
+            return $(this).each(function(){
+                var	$thisEl = $(this),
+                    $optsEl = $thisEl.children('option'),
+                    $uiEl,
+                //thisEvs = $._data($thisEl[0], 'events'),
+                //thisEvs = jQuery._data($thisEl[0], 'events'),
+                    thisEvs = $thisEl.on('events'),
+                    uiId = createUiId($thisEl, 'select'),
+                    optsWidth = 0,
+                    optsPosition,optionsPosition, optionsLimit,
+
+                /* Ui */
+                    tpl = {
+                        wrapper: '<div class="cssSelect"></div>',
+                        select: '<div class="selectBox sNormal"></div>',
+                        selectLt: '<div class="selectLt"></div>',
+                        selectRt: '<div class="selectRt"></div>',
+                        options: '<div class="optionsBox"></div>',
+                        optionsInner: '<div class="optionsInnerBox"></div>',
+                        option: '<div class="optionBox oNormal"></div>',
+                        optionInner: '<span></span>'
+                    },
+
+                /* Select box */
+                    $selectEl = $View(tpl.select),
+                    $sLtEl = $View(tpl.selectLt),
+                    $sRtEl = $View(tpl.selectRt),
+
+                /* Options box */
+                    $optionsEl = $View(tpl.options),
+                    $optionsInnerEl = $View(tpl.optionsInner),
+
+                    init = function() {
+
+                        if(
+                            $thisEl.length &lt;= 1
+                            &&	$thisEl.get(0).tagName === 'SELECT'
+                            &&	!$thisEl.attr('multiple')
+                            &&	$thisEl.children('optgroup').length &lt;= 0
+                        )
+                        {
+
+                            $uiEl = $View(tpl.wrapper).attr('id', uiId);
+                            $('#' + uiId).remove();
+                            $thisEl.show();
+                            $thisEl.hide();
+
+                            $uiEl.append($selectEl).append($optionsEl.append($optionsInnerEl));
+                            $uiEl.click(function(event) {
+                                event.stopPropagation();
+                            });
+
+                            /* Render select*/
+                            $selectEl.append($sLtEl).append($sRtEl);
+                            if( $thisEl.attr('disabled') ){
+                                $selectEl.addClass('sDisabled');
+
+                                return;
+                            }
+
+                            $selectEl.click(events.selectClick);
+                            $selectEl.hover(events.selectHover, events.selectNormal);
+
+                            /* Render options*/
+                            $optsEl.each(function(i){
+                                var	optEl = $(this),
+                                    optionTxt = optEl.text(),
+
+                                /* Render option */
+                                    $optionEl = $View(tpl.option).append($View(tpl.optionInner).text(optionTxt));
+
+                                /* Option event */
+                                $optionEl.css({ float : 'left' });
+                                $optionEl.hover(events.optionHover, events.optionNormal);
+                                $optionEl.click(events.optionClick);
+
+                                /* Render all options*/
+                                $optionsInnerEl.append($optionEl);
+
+                                /* Set selected */
+                                if( optEl.val() == $thisEl.val() ){
+                                    $sLtEl.text(optionTxt);
+
+                                    /* Set select option */
+                                    $optionEl.addClass('selected');
+                                }
+
+                            });
+
+                            /* Options position */
+                            $thisEl.setOptions = function(){
+                                if(config && config.position){
+                                    optionsPosition = config.position;
+                                }
+
+                                if(config && config.limit){
+                                    optionsLimit = config.limit;
+                                }
+
+                                $optionsInnerEl.children('.optionBox').css({ float : 'none' });
+
+                                var top,
+                                    sltPosition = $selectEl.position(),
+                                    sltedPosition = $optionsInnerEl.children('.selected').position(),
+                                    eachOptHeight = $optionsInnerEl.outerHeight() / $optsEl.length,
+                                    optsHeight = 'auto';
+
+                                if(optionsLimit){
+                                    if(optionsLimit != 'auto' && $optsEl.length > optionsLimit){
+                                        optsHeight = Math.round(eachOptHeight) * optionsLimit;
+                                    }
+                                    else{
+                                        optsHeight = 'auto';
+                                    }
+                                }
+                                else{
+                                    if($optsEl.length > 5){
+                                        optsHeight = Math.round(eachOptHeight) * 5;
+                                    }
+                                    else{
+                                        optsHeight = 'auto';
+                                    }
+                                }
+
+                                sltPosition.top = sltPosition.top + $selectEl.outerHeight();
+
+                                $optionsEl.css({height: Math.round(optsHeight), top: sltPosition.top + 1});
+
+                                if(
+                                    optsPosition &&
+                                    (
+                                        $(window).height() + $(document).scrollTop() &lt; $optionsEl.offset().top + $optionsEl.outerHeight()
+                                    )
+                                ){
+                                    top = sltPosition.top - $optionsEl.outerHeight() - $selectEl.outerHeight() - 3;
+                                }else{
+                                    top = sltPosition.top;
+                                }
+
+                                $optionsEl.scrollTop(Math.round(sltedPosition.top - eachOptHeight));
+                                $optionsEl.css({ 'top' : top + 1 , 'left' : sltPosition.left, 'overflow-y': 'auto', 'overflow-x': 'hidden'});
+
+                                if( !optsPosition ){
+                                    optsPosition = $optionsEl.position();
+                                }
+                            };
+
+                            /* Render $uiEl */
+                            $thisEl.before($uiEl);
+                            $thisEl.setOptions();
+                            $optionsEl.hide();
+                        }
+                    },
+
+
+                    events = $.extend({
+                        selectNormal : function() {
+                            $(this).removeClass('sHover');
+                        },
+                        selectHover : function() {
+                            $(this).addClass('sHover');
+                        },
+                        selectClick : function() {
+                            if( $optionsEl.css('display') != 'none' ){
+                                handlers.selectOff();
+                            }
+                            else{
+                                handlers.selectOn();
+                                $thisEl.setOptions();
+                            }
+                        },
+                        optionNormal : function() {
+                            $(this).removeClass('oHover');
+                        },
+                        optionHover : function() {
+
+                            $(this).addClass('oHover');
+                        },
+                        optionClick : function() {
+
+                            handlers.selected(this);
+                        },
+                        documentClick : function() {
+                            handlers.selectOff();
+                        }
+                    }, function(){}),
+                    handlers = $.extend({
+                        selectOn : function(){
+                            this.selectOff();
+
+                            $selectEl.addClass('sPressDown');
+                            $optionsEl.show();
+
+                            $(document).one('click', events.documentClick);
+                        },
+                        selectOff : function(){
+                            $thisEl.unbind('click');
+                            $('.selectBox').removeClass('sPressDown');
+                            $('.optionsBox').hide();
+                        },
+                        selected : function(el){
+                            var i = $optionsInnerEl.children('.optionBox').index(el);
+                            $optionsInnerEl.children('.optionBox').removeClass('selected');
+                            $(el).addClass('selected');
+                            $sLtEl.text($(el).text());
+                            if(thisEvs&& thisEvs.change&& thisEvs.change.length > 0){
+
+
+                                $thisEl[0].selectedIndex = i;
+                                $.each( thisEvs.change , function(){
+                                    $thisEl.one('click', this.handler);
+                                    $thisEl.click();
+                                });
+
+
+                                $thisEl.children().eq(i).attr('selected',true);
+                                $thisEl.trigger('change');
+
+                                var iii=$('#identitySelect').children().eq(i).prop('selected',true);
+                                $.each(thisEvs.change , function(){
+                                    $thisEl.one('click', this.handler);
+                                    $thisEl.click();
+                                });
+                            }
+                            $thisEl[0].selectedIndex = i;
+                            this.selectOff();
+
+                        }
+                    }, function(){});
+
+                return init();
+            });
+        }
+    $.fn.extend({
+        cssSelect: cssSelect
+    });
+
+})(jQuery);
+                    </pre></div><div role="tabpanel" class="tab-pane" id="CSS"><pre class="brush:css">
+                        .cssSelect {
+                          white-space: nowrap;
+                          display: inline-block;
+                          vertical-align: middle;
+                        }
+
+                        .cssSelect * {
+                          display: block;
+                        }
+
+                        .cssSelect a {
+                          color: #666;
+                          outline-width: 0px;
+                          text-decoration: none;
+                        }
+
+                        .cssSelect .selectBox {
+                          cursor: pointer;
+                          border: solid 1px #e5e5e5;
+                          border-radius: 6px;
+                          float: left;
+                          width: 170px;
+                          height: 30px;
+                          background-color: #fafafa;
+                          box-shadow: inset 0 2px 2px #f1f1f1;
+                        }
+
+                        .cssSelect .selectRt {
+                          width: 28px;
+                          height: 100%;
+                          cursor: pointer;
+                          background: url(../gulpdemo/img/form/icon-select.png?v=d09a92b61b) center center no-repeat;
+                          float: right;
+                        }
+
+                        .cssSelect .selectLt {
+                          overflow: hidden;
+                          height: 100%;
+                          width: 130px;
+                          line-height: 30px;
+                          padding: 0 0 0 10px;
+                          background: none transparent scroll repeat 0% 0%;
+                          color: #999999;
+                          cursor: pointer;
+                          float: left;
+                          text-align: left;
+                          /*text-overflow: ellipsis;*/
+                        }
+
+                        .cssSelect .sNormal {
+                          background-position: 0px 0px;
+                        }
+
+                        .cssSelect .sHover {
+                          background-position: 0px -50px;
+                        }
+
+                        .cssSelect .sPressDown {
+                          background-color: #ffffff;
+                          border-radius: 6px 6px 0 0;
+                          position: relative;
+                          z-index: 101;
+                          border-bottom-color: #ffffff;
+                        }
+
+                        .cssSelect .optionsBox {
+                          min-width: 170px;
+                          max-height: 250px;
+                          position: absolute;
+                          border: 1px solid #e5e5e5;
+                          /*border-top:none;*/
+                          border-radius: 0 0 6px 6px;
+                          margin: -2px 0 0 0px;
+                          background: #fff;
+                          z-index: 100;
+                        }
+
+                        .cssSelect .optionBox {
+                          cursor: pointer;
+                          padding: 2px 18px 2px 18px;
+                          margin: 0px;
+                          height: 25px;
+                          line-height: 25px;
+                        }
+
+                        .cssSelect .optionBox span {
+                          cursor: pointer;
+                          font-size: 13px;
+                        }
+
+                        .cssSelect .oHover {
+                          background: #fafafa;
+                          color: #e66b01;
+                          text-decoration: underline;
+                        }
+
+                        .cssSelect .selected {
+                          background: #e66b01;
+                          color: #fff;
+                          text-decoration: none;
+                        }
+                    </pre></div></div></div></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=62f69d29b6"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=04b692f78d"></script><script type="text/javascript" src="/gulpdemo/js/formBeauty/select-beautify.js?v=5f52b09298"></script><script type="text/javascript">$("#province").cssSelect(),$("#selectTabs").tab()</script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=a4cebfe354"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"]),SyntaxHighlighter.all()})</script></body></html>
