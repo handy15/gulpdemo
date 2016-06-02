@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绝对定位</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui" />
+    <style>
+        header, footer, main {
+            display: block;
+        }
+
+        header {
+            position: fixed;/*或者absolute*/
+            height: 50px;
+            left: 0;
+            right: 0;
+            top: 0;
+            background-color: #4e4e4e;
+            text-align: center;
+            color: #ffffff;
+            line-height: 50px;
+        }
+
+        footer {
+            position: fixed;/*或者写成absolute*/
+            height: 34px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ffae00;
+        }
+
+        main {
+            /* main绝对定位，进行内部滚动 */
+            position: absolute;
+            top: 50px;
+            bottom: 34px;
+            left: 0;
+            /* 使之可以滚动 */
+            overflow-y: scroll;
+            /* 增加该属性，可以增加弹性，是滑动更加顺畅 */
+            -webkit-overflow-scrolling: touch;
+            background-color: #00a0e9;
+            width: 100%;
+        }
+        main li{
+            height: 30px;;
+        }
+
+        main .content {
+            height: 2000px;
+        }
+    </style>
+</head>
+<body>
+<!-- fixed定位的头部 (absolute绝对定位也可以)-->
+<header>header</header>
+
+<!-- 可以滚动的区域 -->
+<main>
+    <div class="content">
+        <!-- 内容在这里... -->
+        <ul>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+            <li>7777</li>
+            <li>vvvvv</li>
+        </ul>
+    </div>
+</main>
+
+<!-- fixed定位的底部 （absolute绝对定位也可以）-->
+<footer>
+    <input type="text" placeholder="Footer..."/>
+    <button class="submit">提交</button>
+</footer>
+</body>
+</html>

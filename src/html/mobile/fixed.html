@@ -20,7 +20,7 @@
         <div class="mt20px">
             <h2>代码</h2>
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist" id="selectTabs">
+            <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#HTML" aria-controls="HTML" role="tab" data-toggle="tab">HTML</a></li>
                 <li role="presentation"><a href="#JS" aria-controls="JS" role="tab" data-toggle="tab">JS</a></li>
                 <li role="presentation"><a href="#CSS" aria-controls="CSS" role="tab" data-toggle="tab">CSS</a></li>
@@ -115,22 +115,117 @@
                 </div>
             </div>
         </div>
+        <h1 class="mt20px">二、fixed & absolute</h1>
+        <p>header和footer采用fixed或absolute，中间部分使用absolute。</p>
+        <p class="alert alert-warning">css3属性<strong>-webkit-overflow-scrolling: touch;</strong> 增加该属性，可以增加弹性，是滑动更加顺畅。<em>ios中起作用，android中无作用。</em></p>
+        <p class="alert alert-danger">ios中，弹出键盘时，fixed失效，会乱跑。这种情况出现在页面中存在可输入的元素。</p>
+        <h2>示例</h2>
+        <div><a href="fixed-absolute.html" target="_blank">DEMO</a></div>
         <div class="mt20px">
-            <h1>拓展：Media所有参数汇总</h1>
-            <p>除了最常需要用到的媒体查询器的三个特性，大于，等于，小于的写法。媒体查询器的全部功能肯定不止这三个功能，下面是我总结的它的一些参数用法解释：</p>
+            <h2>代码</h2>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#HTML01" aria-controls="HTML01" role="tab" data-toggle="tab">HTML</a></li>
+                <li role="presentation"><a href="#CSS01" aria-controls="CSS01" role="tab" data-toggle="tab">CSS</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="HTML01">
+                    <pre class="brush:xml">
+                        <!-- fixed定位的头部 (absolute绝对定位也可以)-->
+                        <header>header</header>
+                        <!-- 可以滚动的区域 -->
+                        <main>
+                            <div class="content">
+                                <!-- 内容在这里... -->
+                                <ul>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                </ul>
+                            </div>
+                        </main>
+                        <!-- fixed定位的底部 （absolute绝对定位也可以）-->
+                        <footer>
+                            <input type="text" placeholder="Footer..."/>
+                            <button class="submit">提交</button>
+                        </footer>
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="CSS01">
+                    <pre class="brush:css">
+                        header, footer, main {
+                            display: block;
+                        }
 
+                        header {
+                            position: fixed;/*或者absolute*/
+                            height: 50px;
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                            background-color: #4e4e4e;
+                            text-align: center;
+                            color: #ffffff;
+                            line-height: 50px;
+                        }
+
+                        footer {
+                            position: fixed;/*或者写成absolute*/
+                            height: 34px;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background-color: #ffae00;
+                        }
+
+                        main {
+                            /* main绝对定位，进行内部滚动 */
+                            position: absolute;
+                            top: 50px;
+                            bottom: 34px;
+                            left: 0;
+                            /* 使之可以滚动 */
+                            overflow-y: scroll;
+                            /* 增加该属性，可以增加弹性，是滑动更加顺畅 */
+                            -webkit-overflow-scrolling: touch;
+                            background-color: #00a0e9;
+                            width: 100%;
+                        }
+                        main li{
+                            height: 30px;;
+                        }
+
+                        main .content {
+                            height: 2000px;
+                        }
+                    </pre>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <!--include "../modules/footer.html"-->
 <!--include "../modules/scripts.html"-->
-<script type="text/javascript" src="/js/mobile/segment.js"></script>
-<script type="text/javascript">
-    //select转分段按钮
-    $(function ($){
-        $("#select").Segment();
-    });
-</script>
 <!--include "../modules/syntax_highlighter.html"-->
 </body>
 </html>
