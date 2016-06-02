@@ -118,7 +118,7 @@
         <!--二、fixed & absolute-->
         <h1 class="mt20px">二、fixed & absolute</h1>
         <p>header和footer采用fixed或absolute，中间部分使用absolute。</p>
-        <p class="alert alert-warning">css3属性<code>-webkit-overflow-scrolling: touch;</code> 增加该属性，可以增加弹性，是滑动更加顺畅。<em>ios中起作用，android中无作用。</em></p>
+        <p class="alert alert-warning">css3属性<code>-webkit-overflow-scrolling: touch;</code> 增加该属性，可以增加弹性，是滑动更加顺畅。适用于ios5+。<em>ios中起作用，android中无作用。</em></p>
         <p class="alert alert-danger">ios中，弹出键盘时，fixed失效，会乱跑。这种情况出现在页面中存在可输入的元素。</p>
         <h2>示例</h2>
         <div><a href="fixed_absolute.html" target="_blank">DEMO</a></div>
@@ -245,6 +245,99 @@
                         }
                     });
                 </pre>
+            </div>
+        </div>
+        <!--四、flex布局-->
+        <h1 class="mt20px">四、flex布局</h1>
+        <p>使用css3的新增属性<code>flex</code></p>
+        <p class="alert alert-warning">适合场景：产品的用户群大多为 ios5+、android4+ 用户</p>
+        <h2>示例</h2>
+        <div><a href="fixed_flex.html" target="_blank">DEMO</a></div>
+        <div class="mt20px">
+            <h2>代码</h2>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#HTML02" aria-controls="HTML02" role="tab" data-toggle="tab">HTML</a></li>
+                <li role="presentation"><a href="#CSS02" aria-controls="CSS02" role="tab" data-toggle="tab">CSS</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="HTML02">
+                    <pre class="brush:xml">
+                        <div class="wraper">
+                            <header class="header">我是header</header>
+                            <div class="fixed">测试fixed</div>
+                            <nav class="container">
+                                <ul>1</ul>
+                                <ul>2</ul>
+                                <ul>3</ul>
+                                <ul>4</ul>
+                                <ul>5</ul>
+                                <ul>6</ul>
+                                <ul>7</ul>
+                                <ul>8</ul>
+                                <ul>9</ul>
+                                <ul>10</ul>
+                                <ul>11</ul>
+                                <ul>12</ul>
+                                <ul>13</ul>
+                                <ul>14</ul>
+                                <ul>15</ul>
+                                <ul>16</ul>
+                                <ul>17</ul>
+                                <ul>18</ul>
+                                <ul>19</ul>
+                                <ul>20</ul>
+                            </nav>
+                            <footer class="footer">我是footer</footer>
+                        </div>
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="CSS02">
+                    <pre class="brush:css">
+                        *{ margin: 0; padding: 0;}
+                        html,body{
+                            width: 100%;
+                            height: 100%;
+                        }
+                        ul {
+                            height: 100px;
+                            background-color: #ff0000;
+                        }
+                        /*适合场景：产品的用户群大多为 ios5+、android4+ 用户*/
+                        .wraper{
+                            display:-webkit-box;
+                            display:-webkit-flex;
+                            display:-ms-flexbox;
+                            display:flex;
+                            -webkit-box-orient:vertical;
+                            -webkit-flex-direction:column;
+                            -ms-flex-direction:column;
+                            flex-direction:column;
+                            width:100%;height:100%;
+                        }
+                        .header,.footer{height:40px;line-height:40px;background-color:#D8D8D8;text-align:center;}
+                        .container{
+                            -webkit-box-flex:1;
+                            -webkit-flex:1;
+                            -ms-flex:1;
+                            flex:1;
+                            width:100%;
+
+                            overflow:auto;/* winphone8和android4+ */
+                            -webkit-overflow-scrolling: touch; /* ios5+ */
+                        }
+
+                        .fixed{
+                            position: fixed;
+                            top: 50px; left: 0;
+                            width: 20%;
+                            font-size: 2rem;
+                            color: #ffffff;
+                            background-color: #000000;
+                        }
+                    </pre>
+                </div>
             </div>
         </div>
     </div>
