@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fixed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--include "../modules/header_import.html"-->
+    <link rel="stylesheet" href="/css/mobile.css" />
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_mobile.html"-->
+    <div class="c-right">
+        <h1>一、sticky属性</h1>
+        <p>sticky是指 <strong>粘性元素</strong> 设计。在一些很长的表格中，常常会使用表头悬浮的设计以方便阅读，即在表格离开窗口之前，表头会一直 fixed 悬浮在表格的最顶上。</p>
+        <p class="alert alert-warning">css3属性<strong>position: sticky;</strong></p>
+        <h2>示例</h2>
+        <div><a href="fixed-sticky.html" target="_blank">DEMO</a></div>
+        <div class="mt20px">
+            <h2>代码</h2>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" id="selectTabs">
+                <li role="presentation" class="active"><a href="#HTML" aria-controls="HTML" role="tab" data-toggle="tab">HTML</a></li>
+                <li role="presentation"><a href="#JS" aria-controls="JS" role="tab" data-toggle="tab">JS</a></li>
+                <li role="presentation"><a href="#CSS" aria-controls="CSS" role="tab" data-toggle="tab">CSS</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="HTML">
+                    <pre class="brush:xml">
+                        <div id="J_sticky" class="tabnav">固定元素</div>
+                        <!--用于辅助的其他内容HTML可自行添加-->
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="JS">
+                    <pre class="brush:js">
+                        // 检测iOS版本大于等于6
+                        function gtIOS6 () {
+                            var userAgent = window.navigator.userAgent
+                            var ios = userAgent.match(/(iPad|iPhone|iPod)\s+OS\s([\d_\.]+)/)
+                            return ios && ios[2] && (parseInt(ios[2].replace(/_/g, '.'), 10) >= 6)
+                        }
+
+                        // 判断是否支持sticky属性
+                        function isSupportSticky () {
+                            var prefixTestList = ['', '-webkit-', '-ms-', '-moz-', '-o-']
+                            var stickyText = ''
+                            for (var i = 0; i < prefixTestList.length; i++) {
+                                stickyText += 'position:' + prefixTestList[i] + 'sticky'
+                            }
+                            // 创建一个dom来检查
+                            var div = document.createElement('div')
+                            var body = document.body
+                            div.style.cssText = 'display:none' + stickyText
+                            body.appendChild(div)
+                            var isSupport = /sticky/i.test(window.getComputedStyle(div).position)
+                            body.removeChild(div)
+                            div = null
+                            return isSupport
+                        }
+
+                        function getElementTop(element){
+                            var actualTop = element.offsetTop;
+                            var current = element.offsetParent;
+                            while (current !== null){
+                                actualTop += current.offsetTop;
+                                current = current.offsetParent;
+                            }
+                            return actualTop;
+                        }
+
+                        function sticky (nav) {
+                            if (gtIOS6() || isSupportSticky()) {
+                                // 大于等于iOS6版本使用sticky
+                                nav.classList.add('vux-sticky')
+                            } else {
+                                var navOffsetY = getElementTop(nav);
+                                window.addEventListener('scroll', function () {
+                                    window.scrollY>= navOffsetY ? nav.classList.add('vux-fixed') : nav.classList.remove('vux-fixed')
+                                })
+                            }
+                        }
+                        //调用
+                        sticky(document.getElementById("J_sticky"));
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="CSS">
+                    <pre class="brush:css">
+                        .tabnav {
+                            font-size:20px;
+                            color:red;
+                            text-align:center;
+                        }
+                        .vux-sticky{
+                            position: -webkit-sticky;
+                            /*position: -moz-sticky;*/
+                            /*position: -ms-sticky;*/
+                            position: sticky;
+                            top:0;
+                            left:0;
+                            z-index:998;
+                            width:100%;
+                            background:#fff;
+                        }
+                        .vux-fixed {
+                            position: fixed;
+                            top:0;
+                            z-index:998;
+                            width:100%;
+                            left:0;
+                            background:#fff;
+                        }
+                    </pre>
+                </div>
+            </div>
+        </div>
+        <div class="mt20px">
+            <h1>拓展：Media所有参数汇总</h1>
+            <p>除了最常需要用到的媒体查询器的三个特性，大于，等于，小于的写法。媒体查询器的全部功能肯定不止这三个功能，下面是我总结的它的一些参数用法解释：</p>
+
+        </div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript" src="/js/mobile/segment.js"></script>
+<script type="text/javascript">
+    //select转分段按钮
+    $(function ($){
+        $("#select").Segment();
+    });
+</script>
+<!--include "../modules/syntax_highlighter.html"-->
+</body>
+</html>
