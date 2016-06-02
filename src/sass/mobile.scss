@@ -329,3 +329,46 @@ $segmentColor:#007aff;
 }
 .high-zIndex{ z-index: 1005;}
 .right-block{ float: right;}
+
+/*===========css sprite===========*/
+.my-icon{
+  display: block;
+  float: left;
+  width: 30px;
+  height:30px;
+  margin-right: 10px;
+  background: url(#{$imgPath}/mobile/map-icon.png) no-repeat;
+}
+.ico-car {
+  background-position: 0 0;
+}
+.ico-position {
+  background-position: -30px 0;
+}
+.ico-zoom-in {
+  background-position: -60px 0;
+}
+.ico-zoom-out {
+  background-position: -90px 0;
+}
+.ico-road{
+  background-position: -120px 0;
+}
+.ico-house{
+  background-position: -150px 0;
+}
+.ico-message{
+  background-position: -180px 0;
+}
+/*高分辨率图像宽度 / 目标图像宽度 = X
+原始Sprites图像宽度 / x = background-size的宽度值*/
+/* 移动端媒体查询像素比 */
+@media screen and (-webkit-min-device-pixel-ratio: 2),
+screen and (min--moz-device-pixel-ratio: 2),
+screen and (-o-min-device-pixel-ratio: 2/1),
+screen and (min-device-pixel-ratio: 2){
+  .my-icon {
+    background-image: url(#{$imgPath}/mobile/map-icon@2x.png);
+    background-size: 210px auto;
+  }
+}

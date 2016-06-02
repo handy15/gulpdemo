@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css sprite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--include "../modules/header_import.html"-->
+    <link rel="stylesheet" href="/css/mobile.css" />
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_mobile.html"-->
+    <div class="c-right">
+        <h1>概述</h1>
+        <p>图片精灵有助于减少http请求，减少服务器的压力；但是随着retina屏的出现，需要图片有更高的清晰度，于是需要存在几种不同清晰度的图片，如icon.png、icon@2x.png、icon@3x.png。</p>
+        <h1>示例</h1>
+        <div class="clear">
+            <span class="my-icon ico-car"></span>
+            <span class="my-icon ico-zoom-in"></span>
+            <span class="my-icon ico-zoom-out"></span>
+            <span class="my-icon ico-position"></span>
+            <span class="my-icon ico-road"></span>
+            <span class="my-icon ico-house"></span>
+            <span class="my-icon ico-message"></span>
+        </div>
+        <div class="mt20px">
+            <h1>代码</h1>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist" id="selectTabs">
+                <li role="presentation" class="active"><a href="#HTML" aria-controls="home" role="tab" data-toggle="tab">HTML</a></li>
+                <li role="presentation"><a href="#CSS" aria-controls="messages" role="tab" data-toggle="tab">CSS</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="HTML">
+                    <pre class="brush:xml">
+                        <div class="clear">
+                            <span class="my-icon ico-car"></span>
+                            <span class="my-icon ico-zoom-in"></span>
+                            <span class="my-icon ico-zoom-out"></span>
+                            <span class="my-icon ico-position"></span>
+                            <span class="my-icon ico-road"></span>
+                            <span class="my-icon ico-house"></span>
+                            <span class="my-icon ico-message"></span>
+                        </div>
+                    </pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="CSS">
+                    <pre class="brush:css">
+                        .my-icon {
+                          display: block;
+                          float: left;
+                          width: 30px;
+                          height: 30px;
+                          margin-right: 10px;
+                          background: url(../img/mobile/map-icon.png) no-repeat;
+                        }
+
+                        .ico-car {
+                          background-position: 0 0;
+                        }
+
+                        .ico-position {
+                          background-position: -30px 0;
+                        }
+
+                        .ico-zoom-in {
+                          background-position: -60px 0;
+                        }
+
+                        .ico-zoom-out {
+                          background-position: -90px 0;
+                        }
+
+                        .ico-road {
+                          background-position: -120px 0;
+                        }
+
+                        .ico-house {
+                          background-position: -150px 0;
+                        }
+
+                        .ico-message {
+                          background-position: -180px 0;
+                        }
+
+                        /*高分辨率图像宽度 / 目标图像宽度 = X
+                        原始Sprites图像宽度 / x = background-size的宽度值*/
+                        /* 移动端媒体查询像素比 */
+                        @media screen and (-webkit-min-device-pixel-ratio: 2),
+                        screen and (min--moz-device-pixel-ratio: 2),
+                        screen and (-o-min-device-pixel-ratio: 2 / 1),
+                        screen and (min-device-pixel-ratio: 2) {
+                          .my-icon {
+                            background-image: url(../img/mobile/map-icon@2x.png);
+                            background-size: 210px auto;
+                          }
+                        }
+                    </pre>
+                </div>
+            </div>
+        </div>
+        <div class="mt20px">
+            <h1>拓展：Media所有参数汇总</h1>
+            <p>除了最常需要用到的媒体查询器的三个特性，大于，等于，小于的写法。媒体查询器的全部功能肯定不止这三个功能，下面是我总结的它的一些参数用法解释：</p>
+            <ol class="list01">
+                <li>width:浏览器可视宽度。</li>
+                <li>height:浏览器可视高度。</li>
+                <li>device-width:设备屏幕的宽度。</li>
+                <li>device-height:设备屏幕的高度。</li>
+                <li>orientation:检测设备目前处于横向还是纵向状态。</li>
+                <li>aspect-ratio:检测浏览器可视宽度和高度的比例。(例如：aspect-ratio:16/9)</li>
+                <li>device-aspect-ratio:检测设备的宽度和高度的比例。</li>
+                <li>color:检测颜色的位数。（例如：min-color:32就会检测设备是否拥有32位颜色）</li>
+                <li>color-index:检查设备颜色索引表中的颜色，他的值不能是负数。</li>
+                <li>monochrome:检测单色楨缓冲区域中的每个像素的位数。（这个太高级，估计咱很少会用的到）</li>
+                <li>resolution:检测屏幕或打印机的分辨率。(例如：min-resolution:300dpi或min-resolution:118dpcm)。</li>
+                <li>grid：检测输出的设备是网格的还是位图设备。</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript" src="/js/mobile/segment.js"></script>
+<script type="text/javascript">
+    //select转分段按钮
+    $(function ($){
+        $("#select").Segment();
+    });
+</script>
+<!--include "../modules/syntax_highlighter.html"-->
+</body>
+</html>
