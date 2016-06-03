@@ -136,7 +136,7 @@ body{
 }
 /*===========代码高亮插件===========*/
 .syntaxhighlighter{
-  max-height: 350px;
+  max-height: 500px;
 }
 
 /*===========左侧菜单===========*/
@@ -179,4 +179,8 @@ body{
   .side-menu-child{
     margin-left: 19px;
   }
+}
+/*===========重置bootstrap样式===========*/
+.c-right h1:first-child{
+  margin-top: 0;
 }
