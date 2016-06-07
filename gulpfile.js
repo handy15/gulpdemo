@@ -21,7 +21,8 @@ var gulp = require('gulp'),
     //串行任务
     ,runSequence = require('gulp-run-sequence')
     //替换路径
-    ,replace = require('gulp-replace');
+    ,replace = require('gulp-replace')
+    ,plumber = require('gulp-plumber');
 
 var PATH = {
     //源码目录
@@ -343,6 +344,7 @@ gulp.task('revHtml', function(){
     // 最后将替换过的文件输出即可，这里我输出到了原来引入的路径，这样就可以成功替换了。
     // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
     gulp.src(['dest/rev/**/*.json','dest/**/*.html'])
+        .pipe(plumber())
         .pipe(revCollector({
             replaceReved: true
             //,dirReplacements: {
@@ -420,6 +422,7 @@ gulp.task('revHtmlInit', function(){
     // 最后将替换过的文件输出即可，这里我输出到了原来引入的路径，这样就可以成功替换了。
     // 如果你在开发的时候需要不断调试，还可以加上gulp.watch，实时监控文件变化，然后动态做出响应。当然还是推荐开发与上线分开不同的文件夹进行管理。
     gulp.src(['dest/rev/**/*.json','dest/**/*.html'])
+        .pipe(plumber())
         .pipe(minifyHTML(opts))
         .pipe(replace(/(\/(html|img|css|plugin|js)\/)|(\/index.html)/g, finallyPath + '$&'))
         .pipe(replace(reg, '$1'))

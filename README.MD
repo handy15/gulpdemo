@@ -20,6 +20,7 @@
 * gulp-rev-collector:gulp-rev的插件，用于html魔板更改引用的路径
 * gulp-run-sequence：串行gulp任务
 * gulp-replace:路径替换
+* gulp-plumber:gulp错误管理
 
 ##有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
