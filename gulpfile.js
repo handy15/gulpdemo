@@ -292,29 +292,36 @@ gulp.task('revCopyImages',function(){
 gulp.task('revPluginStyles', function() {
     //插件css
     return gulp.src(['dest/rev/**/*.json',PATH.dest.plugin + '/**/*.css'])
-        .pipe(rev())
+        //.pipe(rev())
         .pipe(revCollector({
             replaceReved: false
         }))
         .pipe(minifycss())
         .pipe(gulp.dest(PATH.rev.plugin))
-        .pipe(rev.manifest())
-        .pipe(gulp.dest(PATH.MD5.plugin));
+        //.pipe(rev.manifest())
+        //.pipe(gulp.dest(PATH.MD5.plugin));
 });
 gulp.task('revPluginCopyOthers',function(){
     //插件其他
     return gulp.src([PATH.dest.plugin+'/**/*','!' + PATH.dest.plugin + '/**/*.js','!' + PATH.dest.plugin + '/**/*.css'])
-        .pipe(rev())
+        //.pipe(rev())
         .pipe(gulp.dest(PATH.rev.plugin))
-        .pipe(rev.manifest())
-        .pipe(gulp.dest(PATH.MD5.plugin));
+        //.pipe(rev.manifest())
+        //.pipe(gulp.dest(PATH.MD5.plugin));
 });
 gulp.task('revPluginScript',function(){
     //脚本
     return gulp.src(PATH.dest.plugin + '/**/*.js')
-        .pipe(rev())
+        //.pipe(rev())
         .pipe(uglify())
         .pipe(gulp.dest(PATH.rev.plugin))
+        //.pipe(rev.manifest())
+        //.pipe(gulp.dest(PATH.MD5.plugin));
+});
+//MD5版本号
+gulp.task('revMD5',function(){
+    return gulp.src(PATH.dest.plugin+'/**/*')
+        .pipe(rev())
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.plugin));
 });
@@ -363,7 +370,7 @@ gulp.task('revHtml', function(){
     return console.log(PATH.dest.html + '下html生成开始');
 });
 gulp.task('release', ['clean','cleanRelease'], function() {
-    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts','plugin'],['revCopyFonts','revCopyImages','revPluginCopyOthers','revScripts','revPluginScript'],['revStyles','revPluginStyles'],['revHtml']);
+    runSequence(['styles', 'scripts', 'html', 'copyImages', 'copyFonts','plugin'],['revMD5'],['revCopyFonts','revCopyImages','revPluginCopyOthers','revScripts','revPluginScript'],['revStyles','revPluginStyles'],['revHtml']);
 });
 
 ///////////////////////////发版，初始化
