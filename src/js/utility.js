@@ -14,6 +14,28 @@ $.extend(utilities,{
         },
         supportPlaceholder: function(){
             return !!("placeholder" in document.createElement("input"));
+        },
+        // 判断是否在微信中查看
+        isWeixin: function(){
+            var ua = navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i)=="micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        /**
+         * 根据时间戳返回格式化时间
+         * @param timestamp int 时间戳秒数
+         * @returns {string} 返回yyyy-MM-dd 格式时间
+         */
+        formatDate: function(timestamp)   {
+            var now = new Date(parseInt(timestamp) *1000);
+            var year = now.getFullYear();
+            var month = now.getMonth()+1;
+            var date = now.getDate();
+//				return year+"-"+month+"-"+date + '   ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+            return year+"-"+month+"-"+date;
         }
     },
     //弹出层
