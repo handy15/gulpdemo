@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>图片转base64码</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=957474c344"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=38a3b8e979"><link rel="stylesheet" href="/gulpdemo/css/h5.css?v=0ca60daa9f"></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li><li><a href="/gulpdemo/html/css3/transform.html" target="_self">CSS3</a></li><li><a href="/gulpdemo/html/h5/img2base64.html" target="_self">H5</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="5" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="/gulpdemo/html/h5/img2base64.html"><i class="icon-blank"></i>图片转base64码</a></li></ul></div></div><div class="c-right"><section><h1>原理</h1><p>通过FileReader实例的readAsDataURL()方法读取文件的base64码。</p><h2 class="base64-title">图片转Base64</h2><div class="base64-con clear"><div class="base64-con-left"><div class="control"><div class="select-file"><div class="select-file-title"></div><a href="javascript:;" class="select-file-btn">选择文件</a></div></div><div class="control"><textarea class="base64-text" readonly="readonly"></textarea></div></div><div class="base64-con-right"><img src="" class="preview"></div></div><h2>代码</h2><pre class="brush:js">
+                var inputFile =  document.createElement('input');
+                inputFile.type = 'file';
+                var selectFile = document.querySelector('.select-file');
+                var base64Text = document.querySelector('.base64-text');
+                var preview = document.querySelector('.preview');
+
+                var reader = new FileReader();
+                reader.onload = function(){
+                    var that = this;
+                    base64Text.value = '';
+                    setTimeout(function(){
+                        base64Text.value = that.result;
+                    },1000);
+                    preview.src = this.result;
+                };
+
+                inputFile.addEventListener('change', function(){
+                    selectFile.querySelector('.select-file-title').innerHTML = this.value;
+                    if(this.files.length == 0){
+                        base64Text.innerText = '';
+                        return;
+                    }
+                    var file = inputFile.files[0];
+                    base64Text.value = '';
+                    if(!(/^image/.test(file.type))){
+                        base64Text.placeholder = '不是图片文件';
+                        return;
+                    }
+                    reader.readAsDataURL(file);
+                });
+
+                selectFile.addEventListener('click', function(){
+                    inputFile.click();
+                });
+            </pre></section></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=62f69d29b6"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=367b99f621"></script><script type="text/javascript">var inputFile=document.createElement("input");inputFile.type="file";var selectFile=document.querySelector(".select-file"),base64Text=document.querySelector(".base64-text"),preview=document.querySelector(".preview"),reader=new FileReader;reader.onload=function(){var e=this;base64Text.value="",setTimeout(function(){base64Text.value=e.result},1e3),preview.src=this.result},inputFile.addEventListener("change",function(){if(selectFile.querySelector(".select-file-title").innerHTML=this.value,0==this.files.length)return void(base64Text.innerText="");var e=inputFile.files[0];return base64Text.value="",/^image/.test(e.type)?void reader.readAsDataURL(e):void(base64Text.placeholder="不是图片文件")}),selectFile.addEventListener("click",function(){inputFile.click()})</script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=a4cebfe354"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"]),SyntaxHighlighter.all()})</script></body></html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>fixed</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=957474c344"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=38a3b8e979"><link rel="stylesheet" href="/gulpdemo/css/mobile.css?v=87970cb24f"></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li><li><a href="/gulpdemo/html/css3/transform.html" target="_self">CSS3</a></li><li><a href="/gulpdemo/html/h5/img2base64.html" target="_self">H5</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="1" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="/gulpdemo/html/mobile/taobao_adapter.html"><i class="icon-blank"></i>淘宝手机适配解决方案</a></li><li><a href="javascript:;"><i class="glyphicon glyphicon-menu-right"></i>基本概念</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/mobile/concept_touch.html">移动端触摸滑动</a></li><li><a href="/gulpdemo/html/mobile/concept_viewport.html">viewport & device-width</a></li></ul></li><li><a href="/gulpdemo/html/mobile/css_sprite.html"><i class="icon-blank"></i>图片精灵</a></li><li><a href="/gulpdemo/html/mobile/hack.html"><i class="icon-blank"></i>常见hack</a></li><li><a href="javascript:;"><i class="glyphicon glyphicon-menu-right"></i>fixed</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/mobile/fixed.html">总览</a></li><li><a href="/gulpdemo/html/mobile/fixed_sticky.html" target="_blank">sticky</a></li><li><a href="/gulpdemo/html/mobile/fixed_absolute.html" target="_blank">fixed & absolute</a></li><li><a href="/gulpdemo/html/mobile/fixed_ios_hack.html" target="_blank">fixed在ios中的hack粗略解决方案</a></li><li><a href="/gulpdemo/html/mobile/fixed_flex.html" target="_blank">flex布局</a></li></ul></li><li><a href="javascript:;"><i class="glyphicon glyphicon-menu-right"></i>特效插件</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/mobile/select_to_segment.html">select转分段按钮</a></li><li><a href="/gulpdemo/html/mobile/repeat_play_img.html" target="_blank">滑动图片</a></li><li><a href="/gulpdemo/html/mobile/repeat_play_img01.html" target="_blank">滑动图片01</a></li><li><a href="/gulpdemo/html/mobile/delete_demo.html" target="_blank">滑动删除</a></li></ul></li><li><a href="javascript:;"><i class="glyphicon glyphicon-menu-right"></i>基于mobiscroll的滚动</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/mobile/mobiscroll_demo.html">综合演示</a></li><li><a href="/gulpdemo/html/mobile/mobiscroll_mydemo.html">自定义</a></li></ul></li></ul></div></div><div class="c-right"><h1>一、sticky属性</h1><p>sticky是指 <strong>粘性元素</strong> 设计。在一些很长的表格中，常常会使用表头悬浮的设计以方便阅读，即在表格离开窗口之前，表头会一直 fixed 悬浮在表格的最顶上。</p><p class="alert alert-warning">css3属性<code>position: sticky;</code></p><h2>示例</h2><div><a href="fixed_sticky.html" target="_blank">DEMO</a></div><div class="mt20px"><h2>代码</h2><ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#HTML" aria-controls="HTML" role="tab" data-toggle="tab">HTML</a></li><li role="presentation"><a href="#JS" aria-controls="JS" role="tab" data-toggle="tab">JS</a></li><li role="presentation"><a href="#CSS" aria-controls="CSS" role="tab" data-toggle="tab">CSS</a></li></ul><div class="tab-content"><div class="tab-pane active" id="HTML"><pre class="brush:xml">
+                        <div id="J_sticky" class="tabnav">固定元素</div>
+                        
+                    </pre></div><div role="tabpanel" class="tab-pane" id="JS"><pre class="brush:js">
+                        // 检测iOS版本大于等于6
+                        function gtIOS6 () {
+                            var userAgent = window.navigator.userAgent
+                            var ios = userAgent.match(/(iPad|iPhone|iPod)\s+OS\s([\d_\.]+)/)
+                            return ios && ios[2] && (parseInt(ios[2].replace(/_/g, '.'), 10) >= 6)
+                        }
+
+                        // 判断是否支持sticky属性
+                        function isSupportSticky () {
+                            var prefixTestList = ['', '-webkit-', '-ms-', '-moz-', '-o-']
+                            var stickyText = ''
+                            for (var i = 0; i &lt; prefixTestList.length; i++) {
+                                stickyText += 'position:' + prefixTestList[i] + 'sticky'
+                            }
+                            // 创建一个dom来检查
+                            var div = document.createElement('div')
+                            var body = document.body
+                            div.style.cssText = 'display:none' + stickyText
+                            body.appendChild(div)
+                            var isSupport = /sticky/i.test(window.getComputedStyle(div).position)
+                            body.removeChild(div)
+                            div = null
+                            return isSupport
+                        }
+
+                        function getElementTop(element){
+                            var actualTop = element.offsetTop;
+                            var current = element.offsetParent;
+                            while (current !== null){
+                                actualTop += current.offsetTop;
+                                current = current.offsetParent;
+                            }
+                            return actualTop;
+                        }
+
+                        function sticky (nav) {
+                            if (gtIOS6() || isSupportSticky()) {
+                                // 大于等于iOS6版本使用sticky
+                                nav.classList.add('vux-sticky')
+                            } else {
+                                var navOffsetY = getElementTop(nav);
+                                window.addEventListener('scroll', function () {
+                                    window.scrollY>= navOffsetY ? nav.classList.add('vux-fixed') : nav.classList.remove('vux-fixed')
+                                })
+                            }
+                        }
+                        //调用
+                        sticky(document.getElementById("J_sticky"));
+                    </pre></div><div role="tabpanel" class="tab-pane" id="CSS"><pre class="brush:css">
+                        .tabnav {
+                            font-size:20px;
+                            color:red;
+                            text-align:center;
+                        }
+                        .vux-sticky{
+                            position: -webkit-sticky;
+                            /*position: -moz-sticky;*/
+                            /*position: -ms-sticky;*/
+                            position: sticky;
+                            top:0;
+                            left:0;
+                            z-index:998;
+                            width:100%;
+                            background:#fff;
+                        }
+                        .vux-fixed {
+                            position: fixed;
+                            top:0;
+                            z-index:998;
+                            width:100%;
+                            left:0;
+                            background:#fff;
+                        }
+                    </pre></div></div></div><h1 class="mt20px">二、fixed & absolute</h1><p>header和footer采用fixed或absolute，中间部分使用absolute。</p><p class="alert alert-warning">css3属性<code>-webkit-overflow-scrolling: touch;</code> 增加该属性，可以增加弹性，是滑动更加顺畅。适用于ios5+。<em>ios中起作用，android中无作用。</em></p><p class="alert alert-danger">ios中，弹出键盘时，fixed失效，会乱跑。这种情况出现在页面中存在可输入的元素。</p><h2>示例</h2><div><a href="fixed_absolute.html" target="_blank">DEMO</a></div><div class="mt20px"><h2>代码</h2><ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#HTML01" aria-controls="HTML01" role="tab" data-toggle="tab">HTML</a></li><li role="presentation"><a href="#CSS01" aria-controls="CSS01" role="tab" data-toggle="tab">CSS</a></li></ul><div class="tab-content"><div class="tab-pane active" id="HTML01"><pre class="brush:xml">
+                        
+                        <header>header</header>
+                        
+                        <main>
+                            <div class="content">
+                                
+                                <ul>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                    <li>7777</li>
+                                    <li>vvvvv</li>
+                                </ul>
+                            </div>
+                        </main>
+                        
+                        <footer>
+                            <input type="text" placeholder="Footer...">
+                            <button class="submit">提交</button>
+                        </footer>
+                    </pre></div><div role="tabpanel" class="tab-pane" id="CSS01"><pre class="brush:css">
+                        header, footer, main {
+                            display: block;
+                        }
+
+                        header {
+                            position: fixed;/*或者absolute*/
+                            height: 50px;
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                            background-color: #4e4e4e;
+                            text-align: center;
+                            color: #ffffff;
+                            line-height: 50px;
+                        }
+
+                        footer {
+                            position: fixed;/*或者写成absolute*/
+                            height: 34px;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background-color: #ffae00;
+                        }
+
+                        main {
+                            /* main绝对定位，进行内部滚动 */
+                            position: absolute;
+                            top: 50px;
+                            bottom: 34px;
+                            left: 0;
+                            /* 使之可以滚动 */
+                            overflow-y: scroll;
+                            /* 增加该属性，可以增加弹性，是滑动更加顺畅 */
+                            -webkit-overflow-scrolling: touch;
+                            background-color: #00a0e9;
+                            width: 100%;
+                        }
+                        main li{
+                            height: 30px;;
+                        }
+
+                        main .content {
+                            height: 2000px;
+                        }
+                    </pre></div></div></div><h1 class="mt20px">三、fixed在ios中的hack粗略解决方案</h1><p>问题描述：ios中，弹出键盘时，fixed失效，会乱跑。这种情况出现在页面中存在可输入的元素。</p><p>解决方案：当可输入元素获得焦点时将<code>position</code>改为<code>relative</code>或是<code>static</code>，当可输入元素失去焦点时将<code>position</code>改为<code>fixed</code></p><h2>示例</h2><div><a href="fixed_ios_hack.html" target="_blank">DEMO</a></div><div class="mt20px"><h2>JS代码</h2><div><pre class="brush:js">
+                    $(function() {
+                        var isIOS = (/iphone|ipad/gi).test(navigator.appVersion);
+
+                        if (isIOS) {
+                            $(".content").on("focus", "input", function () {
+                                $(".next").addClass("pos-rel");
+                            }).on("focusout", "input", function () {
+                                $(".next").removeClass("pos-rel");
+                            });
+                        }
+                    });
+                </pre></div></div><h1 class="mt20px">四、flex布局</h1><p>使用css3的新增属性<code>flex</code></p><p class="alert alert-warning">适合场景：产品的用户群大多为 ios5+、android4+ 用户</p><h2>示例</h2><div><a href="fixed_flex.html" target="_blank">DEMO</a></div><div class="mt20px"><h2>代码</h2><ul class="nav nav-tabs" role="tablist"><li role="presentation" class="active"><a href="#HTML02" aria-controls="HTML02" role="tab" data-toggle="tab">HTML</a></li><li role="presentation"><a href="#CSS02" aria-controls="CSS02" role="tab" data-toggle="tab">CSS</a></li></ul><div class="tab-content"><div class="tab-pane active" id="HTML02"><pre class="brush:xml">
+                        <div class="wraper">
+                            <header class="header">我是header</header>
+                            <div class="fixed">测试fixed</div>
+                            <nav class="container">
+                                <ul>1</ul>
+                                <ul>2</ul>
+                                <ul>3</ul>
+                                <ul>4</ul>
+                                <ul>5</ul>
+                                <ul>6</ul>
+                                <ul>7</ul>
+                                <ul>8</ul>
+                                <ul>9</ul>
+                                <ul>10</ul>
+                                <ul>11</ul>
+                                <ul>12</ul>
+                                <ul>13</ul>
+                                <ul>14</ul>
+                                <ul>15</ul>
+                                <ul>16</ul>
+                                <ul>17</ul>
+                                <ul>18</ul>
+                                <ul>19</ul>
+                                <ul>20</ul>
+                            </nav>
+                            <footer class="footer">我是footer</footer>
+                        </div>
+                    </pre></div><div role="tabpanel" class="tab-pane" id="CSS02"><pre class="brush:css">
+                        *{ margin: 0; padding: 0;}
+                        html,body{
+                            width: 100%;
+                            height: 100%;
+                        }
+                        ul {
+                            height: 100px;
+                            background-color: #ff0000;
+                        }
+                        /*适合场景：产品的用户群大多为 ios5+、android4+ 用户*/
+                        .wraper{
+                            display:-webkit-box;
+                            display:-webkit-flex;
+                            display:-ms-flexbox;
+                            display:flex;
+                            -webkit-box-orient:vertical;
+                            -webkit-flex-direction:column;
+                            -ms-flex-direction:column;
+                            flex-direction:column;
+                            width:100%;height:100%;
+                        }
+                        .header,.footer{height:40px;line-height:40px;background-color:#D8D8D8;text-align:center;}
+                        .container{
+                            -webkit-box-flex:1;
+                            -webkit-flex:1;
+                            -ms-flex:1;
+                            flex:1;
+                            width:100%;
+
+                            overflow:auto;/* winphone8和android4+ */
+                            -webkit-overflow-scrolling: touch; /* ios5+ */
+                        }
+
+                        .fixed{
+                            position: fixed;
+                            top: 50px; left: 0;
+                            width: 20%;
+                            font-size: 2rem;
+                            color: #ffffff;
+                            background-color: #000000;
+                        }
+                    </pre></div></div></div></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=62f69d29b6"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=367b99f621"></script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=a4cebfe354"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"]),SyntaxHighlighter.all()})</script></body></html>

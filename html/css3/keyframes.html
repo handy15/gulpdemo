@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>keyframes</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=957474c344"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=38a3b8e979"><style type="text/css">#progress{width:50%;height:30px;border:1px solid #ccc;border-radius:15px;overflow:hidden;box-shadow:0 0 5px 0 #ddd inset}#progress span{display:inline-block;height:100%;background:#2989d8;background:-moz-linear-gradient(45deg,#2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%);background:-webkit-gradient(linear,left bottom,right top,color-stop(33%,#2989d8),color-stop(34%,#7db9e8),color-stop(59%,#7db9e8),color-stop(60%,#2989d8));background:-webkit-linear-gradient(45deg,#2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%);background:-o-linear-gradient(45deg,#2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%);background:-ms-linear-gradient(45deg,#2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%);background:linear-gradient(45deg,#2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', endColorstr='#2989d8', GradientType=1 );background-size:60px 30px;text-align:center;color:#fff;line-height:28px;-webkit-animation:load 5s ease-in .1s;-moz-animation:load 5s ease-in .1s;-o-animation:load 5s ease-in .1s;-ms-animation:load 5s ease-in .1s;animation:load 5s ease-in .1s}@-webkit-keyframes load{0%{width:0}}@-ms-keyframes load{0%{width:0}}@-moz-keyframes load{0%{width:0}}@-o-keyframes load{0%{width:0}}@keyframes load{0%{width:0}}</style></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li><li><a href="/gulpdemo/html/css3/transform.html" target="_self">CSS3</a></li><li><a href="/gulpdemo/html/h5/img2base64.html" target="_self">H5</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="4" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="/gulpdemo/html/css3/transform.html"><i class="icon-blank"></i>transform</a></li><li><a href="/gulpdemo/html/css3/keyframes.html"><i class="icon-blank"></i>keyframes</a></li></ul></div></div><div class="c-right"><section><h1>进度条</h1><h2>DEMO</h2><div id="progress"><span style="width:80%">80%</span></div><h2>示例代码</h2><div><ul class="nav nav-tabs" role="tablist"><li role="presentation"><a href="#HTML" aria-controls="HTML" role="tab" data-toggle="tab">HTML</a></li><li role="presentation" class="active"><a href="#CSS" aria-controls="CSS" role="tab" data-toggle="tab">CSS</a></li></ul><div class="tab-content"><div role="tabpanel" class="tab-pane" id="HTML"><pre class="brush:xml">
+                            &lt;div id="progress"&gt;<span style="width:80%">80%</span>&lt;/div&gt;
+                        </pre></div><div role="tabpanel" class="tab-pane active" id="CSS"><pre class="brush:css">
+                            #progress{
+                                width: 50%;
+                                height: 30px;
+                                border:1px solid #ccc;
+                                border-radius: 15px;
+                                overflow: hidden;
+                                box-shadow: 0 0 5px 0px #ddd inset;
+                            }
+                            #progress span {
+                                display: inline-block;
+                                /*min-width: 30px;;*/
+                                /*width: 100%;*/
+                                height: 100%;
+                                background: #2989d8; /* Old browsers */
+                                background: -moz-linear-gradient(45deg, #2989d8 33%, #7db9e8 34%, #7db9e8 59%, #2989d8 60%); /* FF3.6+ */
+                                background: -webkit-gradient(linear, left bottom, right top, color-stop(33%,#2989d8), color-stop(34%,#7db9e8), color-stop(59%,#7db9e8), color-stop(60%,#2989d8)); /* Chrome,Safari4+ */
+                                background: -webkit-linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* Chrome10+,Safari5.1+ */
+                                background: -o-linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* Opera 11.10+ */
+                                background: -ms-linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* IE10+ */
+                                background: linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* W3C */
+                                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', endColorstr='#2989d8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+                                background-size: 60px 30px;
+                                text-align: center;
+                                color:#fff;
+                                line-height: 28px;
+                                -webkit-animation:load 5s ease-in 0.1s;
+                                -moz-animation:load 5s ease-in 0.1s;
+                                -o-animation:load 5s ease-in 0.1s;
+                                -ms-animation:load 5s ease-in 0.1s;
+                                animation:load 5s ease-in 0.1s;
+                            }
+                            @-webkit-keyframes load{
+                                0%{
+                                    width: 0%;
+                                }
+                            }
+                            @-ms-keyframes load{
+                                0%{
+                                    width: 0%;
+                                }
+                            }
+                            @-moz-keyframes load{
+                                0%{
+                                    width: 0%;
+                                }
+                            }
+                            @-o-keyframes load{
+                                0%{
+                                    width: 0%;
+                                }
+                            }
+                            @keyframes load{
+                                0%{
+                                    width: 0%;
+                                }
+                            }
+                        </pre></div></div></div><h2>webkit内核的safari、 Chrome的Linear Gradients (线性渐变)的几点说明</h2><p class="alert alert-warning">基本语法：background-image:-webkit-gradient(type,x1 y1, x2 y2, from(开始颜色值),to(结束颜色值), [color-stop(偏移量小数,停靠颜色值),...] )</p><ol class="list01"><li>-webkit-gradient是background的一个属性值；</li><li>webkit内核的Linear Gradients (线性渐变) 第一组参数type（类型）为 linear；</li><li>第二组参数是,x1 y1, x2 y2,当成颜色渐变体的两个点的坐标就是。x1,x2,y1,y2的取值范围为0%-100%，当x1,x2,y1,y2取值为极值的时候，x1和x2可以取值left（或0%）或right（或100%），,y1和y2可以取值top（或0%）或bottom（或100%）；<ol class="list01"><li>当x1等于x2，y1不等于y2，实现<strong>垂直渐变</strong>，调整y1，y2的值可以调整渐变半径大小；</li><li>当y1等于y2，x1不等于x2，实现<strong>水平渐变</strong>，调整x1，x2的值可以调整渐变半径大小；</li><li>当y1不等于y2，x1不等于x2，实现<strong>角度渐变</strong>，当x1,x2,y1,y2取值为极值的时候接近垂直渐变或水平渐变；</li><li>当x1等于x2，y1等于y2，实现<strong>没有渐变</strong>，取from色，即“ from(颜色值) ”；</li></ol></li><li>实现垂直渐变和水平渐变渐变时，x1和x2可以最简单的取值是left（或0%）或right（或100%）,y1和y2可以最简单的取值是top（或0%）或bottom（或100%）；</li><li>from(开始颜色值),to(结束颜色值)是两个渐变颜色值；</li><li>[color-stop(偏移量&lt;小数&gt;,停靠颜色值),...]：可以使用多个color-stop，如果渐变只有2个颜色，那么可以不使用该参数；偏移量必须为小数，如果偏移量>=1,那么该color-stop相当于无效；</li></ol><p class="pt20px"><cit>经典网站：<a href="http://u.boy.im/css3keyframes/" target="_blank">http://u.boy.im/css3keyframes/</a></cit></p></section></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=62f69d29b6"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=367b99f621"></script><script type="text/javascript"></script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=a4cebfe354"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"]),SyntaxHighlighter.all()})</script></body></html>

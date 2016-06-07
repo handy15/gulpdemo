@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>table sort</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=957474c344"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=38a3b8e979"><style>.NormalCss{background:url(/gulpdemo/img/icon-normal.png?v=fb037a6c07) right center no-repeat}.SortDescCss{background:url(/gulpdemo/img/icon-desc.png?v=f294fd895c) right center no-repeat}.SortAscCss{background:url(/gulpdemo/img/icon-asc.png?v=ae87f851be) right center no-repeat}</style></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li><li><a href="/gulpdemo/html/css3/transform.html" target="_self">CSS3</a></li><li><a href="/gulpdemo/html/h5/img2base64.html" target="_self">H5</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="3" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>地图</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/chinamap.html">中国地图</a></li><li><a href="/gulpdemo/html/javascript/gaode/gdMap.html">高德地图</a></li><li><a href="/gulpdemo/html/javascript/gaode/map.html">高德地图-搜索结果列表</a></li><li><a href="/gulpdemo/html/javascript/gaode/poi.html">高德地图-iframe传参</a></li><li><a href="/gulpdemo/html/javascript/baidu-map.html">百度地图</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>form元素美化</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/formBeauty/select.html">select美化</a></li><li><a href="/gulpdemo/html/javascript/formBeauty/radio.html">radio & checkbox美化</a></li></ul></li><li><a href="/gulpdemo/html/javascript/date_compare.html"><i class="icon-blank"></i>时间跨时区比较</a></li><li><a href="/gulpdemo/html/javascript/heavenly.html"><i class="icon-blank"></i>天干地支纪年</a></li><li><a href="/gulpdemo/html/javascript/table_sort.html"><i class="icon-blank"></i>table sort</a></li></ul></div></div><div class="c-right"><h1>使用table sort插件对table进行排序</h1><div class="alert alert-warning"><p>代码：<code>new TableSorter("tb1");</code></p><p>效果：点击任意表头可执行排序。</p></div><table class="table table-bordered table-hover" style="width:80%" id="tb1"><tr><th>序号</th><th>姓名</th><th>工号</th><th>职位</th><th>性别</th><th>业绩</th><th>报到时间</th></tr><tr><td>1</td><td>刘德华</td><td>8008</td><td>总裁</td><td>男</td><td>98</td><td>2008-04-12</td></tr><tr><td>2</td><td>吴奇隆</td><td>8004</td><td>主管</td><td>男</td><td>80</td><td>2008-04-16</td></tr><tr><td>3</td><td>王光良</td><td>8003</td><td>经理</td><td>男</td><td>85</td><td>2008-04-15</td></tr><tr><td>4</td><td>张学友</td><td>8009</td><td>副总裁</td><td>男</td><td>90</td><td>2008-04-11</td></tr><tr><td>5</td><td>张柏芝</td><td>8005</td><td>助理</td><td>女</td><td>78</td><td>2008-04-13</td></tr><tr><td>6</td><td>陈冠希</td><td>8001</td><td>总监</td><td>男</td><td>60</td><td>2008-04-18</td></tr><tr><td>7</td><td>陈慧琳</td><td>8002</td><td>试用期</td><td>女</td><td>85</td><td>2008-04-18</td></tr><tr><td>8</td><td>张曼玉</td><td>8007</td><td>高级经理</td><td>女</td><td>82</td><td>2008-04-16</td></tr><tr><td>9</td><td>周润发</td><td>8006</td><td>副总裁</td><td>男</td><td>88</td><td>2008-04-13</td></tr></table><div class="alert alert-warning"><p>代码：<code>new TableSorter("tb2", 0, 2, 5, 6);</code></p><p>效果：点击表头0,2,5,6列可执行排序。</p></div><table class="table table-bordered table-hover" style="width:80%" id="tb2"><tr><th>序号</th><th>姓名</th><th>工号</th><th>职位</th><th>性别</th><th>业绩</th><th>报到时间</th></tr><tr><td>1</td><td>刘德华</td><td>8008</td><td>总裁</td><td>男</td><td>98</td><td>2008-04-12</td></tr><tr><td>2</td><td>吴奇隆</td><td>8004</td><td>主管</td><td>男</td><td>80</td><td>2008-04-16</td></tr><tr><td>3</td><td>王光良</td><td>8003</td><td>经理</td><td>男</td><td>85</td><td>2008-04-15</td></tr><tr><td>4</td><td>张学友</td><td>8009</td><td>副总裁</td><td>男</td><td>90</td><td>2008-04-11</td></tr><tr><td>5</td><td>张柏芝</td><td>8005</td><td>助理</td><td>女</td><td>78</td><td>2008-04-13</td></tr><tr><td>6</td><td>陈冠希</td><td>8001</td><td>总监</td><td>男</td><td>60</td><td>2008-04-18</td></tr><tr><td>7</td><td>陈慧琳</td><td>8002</td><td>试用期</td><td>女</td><td>85</td><td>2008-04-18</td></tr><tr><td>8</td><td>张曼玉</td><td>8007</td><td>高级经理</td><td>女</td><td>82</td><td>2008-04-16</td></tr><tr><td>9</td><td>周润发</td><td>8006</td><td>副总裁</td><td>男</td><td>88</td><td>2008-04-13</td></tr></table><div class="alert alert-warning">效果：点击任意表头可执行排序并返回提示</div><p>代码：</p><pre class="brush:js">
+            new TableSorter("tb3").OnSorted = function(c, t){
+                alert("table is sorted by " + c.innerHTML + " " + (t ? "Asc" : "Desc"));
+            }
+        </pre><table class="table table-bordered table-hover" style="width:80%" id="tb3"><thead><tr><th>序号</th><th>姓名</th><th>工号</th><th>职位</th><th>性别</th><th>业绩</th><th>报到时间</th></tr></thead><tbody><tr><td>1</td><td>刘德华</td><td>8008</td><td>总裁</td><td>男</td><td>98</td><td>2008-04-12</td></tr><tr><td>2</td><td>吴奇隆</td><td>8004</td><td>主管</td><td>男</td><td>80</td><td>2008-04-16</td></tr><tr><td>3</td><td>王光良</td><td>8003</td><td>经理</td><td>男</td><td>85</td><td>2008-04-15</td></tr><tr><td>4</td><td>张学友</td><td>8009</td><td>副总裁</td><td>男</td><td>90</td><td>2008-04-11</td></tr><tr><td>5</td><td>张柏芝</td><td>8005</td><td>助理</td><td>女</td><td>78</td><td>2008-04-13</td></tr><tr><td>6</td><td>陈冠希</td><td>8001</td><td>总监</td><td>男</td><td>60</td><td>2008-04-18</td></tr><tr><td>7</td><td>陈慧琳</td><td>8002</td><td>试用期</td><td>女</td><td>85</td><td>2008-04-18</td></tr><tr><td>8</td><td>张曼玉</td><td>8007</td><td>高级经理</td><td>女</td><td>82</td><td>2008-04-16</td></tr><tr><td>9</td><td>周润发</td><td>8006</td><td>副总裁</td><td>男</td><td>88</td><td>2008-04-13</td></tr></tbody></table><h1>插件代码</h1><pre class="brush:js">
+            //Author    :   狼Robot
+            //Contact   :   robot@k2046.cn
+            //Date      :   2008-04-19
+            //Explain   :   使Table可以点击排序.
+            /*使用说明  :
+             方法1:
+             new TableSorter("tb1");
+             效果:
+             id为tb1的table的第一行任意单元格都可以点击进行排序.
+             方法2:
+             new TableSorter("tb1", 0, 1, 3);
+             效果:
+             id为tb1的table的第一行0,1,3单元格可以进行点击排序.
+             */
+            function TableSorter(table){
+                this.Table = this.$(table);
+                // console.log(this.Table.tHead);
+                // console.log(this.Table.tBodies[0]);
+                if(this.Table.rows.length &lt;= 1){
+                    return;
+                }
+                this.Init(arguments);
+            }
+            //以下样式针对表头的单元格.
+            TableSorter.prototype.NormalCss = "NormalCss";//没有执行排序时的样式.
+            TableSorter.prototype.SortAscCss = "SortAscCss";//升序排序时的样式.
+            TableSorter.prototype.SortDescCss = "SortDescCss";//降序排序时的样式.
+            //初始化table的信息和操作.
+            TableSorter.prototype.Init = function(args){
+                this.ViewState = [];
+                for(var x = 0; x &lt; this.Table.rows[0].cells.length; x++){
+                    this.ViewState[x] = false;
+                }
+                // 设置部分列可排序
+                if(args.length > 1){
+                    for(var x = 1; x &lt; args.length; x++){
+                        if(args[x] > this.Table.rows[0].cells.length){
+                            continue;
+                        }else{
+                            this.Table.rows[0].cells[args[x]].onclick = this.GetFunction(this,"Sort",args[x]);
+                            this.Table.rows[0].cells[args[x]].style.cursor = "pointer";
+                            this.Table.rows[0].cells[args[x]].className = this.NormalCss;
+                        }
+                    }
+                }else{// 设置全部列可排序
+                    for(var x = 0; x &lt; this.Table.rows[0].cells.length; x++){
+                        this.Table.rows[0].cells[x].onclick = this.GetFunction(this,"Sort",x);
+                        this.Table.rows[0].cells[x].style.cursor = "pointer";
+                        this.Table.rows[0].cells[x].className = this.NormalCss;
+                    }
+                }
+            }
+            //简写document.getElementById方法.
+            TableSorter.prototype.$ = function(element){
+                return document.getElementById(element);
+            }
+            //取得指定对象的脱壳函数.
+            TableSorter.prototype.GetFunction = function(variable,method,param){
+                return function(){
+                    variable[method](param);
+                }
+            }
+            //执行排序.
+            TableSorter.prototype.Sort = function(col){
+                var SortAsNumber = true;
+                // 重置列的排序样式为非排序状态
+                for(var x = 0; x &lt; this.Table.rows[0].cells.length; x++){
+                    var thisClassName = this.Table.rows[0].cells[x].className;
+                    if(thisClassName == this.SortAscCss || thisClassName == this.SortDescCss){
+                        this.Table.rows[0].cells[x].className = this.NormalCss;
+                    }
+                }
+                var Sorter = [];
+                for(var x = 1; x &lt; this.Table.rows.length; x++){
+                    Sorter[x-1] = [this.Table.rows[x].cells[col].innerHTML, x];
+                    // 是否是数值排序
+                    SortAsNumber = SortAsNumber && this.IsNumeric(Sorter[x-1][0]);
+                }
+                // 排序
+                if(SortAsNumber){
+                    for(var x = 0; x &lt; Sorter.length; x++){
+                        for(var y = x + 1; y &lt; Sorter.length; y++){
+                            if(parseFloat(Sorter[y][0]) &lt; parseFloat(Sorter[x][0])){
+                                var tmp = Sorter[x];
+                                Sorter[x] = Sorter[y];
+                                Sorter[y] = tmp;
+                            }
+                        }
+                    }
+                }else{
+                    Sorter.sort();
+                }
+                if(this.ViewState[col]){
+                    Sorter.reverse();
+                    this.ViewState[col] = false;
+                    this.Table.rows[0].cells[col].className = this.SortDescCss;
+                }else{
+                    this.ViewState[col] = true;
+                    this.Table.rows[0].cells[col].className = this.SortAscCss;
+                }
+                var Rank = [];
+                for(var x = 0; x &lt; Sorter.length; x++){
+                    Rank[x] = this.GetRowHtml(this.Table.rows[Sorter[x][1]]);
+                }
+                // table内容重排
+                for(var x = 1; x &lt; this.Table.rows.length; x++){
+                    for(var y = 0; y &lt; this.Table.rows[x].cells.length; y++){
+                        this.Table.rows[x].cells[y].innerHTML = Rank[x-1][y];
+                    }
+                }
+                this.OnSorted(this.Table.rows[0].cells[col], this.ViewState[col]);
+            }
+            //取得指定行的内容.
+            TableSorter.prototype.GetRowHtml = function(row){
+                var result = [];
+                for(var x = 0; x &lt; row.cells.length; x++){
+                    result[x] = row.cells[x].innerHTML;
+                }
+                return result;
+            }
+            TableSorter.prototype.IsNumeric = function(num){
+                return /^\d+(\.\d+)?$/.test(num);
+            }
+            //可自行实现排序后的动作.
+            TableSorter.prototype.OnSorted = function(cell, IsAsc){
+                return;
+            }
+        </pre></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=62f69d29b6"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=367b99f621"></script><script type="text/javascript" src="/gulpdemo/js/javascript/table_sort.js?v=6e794083eb"></script><script type="text/javascript">new TableSorter("tb1"),new TableSorter("tb2",0,2,5,6),new TableSorter("tb3").OnSorted=function(e,t){alert("table is sorted by "+e.innerHTML+" "+(t?"Asc":"Desc"))}</script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=a4cebfe354"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js"]),SyntaxHighlighter.all()})</script></body></html>
