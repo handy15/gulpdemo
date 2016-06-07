@@ -90,13 +90,13 @@
                 this.dayCyl   =   offset   +   40
                 this.monCyl   =   14
 
-                for(i=1900;   i<2050   &&   offset>0;   i++)   {
+                for(i=1900;   i&lt;2050   &&   offset>0;   i++)   {
                     temp   =   lYearDays(i)
                     offset   -=   temp
                     this.monCyl   +=   12
                 }
 
-                if(offset<0)   {
+                if(offset&lt;0)   {
                     offset   +=   temp;
                     i--;
                     this.monCyl   -=   12
@@ -108,7 +108,7 @@
                 leap   =   leapMonth(i)   //闰哪个月
                 this.isLeap   =   false
 
-                for(i=1;   i<13   &&   offset>0;   i++)   {
+                for(i=1;   i&lt;13   &&   offset>0;   i++)   {
                     //闰月
                     if(leap>0   &&   i==(leap+1)   &&   this.isLeap==false){
                         --i;
@@ -130,7 +130,7 @@
                         this.isLeap   =   true;   --i;   --this.monCyl;
                     }
 
-                if(offset<0){
+                if(offset&lt;0){
                     offset   +=   temp;
                     --i;
                     --this.monCyl;

@@ -332,7 +332,7 @@
                 this.Table = this.$(table);
                 // console.log(this.Table.tHead);
                 // console.log(this.Table.tBodies[0]);
-                if(this.Table.rows.length <= 1){
+                if(this.Table.rows.length &lt;= 1){
                     return;
                 }
                 this.Init(arguments);
@@ -344,12 +344,12 @@
             //初始化table的信息和操作.
             TableSorter.prototype.Init = function(args){
                 this.ViewState = [];
-                for(var x = 0; x < this.Table.rows[0].cells.length; x++){
+                for(var x = 0; x &lt; this.Table.rows[0].cells.length; x++){
                     this.ViewState[x] = false;
                 }
                 // 设置部分列可排序
                 if(args.length > 1){
-                    for(var x = 1; x < args.length; x++){
+                    for(var x = 1; x &lt; args.length; x++){
                         if(args[x] > this.Table.rows[0].cells.length){
                             continue;
                         }else{
@@ -359,7 +359,7 @@
                         }
                     }
                 }else{// 设置全部列可排序
-                    for(var x = 0; x < this.Table.rows[0].cells.length; x++){
+                    for(var x = 0; x &lt; this.Table.rows[0].cells.length; x++){
                         this.Table.rows[0].cells[x].onclick = this.GetFunction(this,"Sort",x);
                         this.Table.rows[0].cells[x].style.cursor = "pointer";
                         this.Table.rows[0].cells[x].className = this.NormalCss;
@@ -380,23 +380,23 @@
             TableSorter.prototype.Sort = function(col){
                 var SortAsNumber = true;
                 // 重置列的排序样式为非排序状态
-                for(var x = 0; x < this.Table.rows[0].cells.length; x++){
+                for(var x = 0; x &lt; this.Table.rows[0].cells.length; x++){
                     var thisClassName = this.Table.rows[0].cells[x].className;
                     if(thisClassName == this.SortAscCss || thisClassName == this.SortDescCss){
                         this.Table.rows[0].cells[x].className = this.NormalCss;
                     }
                 }
                 var Sorter = [];
-                for(var x = 1; x < this.Table.rows.length; x++){
+                for(var x = 1; x &lt; this.Table.rows.length; x++){
                     Sorter[x-1] = [this.Table.rows[x].cells[col].innerHTML, x];
                     // 是否是数值排序
                     SortAsNumber = SortAsNumber && this.IsNumeric(Sorter[x-1][0]);
                 }
                 // 排序
                 if(SortAsNumber){
-                    for(var x = 0; x < Sorter.length; x++){
-                        for(var y = x + 1; y < Sorter.length; y++){
-                            if(parseFloat(Sorter[y][0]) < parseFloat(Sorter[x][0])){
+                    for(var x = 0; x &lt; Sorter.length; x++){
+                        for(var y = x + 1; y &lt; Sorter.length; y++){
+                            if(parseFloat(Sorter[y][0]) &lt; parseFloat(Sorter[x][0])){
                                 var tmp = Sorter[x];
                                 Sorter[x] = Sorter[y];
                                 Sorter[y] = tmp;
@@ -415,12 +415,12 @@
                     this.Table.rows[0].cells[col].className = this.SortAscCss;
                 }
                 var Rank = [];
-                for(var x = 0; x < Sorter.length; x++){
+                for(var x = 0; x &lt; Sorter.length; x++){
                     Rank[x] = this.GetRowHtml(this.Table.rows[Sorter[x][1]]);
                 }
                 // table内容重排
-                for(var x = 1; x < this.Table.rows.length; x++){
-                    for(var y = 0; y < this.Table.rows[x].cells.length; y++){
+                for(var x = 1; x &lt; this.Table.rows.length; x++){
+                    for(var y = 0; y &lt; this.Table.rows[x].cells.length; y++){
                         this.Table.rows[x].cells[y].innerHTML = Rank[x-1][y];
                     }
                 }
@@ -429,7 +429,7 @@
             //取得指定行的内容.
             TableSorter.prototype.GetRowHtml = function(row){
                 var result = [];
-                for(var x = 0; x < row.cells.length; x++){
+                for(var x = 0; x &lt; row.cells.length; x++){
                     result[x] = row.cells[x].innerHTML;
                 }
                 return result;
