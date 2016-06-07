@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片转base64码</title>
+    <!--include "../modules/header_import.html"-->
+    <link rel="stylesheet" href="/css/h5.css">
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_h5.html"-->
+    <div class="c-right">
+        <section>
+            <h1>原理</h1>
+            <p>通过FileReader实例的readAsDataURL()方法读取文件的base64码。</p>
+            <h2 class="base64-title">图片转Base64</h2>
+            <div class="base64-con clear">
+                <div class="base64-con-left">
+                    <div class="control">
+                        <div class="select-file">
+                            <div class="select-file-title"></div>
+                            <a href="javascript:;" class="select-file-btn">选择文件</a>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <textarea class="base64-text" readonly></textarea>
+                    </div>
+                </div>
+                <div class="base64-con-right">
+                    <img src="" class="preview"/>
+                </div>
+            </div>
+            <h2>代码</h2>
+            <pre class="brush:js">
+                var inputFile =  document.createElement('input');
+                inputFile.type = 'file';
+                var selectFile = document.querySelector('.select-file');
+                var base64Text = document.querySelector('.base64-text');
+                var preview = document.querySelector('.preview');
+
+                var reader = new FileReader();
+                reader.onload = function(){
+                    var that = this;
+                    base64Text.value = '';
+                    setTimeout(function(){
+                        base64Text.value = that.result;
+                    },1000);
+                    preview.src = this.result;
+                };
+
+                inputFile.addEventListener('change', function(){
+                    selectFile.querySelector('.select-file-title').innerHTML = this.value;
+                    if(this.files.length == 0){
+                        base64Text.innerText = '';
+                        return;
+                    }
+                    var file = inputFile.files[0];
+                    base64Text.value = '';
+                    if(!(/^image/.test(file.type))){
+                        base64Text.placeholder = '不是图片文件';
+                        return;
+                    }
+                    reader.readAsDataURL(file);
+                });
+
+                selectFile.addEventListener('click', function(){
+                    inputFile.click();
+                });
+            </pre>
+        </section>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript">
+    var inputFile =  document.createElement('input');
+    inputFile.type = 'file';
+    var selectFile = document.querySelector('.select-file');
+    var base64Text = document.querySelector('.base64-text');
+    var preview = document.querySelector('.preview');
+
+    var reader = new FileReader();
+    reader.onload = function(){
+        // base64Text.innerText = this.result;
+        var that = this;
+//        console.log(that);
+        base64Text.value = '';
+        setTimeout(function(){
+            base64Text.value = that.result;
+        },1000);
+
+        // console.log(base64Text.value); //变化后的值
+        // console.log(base64Text.innerText); //undefined
+        // console.log(base64Text.innerHTML); //(空字符串)
+
+        preview.src = this.result;
+    };
+
+    inputFile.addEventListener('change', function(){
+        selectFile.querySelector('.select-file-title').innerHTML = this.value;
+        if(this.files.length == 0){
+            base64Text.innerText = '';
+            return;
+        }
+        var file = inputFile.files[0];
+//        console.log(this.files);
+        base64Text.value = '';
+        if(!(/^image/.test(file.type))){
+            base64Text.placeholder = '不是图片文件';
+            return;
+        }
+        reader.readAsDataURL(file);
+    });
+
+    selectFile.addEventListener('click', function(){
+        inputFile.click();
+    });
+</script>
+<!--include "../modules/syntax_highlighter.html"-->
+</body>
+</html>

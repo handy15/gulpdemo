@@ -1,0 +1,70 @@
+//变量
+@import "modules/_variables";
+//代码片段
+@import "modules/_mixin";
+
+/*===========图片转base64码===========*/
+.base64-title{
+  color: #ddd;
+  text-shadow: 2px 2px 5px #000;
+}
+%content{
+  float: left;
+  border-radius: 4px;
+}
+.base64-con{
+  &-left{
+    @extend %content;
+    width: 40%;
+    margin-left:3%;
+  }
+  &-right{
+    @extend %content;
+    max-width: 40%;
+    margin-left: 1%;
+  }
+}
+.preview{width: 100%;}
+
+.select-file{
+  border:1px solid #9B59B6;
+  position: relative;
+  &:after{
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+%selectfile{
+  float: left;
+  line-height: 30px;
+  height: 30px;
+}
+.select-file-title{
+  @extend %selectfile;
+  @include ellipsis;
+  width: 80%;
+}
+.select-file-btn{
+  @extend %selectfile;
+  width: 20%;
+  background-color: #8E44AD;
+  text-align: center;
+  color: #fff;
+  transition: background-color .5s;
+  &:hover{
+    background-color: #1ABC9C;
+    color: #ffffff;
+  }
+}
+.base64-text{
+  background-color:transparent;
+  height: 300px;
+  //width: calc(100% - 6px);
+  width: 100%;
+  resize:none;
+  overflow: auto;
+  border: 1px solid #9B59B6;
+  margin-top: 10px;
+  word-break: break-all;
+}
