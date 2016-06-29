@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array方法</title>
+    <!--include "../../modules/header_import.html"-->
+</head>
+<body>
+<!--include "../../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../../modules/left_javascript.html"-->
+    <div class="c-right">
+        <h1>Array的方法</h1>
+        <h2>concat</h2>
+        <p>concat方法：返回一个新数组，这个新数组是由两个或更多数组组合而成的。</p>
+        <div class="alert alert-warning">array1.concat([item1[,   item2[,   .   .   .   [,   itemN]]]])</div>
+        <h2>join</h2>
+        <p>join方法：返回字符串值，其中包含了连接到一起的数组的所有元素，元素由指定的分隔符分隔开来。</p>
+        <div class="alert alert-warning">arrayObj.join(separator)</div>
+        <h2>pop</h2>
+        <p>pop方法：移除数组中的最后一个元素并返回该元素。</p>
+        <div class="alert alert-warning">arrayObj.pop()</div>
+        <h2>push</h2>
+        <p>push方法：将新元素添加到一个数组中，并返回数组的新长度值。</p>
+        <div class="alert alert-warning">arrayObj.push([item1   [item2   [.   .   .   [itemN   ]]]])</div>
+        <h2>reverse</h2>
+        <p>reverse方法：返回一个元素顺序被反转的Array对象。注意这里是返回一个原来的数组而不是创建了一个新的数组。</p>
+        <div class="alert alert-warning">arrayObj.reverse()</div>
+        <h2>shift</h2>
+        <p>shift方法：移除数组中的第一个元素并返回该元素。</p>
+        <div class="alert alert-warning">arrayObj.shift()</div>
+        <h2>slice</h2>
+        <p>slice方法：返回一个数组的一段。</p>
+        <div class="alert alert-warning">arrayObj.slice(start,[end])</div>
+        <h2>sort</h2>
+        <p>sort方法：返回一个元素已经进行了排序的Array对象。如果 sort()里面没有参数那么将按照字母顺序排列，如果要用从大到小顺序排列里面需要带参数<code>sort(function(a,b){return b-a})</code>。</p>
+        <div class="alert alert-warning">arrayobj.sort(sortfunction)</div>
+        <h2>splice</h2>
+        <p>splice方法：从一个数组中移除一个或多个元素，如果必要，在所移除元素的位置上插入新元素，返回所移除的元素。</p>
+        <div class="alert alert-warning">arrayObj.splice(start,   deleteCount,   [item1[,   item2[,   .   .   .   [,itemN]]]])</div>
+        <h2>unshift</h2>
+        <p>unshift方法：将指定的元素插入数组开始位置并返回该数组。<span class="text-danger">在IE下无效，返回undefined fox下可以。</span></p>
+        <div class="alert alert-warning">arrayObj.unshift([item1[,   item2   [,   .   .   .   [,   itemN]]]]) </div>
+    </div>
+</div>
+<!--include "../../modules/footer.html"-->
+<!--include "../../modules/scripts.html"-->
+<!--include "../../modules/syntax_highlighter.html"-->
+</body>
+</html>
