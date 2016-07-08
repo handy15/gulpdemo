@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>knockout</title>
+    <style>
+        #test2{
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+<div id="test1">
+    <div data-bind="visible: shouldShowMessage">
+        You will see this message only when "shouldShowMessage" holds a true value.
+    </div>
+    <p>Today's message is: <span data-bind="text: myMessage">88888</span></p>
+    <p>Today's message is: <span data-bind="html: myMessage">88888</span></p>
+    <p>The item is <span data-bind="text: price"></span> today.</p>
+    <p>The item is <span data-bind="text: priceRating"></span> today.</p>
+    The item is <span data-bind="text: price() > 50 ? 'expensive' : 'affordable'"></span> today.
+</div>
+<div id="test2">
+    <div data-bind="visible: shouldShowMessage">
+        You will see this message only when "shouldShowMessage" holds a true value 0000.
+    </div>
+</div>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>-->
+<script type="text/javascript" src="plugin/knockout-3.4.0.debug.js"></script>
+<script type="text/javascript">
+    var viewModel = {
+        shouldShowMessage: ko.observable(true), // Message initially visible
+//        myMessage: 'can not change'
+        myMessage: ko.observable(),
+        price: ko.observable(24.95)
+    };
+
+    viewModel.priceRating = ko.pureComputed(function() {
+        return this.price() > 50 ? "expensive" : "affordable";
+    }, viewModel);
+    //    viewModel.shouldShowMessage(true); // ... now it's visible again
+    ko.applyBindings(viewModel,document.getElementById('test1'));
+    viewModel.shouldShowMessage(false); // ... now it's hidden
+    viewModel.myMessage('Hello world!');
+    setTimeout(function(){
+        viewModel.myMessage('delay modify!');
+    },2000);
+    viewModel.price(88888);
+
+    viewModel.myMessage("<i>Hello, world!</i>");
+
+</script>
+</body>
+</html>
