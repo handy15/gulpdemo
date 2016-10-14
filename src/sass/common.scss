@@ -189,3 +189,7 @@ body{
   list-style: decimal outside;
   margin-left: 30px;
 }
+/*===========重置jbox样式===========*/
+.jbox-body *{
+  box-sizing: content-box;
+}

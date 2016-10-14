@@ -154,7 +154,7 @@ gulp.task('scripts', function() {
         .pipe(jshint())
         .pipe(gulp.dest(PATH.dest.js));
     //jquery
-    gulp.src([PATH.src.js+'/jquery-1.12.1.js'])
+    gulp.src([PATH.src.js+'/jquery-1.12.1.js',PATH.src.js+'/jquery-migrate-1.1.1.js'])
         .pipe(jshint())
         .pipe(gulp.dest(PATH.dest.js));
 });

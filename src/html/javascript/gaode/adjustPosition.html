@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>调整坐标点</title>
+    <!--include "../../modules/header_import.html"-->
+</head>
+<body>
+<!--include "../../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../../modules/left_javascript.html"-->
+    <div class="c-right">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-1 control-label" for="name">点名称：</label>
+                <div class="col-sm-4"><input class="form-control" type="text" id="name" value="郁金香花苑"/></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label" for="point">点坐标：</label>
+                <div class="col-sm-4"><input class="form-control" type="text" id="point" placeholder="31.984629,118.796463" value="31.984629,118.796463"/></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label" for="city">城市名称：</label>
+                <div class="col-sm-4"><input class="form-control" type="text" id="city" value="南京市"/></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-1 control-label"></div>
+                <div class="col-sm-4"><button class="btn btn-info" id="mapLocation" type="button">地图坐标</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--include "../../modules/footer.html"-->
+<!--include "../../modules/scripts.html"-->
+<script type="text/javascript">
+    $(function(){
+        //地图坐标
+        $('#mapLocation').click(function(){
+            //楼盘坐标(纬度,经度)
+            var point = $('#point').val();
+            //楼盘名称
+            var name = $('#name').val();
+            if(name=='' && !point.match(/^([1-9]|0\.)\d*(\.\d*)?,([1-9]|0\.)\d*(\.\d*)?$/)){
+                top.$.jBox('<div style="padding: 10px; font-size: 14px; line-height: 1.5;">因无“点名称”且“点坐标”格式错误，故无法按点名称搜索或根据点坐标定位！</div>',{
+                    title: '提示',
+                    width: 400
+                });
+                return;
+            }
+            top.$.jBox.open("iframe:adjustPositionOpen.html?point=" + point + "&name=" + name + "&city="+$('#city').val(), "选择高德坐标", 900, 550, {
+                buttons:{"确定":"ok", "关闭":true},
+                bottomText:'已有 <strong>点坐标</strong> 则定位显示，否则按 <strong>点名称</strong> 搜索。可拖动选定坐标点更改坐标。',
+                submit:function(v, h, f){
+                    if (v=="ok"){
+                        var map = h.find("iframe")[0].contentWindow;
+                        $('#point').val(map.getLngLat());
+                    }
+                },
+                loaded:function(h){
+                    $(".jbox-content", top.document).css("overflow-y","hidden");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
