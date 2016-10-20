@@ -1,0 +1,40 @@
+列表： http://www.js-css.cn/a/jscode/cutpic/
+crop2: http://www.js-css.cn/a/jscode/cutpic/2014/0306/1133.html
+	JCrop演示示例：http://www.open-open.com/lib/view/open1398826843484.html
+   1.常用选项设置
+	aspectRatio:选中区域按宽/高比，为1表示正方形。
+       minSize:最小的宽，高值。
+       maxSize:最大的宽，高值。
+       setSelect:设置初始选中区域。
+       bgColor:背景颜色
+       bgOpacity:背景透明度。
+       allowResize:是否允许改变选中区域大小。
+       allowMove:是否允许移动选中区域。
+   2.api用法
+	var api = $.Jcrop("#demoImage");
+	api.disable();                      //设置为禁用裁剪效果
+	api.enable();                       //设置为启用裁剪效果
+	api.setOptions({allowResize:false});//设置相应配置
+	api.setSelect([0,0,100,100]);       //设置选中区域
+
+	$( function() {  
+                //事件处理  
+                $("#demoImage").Jcrop(  
+                {  
+                    onChange:showCoords,    //当选择区域变化的时候，执行对应的回调函数  
+                    onSelect:showCoords     //当选中区域的时候，执行对应的回调函数  
+                }  
+                );  
+            }  
+        );  
+            function showCoords(c) {  
+                $("#txtX1").val(c.x);       //得到选中区域左上角横坐标  
+                $("#txtY1").val(c.y);       //得到选中区域左上角纵坐标  
+                $("#txtX2").val(c.x2);      //得到选中区域右下角横坐标  
+                $("#txtY2").val(c.y2);      //得到选中区域右下角纵坐标  
+                $("#txtWidth").val(c.w);    //得到选中区域的宽度  
+                $("#txtHeight").val(c.h);   //得到选中区域的高度  
+            }  
+
+
+crop3: http://www.js-css.cn/a/jscode/cutpic/2014/0417/1185.html
