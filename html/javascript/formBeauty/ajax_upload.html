@@ -1,0 +1,250 @@
+<!DOCTYPE HTML><html><head><meta charset="utf-8"><title>select美化</title><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/bootstrap-3.3.5/css/bootstrap.css?v=bba40d0d97"><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/jquery-jbox/2.3/Skins/Blue/jbox.css"><link rel="stylesheet" type="text/css" href="/gulpdemo/css/common.css?v=53038c56f9"><link rel="stylesheet" href="/gulpdemo/css/form-beauty.css?v=95b54f842e"></head><body><header class="header"><nav><ul class="navigation"><li><a href="/gulpdemo/index.html" target="_self" title="返回首页" class="home"></a></li><li><a href="/gulpdemo/html/mobile/taobao_adapter.html">移动端</a></li><li><a href="/gulpdemo/html/webDesign/vertical_align.html" target="_self">网页布局</a></li><li><a href="/gulpdemo/html/javascript/chinamap.html" target="_self">javascript & JQuery</a></li><li><a href="/gulpdemo/html/css3/transform.html" target="_self">CSS3</a></li><li><a href="/gulpdemo/html/h5/img2base64.html" target="_self">H5</a></li><li><a href="/gulpdemo/html/plugin/plugin_instruction.html" target="_self">插件说明</a></li></ul></nav></header><div class="container01"><div class="c-left"><input type="hidden" value="3" id="menuId"><div class="side-menu"><ul class="side-menu-list"><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>基础知识</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/base/array.html">Array</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>地图</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/chinamap.html">中国地图</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>高德地图</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/gaode/gdMap.html">示例</a></li><li><a href="/gulpdemo/html/javascript/gaode/map.html">搜索结果列表</a></li><li><a href="/gulpdemo/html/javascript/gaode/poi.html">iframe传参</a></li><li><a href="/gulpdemo/html/javascript/gaode/adjustPosition.html">调整坐标</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>百度地图</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/baidu/baidu-map.html">百度地图</a></li></ul></li><li><a href="#"><i class="glyphicon glyphicon-menu-right"></i>form元素</a><ul class="side-menu-child hide"><li><a href="/gulpdemo/html/javascript/formBeauty/select.html">select美化</a></li><li><a href="/gulpdemo/html/javascript/formBeauty/radio.html">radio & checkbox美化</a></li><li><a href="/gulpdemo/html/javascript/formBeauty/ajax_upload.html">ajax上传文件</a></li></ul></li><li><a href="/gulpdemo/html/javascript/date_compare.html"><i class="icon-blank"></i>时间跨时区比较</a></li><li><a href="/gulpdemo/html/javascript/heavenly.html"><i class="icon-blank"></i>天干地支纪年</a></li><li><a href="/gulpdemo/html/javascript/table_sort.html"><i class="icon-blank"></i>table sort</a></li></ul></div></div><div class="c-right"><h1>基本原理</h1><p>ajax上传文件的基本原理：在页面中通过脚本动态添加<code>iframe</code>，<code>iframe</code>中添加<code>form</code>和<code>file</code>元素进行文件的上传，提交后的结果在<code>iframe</code>中展示。关于返回后的数据，通过脚本格式化到需要的结构，比如json、xml、JavaScript等。</p><div class="mt20px"><h1>代码</h1><ul class="nav nav-tabs" role="tablist" id="selectTabs"><li role="presentation" class="active"><a href="#HTML" aria-controls="home" role="tab" data-toggle="tab">HTML</a></li><li role="presentation"><a href="#JS" aria-controls="profile" role="tab" data-toggle="tab">JS</a></li></ul><div class="tab-content"><div role="tabpanel" class="tab-pane active" id="HTML"><pre class="brush:xml">
+                        <form id="fileForm" class="form-search">
+                            <div class="alert alert-error">仅允许导入“sql”格式文件！每条sql语句占一行，以英文分号（;）结束。</div>
+                            <ul class="ul-form">
+                                <li>
+                                    <label for="file" class="control-label">上传文件：</label>
+                                    <input id="file" name="file" type="file">
+                                </li>
+                                <li style="padding-left:15px">
+                                    <input id="fileImport" class="btn btn-primary" type="button" value="导入">
+                                </li>
+                            </ul>
+                        </form>
+                        <script type="text/javascript">$("#fileImport").click(function(){var o=$(this),t=$("#file"),i=!0,e="请选择上传文件！";""==t.val()?i=!1:t.val().match(/.sql$/)||(e="文件格式错误！",i=!1),i?(o.attr("disabled",!0),loading("正在导入，请稍等..."),$.ajaxFileUpload({url:"${ctx}/otherdata/estateMat/importFileData",secureuri:!1,fileElementId:"file",dataType:"json",success:function(t,i){closeTip(),top.$.jBox.info(t.message,"系统提示",{closed:function(){o.attr("disabled",!1)}}),top.$(".jbox-body .jbox-icon").css("top","55px"),top.$(".jbox-content").css("max-height","300px")},error:function(t,i,e){closeTip(),top.$.jBox.info(e,"系统提示",{closed:function(){o.attr("disabled",!1)}}),top.$(".jbox-body .jbox-icon").css("top","55px")}})):(top.$.jBox.info(e,"系统提示",{closed:function(){t.val("")}}),top.$(".jbox-body .jbox-icon").css("top","55px"))})</script>
+                    </pre></div><div role="tabpanel" class="tab-pane" id="JS"><pre class="brush:js">
+jQuery.extend({
+    createUploadIframe: function(id, uri){
+        //create frame
+        var frameId = 'jUploadFrame' + id;
+
+        if(window.ActiveXObject && jQuery.FuckInternetExplorer() == 'true') {
+            var io = document.createElement('&lt;iframe id="' + frameId + '" name="' + frameId + '" />');
+            if(typeof uri== 'boolean'){
+                io.src = 'javascript:false';
+            }
+            else if(typeof uri== 'string'){
+                io.src = uri;
+            }
+        }
+        else {
+            var io = document.createElement('iframe');
+            io.id = frameId;
+            io.name = frameId;
+        }
+        io.style.position = 'absolute';
+        io.style.top = '-1000px';
+        io.style.left = '-1000px';
+
+        document.body.appendChild(io);
+
+        return io
+    },
+    createUploadForm: function(id, fileElementId){
+        //create form
+        var formId = 'jUploadForm' + id;
+        var fileId = 'jUploadFile' + id;
+        var form = $('<form action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');
+        var oldElement = $('#' + fileElementId);
+        var newElement = $(oldElement).clone();
+        $(oldElement).attr('id', fileId);
+        $(oldElement).before(newElement);
+        $(oldElement).appendTo(form);
+        //set attributes
+        $(form).css('position', 'absolute');
+        $(form).css('top', '-1200px');
+        $(form).css('left', '-1200px');
+        $(form).appendTo('body');
+        return form;
+    },
+    addOtherRequestsToForm: function(form,data){
+        // add extra parameter
+        var originalElement = $('<input type="hidden" name="" value="">');
+        for (var key in data) {
+            name = key;
+            value = data[key];
+            var cloneElement = originalElement.clone();
+            cloneElement.attr({'name':name,'value':value});
+            $(cloneElement).appendTo(form);
+        }
+        return form;
+    },
+    ajaxFileUpload: function(s) {
+        // TODO introduce global settings, allowing the client to modify them for all requests, not only timeout
+        s = jQuery.extend({}, jQuery.ajaxSettings, s);
+        var id = new Date().getTime();
+        var form = jQuery.createUploadForm(id, s.fileElementId);
+        if ( s.data ) form = jQuery.addOtherRequestsToForm(form,s.data);
+        var io = jQuery.createUploadIframe(id, s.secureuri);
+        var frameId = 'jUploadFrame' + id;
+        var formId = 'jUploadForm' + id;
+        // Watch for a new set of requests
+        if ( s.global && ! jQuery.active++ )
+        {
+            jQuery.event.trigger( "ajaxStart" );
+        }
+        var requestDone = false;
+        // Create the request object
+        var xml = {}
+        if ( s.global )
+            jQuery.event.trigger("ajaxSend", [xml, s]);
+        // Wait for a response to come back
+        var uploadCallback = function(isTimeout){
+            var io = document.getElementById(frameId);
+            try{
+                if(io.contentWindow){
+                    xml.responseText = io.contentWindow.document.body?io.contentWindow.document.body.innerHTML:null;
+                    xml.responseXML = io.contentWindow.document.XMLDocument?io.contentWindow.document.XMLDocument:io.contentWindow.document;
+                }else if(io.contentDocument){
+                    xml.responseText = io.contentDocument.document.body?io.contentDocument.document.body.innerHTML:null;
+                    xml.responseXML = io.contentDocument.document.XMLDocument?io.contentDocument.document.XMLDocument:io.contentDocument.document;
+                }
+            }catch(e){
+                jQuery.handleError(s, xml, null, e);
+            }
+            if ( xml || isTimeout == "timeout"){
+                requestDone = true;
+                var status;
+                try {
+                    status = isTimeout != "timeout" ? "success" : "error";
+                    // Make sure that the request was successful or notmodified
+                    if ( status != "error" ){
+                        // process the data (runs the xml through httpData regardless of callback)
+                        var data = jQuery.uploadHttpData( xml, s.dataType );
+                        // If a local callback was specified, fire it and pass it the data
+                        if ( s.success ){
+                            s.success( data, status );
+                        }
+
+                        // Fire the global callback
+                        if( s.global ){
+                            jQuery.event.trigger( "ajaxSuccess", [xml, s] );
+                        }
+                    } else{
+                        jQuery.handleError(s, xml, status);
+                    }
+                } catch(e){
+                    status = "error";
+                    jQuery.handleError(s, xml, status, e);
+                }
+
+                // The request was completed
+                if( s.global ){
+                    jQuery.event.trigger( "ajaxComplete", [xml, s] );
+                }
+
+                // Handle the global AJAX counter
+                if ( s.global && ! --jQuery.active )
+                    jQuery.event.trigger( "ajaxStop" );
+
+                // Process result
+                if ( s.complete )
+                    s.complete(xml, status);
+
+                jQuery(io).unbind()
+
+                setTimeout(function(){
+                    try{
+                        $(io).remove();
+                        $(form).remove();
+                    } catch(e)
+                    {
+                        jQuery.handleError(s, xml, null, e);
+                    }
+
+                }, 100)
+
+                xml = null
+
+            }
+        }
+        // Timeout checker
+        if ( s.timeout > 0 )
+        {
+            setTimeout(function(){
+                // Check to see if the request is still happening
+                if( !requestDone ) uploadCallback( "timeout" );
+            }, s.timeout);
+        }
+        try
+        {
+            // var io = $('#' + frameId);
+            var form = $('#' + formId);
+            $(form).attr('action', s.url);
+            $(form).attr('method', 'POST');
+            $(form).attr('target', frameId);
+            if(form.encoding)
+            {
+                form.encoding = 'multipart/form-data';
+            }
+            else
+            {
+                form.enctype = 'multipart/form-data';
+            }
+            $(form).submit();
+
+        } catch(e)
+        {
+            jQuery.handleError(s, xml, null, e);
+        }
+        if(window.attachEvent){
+            document.getElementById(frameId).attachEvent('onload', uploadCallback);
+        }
+        else{
+            document.getElementById(frameId).addEventListener('load', uploadCallback, false);
+        }
+        return {abort: function () {}};
+
+    },
+
+    uploadHttpData: function( r, type ) {
+        var data = !type;
+        data = type == "xml" || data ? r.responseXML : r.responseText;
+        // If the type is "script", eval it in global context
+        if ( type == "script" )
+            jQuery.globalEval( data );
+        // Get the JavaScript object, if JSON is used.
+        if ( type == "json" ){
+            // If you add mimetype in your response,
+            // you have to delete the '&lt;pre&gt;&lt;/pre&gt;' tag.
+            // The pre tag in Chrome has attribute, so have to use regex to remove
+            var data = r.responseText;
+            var rx = new RegExp("&lt;pre.*?&gt;((.|\n)*?)&lt;/pre&gt;","i");
+            var am = rx.exec(data);
+            //this is the desired data extracted
+            var data = (am) ? am[1] : "";    //the only submatch or empty
+            data = data.replace(/\n/g,'&lt;br/>');
+            eval( "data = " + data );
+        }
+        // evaluate scripts within html
+        if ( type == "html" )
+            jQuery("&lt;div&gt;").html(data).evalScripts();
+            //alert($('param', data).each(function(){alert($(this).attr('value'));}));
+            return data;
+        },
+        //错误处理函数
+        handleError: function( s, xhr, status, e )      {
+            // If a local callback was specified, fire it
+            if ( s.error ) {
+            s.error.call( s.context || s, xhr, status, e );
+        }
+
+        // Fire the global callback
+        if ( s.global ) {
+            (s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );
+        }
+    },
+    //判断是否是IE9以下版本
+    FuckInternetExplorer: function () {
+        var b_version = navigator.appVersion;
+        var version = b_version.split(";");
+        if (version.length > 1) {
+            var trim_Version = parseInt(version[1].replace(/[ ]/g, "").replace(/MSIE/g, ""));
+            if (trim_Version &lt; 9) {
+                return 'true';
+            }
+        }
+        return 'false';
+    }
+})
+                    </pre></div></div></div></div></div><footer class="footer"><p>Author: wangyaru</p><p>Created time: 2016/02/15</p><p>&copy;forever</p></footer><script type="text/javascript" src="/gulpdemo/js/jquery-1.12.1.js?v=da6deec5d1"></script><script type="text/javascript" src="/gulpdemo/js/jquery-migrate-1.1.1.js?v=d62a5c2a27"></script><script type="text/javascript" src="/gulpdemo/plugin/bootstrap-3.3.5/js/bootstrap.js?v=5a9f44d675"></script><script type="text/javascript" src="/gulpdemo/plugin/jquery-jbox/2.3/jquery.jBox-2.3.src.js?v=568416d5b1"></script><script type="text/javascript" src="/gulpdemo/js/main.js?v=6f399efa9e"></script><script type="text/javascript" src="/gulpdemo/js/formBeauty/select-beautify.js?v=9dc5be3599"></script><script type="text/javascript">$("#province").cssSelect(),$("#selectTabs").tab()</script><link rel="stylesheet" type="text/css" href="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCoreDefault.css?v=b1f1863310"><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shCore.js?v=990e7f9af1"></script><script type="text/javascript" src="/gulpdemo/plugin/syntaxhighlighter_3.0.83/shAutoloader.js?v=7b30a548e7"></script><script type="text/javascript">$(document).ready(function(){SyntaxHighlighter.autoloader(["js","jscript","javascript","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushJScript.js?v=614d07995f"],["css","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushCss.js?v=25fa849321"],["xml","html","/gulpdemo/plugin/syntaxhighlighter_3.0.83/shBrushXml.js?v=035d0131d7"]),SyntaxHighlighter.all()})</script></body></html>
