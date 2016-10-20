@@ -322,7 +322,7 @@ jQuery.extend({
         var version = b_version.split(";");
         if (version.length > 1) {
             var trim_Version = parseInt(version[1].replace(/[ ]/g, "").replace(/MSIE/g, ""));
-            if (trim_Version < 9) {
+            if (trim_Version &lt; 9) {
                 return 'true';
             }
         }
