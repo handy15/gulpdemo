@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户构成-用户成分转化</title>
+    <!--include "../modules/header_import.html"-->
+    <link rel="stylesheet" type="text/css" href="/plugin/calender/plugin-jCal.css" />
+    <style type="text/css">
+        *{ padding: 0; margin: 0;}
+        body{font-size: 12px;}
+        #boxer .boxer-container {
+            overflow: hidden;
+        }
+
+        /*日期文本框*/
+        .datepickerPanelArea{
+            margin-bottom: 20px;
+            z-index: 105;
+            position: relative;
+            float: right;
+            zoom: 1;
+            width: 230px;
+            border: 1px solid #b4b4b4;
+            border-radius: 8px;
+            -webkit-box-shadow: inset 2px 2px 5px #eaeaea;
+            -moz-box-shadow: inset 2px 2px 5px #eaeaea;
+            box-shadow: inset 2px 2px 5px #eaeaea;
+            background: #FDFDFD;
+            height: 28px;
+            line-height: 28px;
+        }
+
+        .operation-panel {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid #ECECEC;
+        }
+        .operation-panel th {
+            height: 40px;
+            text-align: center;
+            font-size: 14px;
+            border-right: 1px solid #fff;
+            background-color: #EBEBEB;
+        }
+        .operation-panel td {
+            height: 50px;
+            border-right: 1px solid #fff;
+            background-color: #FAFAFA;
+        }
+
+        .index-list li {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .index-list li:hover {
+            cursor: default;
+            background-color: #5BD2CA;
+        }
+
+        .wau-graph {
+            height: 600px;
+        }
+
+        .graph-container .error-info {
+            display: none;
+            text-align: center;
+            margin: 290px 0;
+            float: left;
+            width: 100%;
+        }
+
+        .operation-tips {
+            margin: 10px;
+            color: #aaa;
+        }
+
+        .wau-graph {
+            position: relative;
+        }
+
+        svg text {
+            cursor: default;
+        }
+
+        .link {
+            pointer-events: none;
+        }
+
+        /*日历*/
+        .singledate{
+            position:absolute;
+            right:0;
+            bottom:0;
+            z-index:1000;
+            background-color: #8A8A8A;
+            border: 1px solid #717171;
+            padding:4px 9px 4px;
+            box-shadow: 0px 2px 4px #E7E9EA;
+            overflow: hidden;
+        }
+        .singledate2{
+            top:45px;
+            bottom:auto;
+        }
+        .singledate span{
+            font-size:14px;
+        }
+        .singledate .mod-header h2{
+            color:#fff;
+        }
+        .singledate .startday{
+            color:#c2c2c2;
+        }
+        .singledate .endday{
+            color:#fff;
+        }
+        .singledate div.mod-header{
+            border:0;
+            background:none;
+            padding:0;
+            height:21px;
+            line-height:21px;
+        }
+        .singledate .option{
+            color:#c2c2c2;
+        }
+        .singledate .days{
+            font-size:12px;
+            color:#c2c2c2;
+        }
+        .singledate div.mod-body{
+            border:0;
+            padding:0;
+        }
+        .singledate .tabs ul{
+            margin:10px 0 6px;
+            text-align: left;
+            height:24px;
+            line-height:24px;
+        }
+        .singledate .tabs ul li{
+            height: 20px;
+            line-height: 20px;
+            float:left;
+            margin-right:18px;
+        }
+        .singledate .tabs ul li.on{
+            border-bottom:4px solid #73d3d6;
+        }
+        .singledate .tabs ul li.on a{
+            cursor:default;
+        }
+        .singledate .tabs ul li a{
+            font-size:13px;
+            color: #fff;
+        }
+        .singledate .form{
+            margin-top:4px;
+            font-size:13px;
+            color:#ebebeb;
+            text-align:left;
+        }
+        .singledate .form .submit{
+            padding:4px 13px;
+            background:#fff;
+            border:1px solid #c6c6c6;
+            -webkit-box-shadow: 0 1px 0 #646464;
+            -moz-box-shadow: 0 1px 0 #646464;
+            box-shadow: 0 1px 0 #646464;
+            -moz-border-radius:8px;
+            -webkit-border-radius:8px;
+            border-radius:8px;
+            cursor:pointer;
+            color: #333333;
+            line-height: 1;
+            float:right;
+        }
+        .none{ display: none;}
+        text.label{ font-weight: normal;}
+    </style>
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_echarts.html"-->
+    <div class="c-right">
+        <h2>用户成分转化</h2>
+        <div class="datepickerPanelArea">
+            <div class="dateselect select_value" title="" timeUnit=""><span class="start"></span> - <span class="end"></span><!--<b class="icon pulldown"></b>--></div>
+        </div>
+        <table class="operation-panel">
+            <tr>
+                <th>指标变化</th>
+                <th>指标分解</th>
+                <th>系数演示</th>
+            </tr>
+            <tr>
+                <td>
+                    <ul class="index-list">
+                        <li class="js-weekly-active-user">活跃用户</li>
+                        <li class="js-weekly-loss-user">流失用户</li>
+                        <li class="js-user-transfer js-active">活跃用户变化</li>
+                        <li class="js-user-transfer js-loss">流失用户变化</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul class="index-list">
+                        <li class="js-user-retention">用户留存</li>
+                        <li class="js-user-loss">用户流失</li>
+                        <li class="js-user-back">用户回流</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul class="index-list">
+                        <li class="js-retention-coefficient">留存系数</li>
+                        <li class="js-reflux-coefficient">回流系数</li>
+                        <li class="js-balance-coefficient">平衡系数</li>
+                        <li class="js-change-coefficient">变化系数</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <p class="operation-tips">鼠标悬浮任意一项来查看演示</p>
+        <div class="graph-container clearfix">
+            <p class="error-info">没有数据或数据加载错误，请稍后重试。</p>
+            <div class="wau-graph"></div>
+        </div>
+        <div class="wait-load"><img src="/img/loadding.gif"></div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript" src="/plugin/calender/plugin-jCal.js"></script>
+<script type="text/javascript" src="/js/echarts/d3.js"></script>
+<script type="text/javascript" src="/js/echarts/d3.jetpack.js"></script>
+<script type="text/javascript" src="/js/echarts/transition/d3.wau.js"></script>
+<script type="text/javascript" src="/js/echarts/transition/transition.js"></script>
+<!--http://mobile.umeng.com/apps/4100008dd65107258db11ef4/wau/transition-->
+</body>
+</html>

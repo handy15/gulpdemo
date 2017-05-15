@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="46px" height="28px" viewBox="0 0 46 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>fu-arrow-hover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Artboard-1" sketch:type="MSArtboardGroup" transform="translate(-663.000000, -401.000000)">
+            <g id="fu-arrow-hover" sketch:type="MSLayerGroup" transform="translate(663.000000, 401.000000)">
+                <rect id="Rectangle-26-Copy-2" stroke="#4990E2" fill="#4990E2" sketch:type="MSShapeGroup" x="0" y="0" width="46" height="28" rx="2"></rect>
+                <path d="M28.6,15 L25.3,18.3 C24.9,18.7 24.9,19.3 25.3,19.7 C25.5,19.9 25.7,20 26,20 C26.3,20 26.5,19.9 26.7,19.7 L31.7,14.7 C31.9,14.5 32,14.25 32,14 C32,13.75 31.9,13.5 31.7,13.3 L26.7,8.3 C26.3,7.9 25.7,7.9 25.3,8.3 C24.9,8.7 24.9,9.3 25.3,9.7 L28.6,13 L15,13 C14.4,13 14,13.4 14,14 C14,14.6 14.4,15 15,15 L28.6,15 Z" id="Shape" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

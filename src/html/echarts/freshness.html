@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户新鲜度</title>
+    <!--include "../modules/header_import.html"-->
+    <style type="text/css">
+        /*css reset*/
+        *{ margin: 0; padding: 0;}
+        ul,li{ list-style: none}
+        body{ font-size: 14px;}
+        /*tabs*/
+        .tabs{
+            float: left;
+            height: 28px;
+            margin-left: 25px;
+            margin-top: 15px;
+            border: 1px solid #b4b4b4;
+            border-radius: 6px;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        .tabs li{
+            float: left;
+            padding: 0 15px;
+            border-right: 1px solid #b4b4b4;
+            border-left: 1px solid #ffffff;
+            border-bottom: 1px solid #ffffff;
+            filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#f8f8f8,endColorStr=#e7e7e7); /*IE 6 7 8*/
+            background: -ms-linear-gradient(top, #f8f8f8,  #e7e7e7);        /* IE 10 */
+            background:-moz-linear-gradient(top,#f8f8f8,#e7e7e7);/*火狐*/
+            background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#f8f8f8), to(#e7e7e7));/*谷歌*//* Safari 4-5, Chrome 1-9*/
+            background: -webkit-linear-gradient(top, #f8f8f8, #e7e7e7);   /*Safari5.1 Chrome 10+*/
+            background: -o-linear-gradient(top, #f8f8f8, #e7e7e7);  /*Opera 11.10+*/
+            color: #333333;
+            line-height: 27px;
+            cursor: pointer;
+        }
+        .tabs li:first-child{
+            border-left:none;
+        }
+        .tabs li:last-child{
+            border-right:none;
+        }
+        .tabs li.active{
+            border-top: 1px solid #ffffff;
+            border-bottom: none;
+            filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#5bb9bb,endColorStr=#89dadd); /*IE 6 7 8*/
+            background: -ms-linear-gradient(top, #5bb9bb,  #89dadd);        /* IE 10 */
+            background:-moz-linear-gradient(top,#5bb9bb,#89dadd);/*火狐*/
+            background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#5bb9bb), to(#89dadd));/*谷歌*//* Safari 4-5, Chrome 1-9*/
+            background: -webkit-linear-gradient(top, #5bb9bb, #89dadd);   /*Safari5.1 Chrome 10+*/
+            background: -o-linear-gradient(top, #5bb9bb, #89dadd);  /*Opera 11.10+*/
+        }
+        .clearfix{zoom: 1;}
+        .clearfix:after{
+            content: '';
+            display: block;
+            clear: both;
+            height: 0;
+            visibility: hidden;
+            overflow: hidden;
+        }
+
+        /*d3 slider*/
+
+        .d3-slider {
+            position: relative;
+            font-family: Verdana,Arial,sans-serif;
+            font-size: 1.1em;
+            border: 1px solid #aaaaaa;
+            z-index: 2;
+        }
+
+        .d3-slider-horizontal {
+            height: .8em;
+        }
+
+        .d3-slider-range {
+            background:#2980b9;
+            left:0px;
+            right:0px;
+            height: 0.8em;
+            position: absolute;
+        }
+
+        .d3-slider-range-vertical {
+            background:#2980b9;
+            left:0px;
+            right:0px;
+            position: absolute;
+            top:0;
+        }
+
+        .d3-slider-vertical {
+            width: .8em;
+            height: 100px;
+        }
+
+        .d3-slider-handle {
+            position: absolute;
+            width: 1.2em;
+            height: 1.2em;
+            border: 1px solid #d3d3d3;
+            border-radius: 4px;
+            background: #eee;
+            background: linear-gradient(to bottom, #eee 0%, #ddd 100%);
+            z-index: 3;
+            cursor: pointer;
+        }
+
+        .d3-slider-handle:hover {
+            border: 1px solid #999999;
+        }
+
+        .d3-slider-horizontal .d3-slider-handle {
+            top: -.3em;
+            margin-left: -.6em;
+        }
+
+        .d3-slider-axis {
+            position: relative;
+            z-index: 1;
+        }
+
+        .d3-slider-axis-bottom {
+            top: .8em;
+        }
+
+        .d3-slider-axis-right {
+            left: .8em;
+        }
+
+        .d3-slider-axis path {
+            stroke-width: 0;
+            fill: none;
+        }
+
+        .d3-slider-axis line {
+            fill: none;
+            stroke: #aaa;
+            shape-rendering: crispEdges;
+        }
+
+        .d3-slider-axis text {
+            font-size: 11px;
+        }
+
+        .d3-slider-vertical .d3-slider-handle {
+            left: -.25em;
+            margin-left: 0;
+            margin-bottom: -.6em;
+        }
+        /*freshness*/
+        a.feed_back_all {
+            position: absolute;
+        }
+
+        .axis path, .axis line {
+            fill: none;
+            stroke: #333;
+            shape-rendering: crispEdges;
+        }
+
+        .axis .grid-line {
+            stroke: #d1d1d1;
+        }
+
+        #control {
+            width: 100%;
+            height: 50px;
+            background: #F5F5F5;
+            border-bottom: 1px solid #E8E8E8;
+            float: left;
+            line-height: 50px;
+        }
+        #control h4{
+            line-height: 50px;
+            margin: 0;
+        }
+
+        .control-container {
+            width: 220px;
+            height: 50px;
+            float: left;
+            margin-left: 24px;
+        }
+
+        .control-container h4 {
+            float: left;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .filteritems {
+            float: right;
+            margin-top: 10px;
+        }
+
+        #color-container {
+            width: 90px;
+        }
+
+        .selected-color {
+            position: relative;
+        }
+
+        .single-color {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            float: left;
+            margin: 10px 0 10px 10px;
+        }
+
+        .palette {
+            width: 131px;
+            height: 51px;
+            background: #fff;
+            border: 1px solid #C6C6C6;
+            border-radius: 6px;
+            position: absolute;
+            top: 35px;
+            left: -10px;
+            cursor: default;
+        }
+
+        /* override d3.slide */
+        .d3-slider {
+            border: 0px;
+        }
+
+        .d3-slider-horizontal {
+            height: 17px;
+        }
+
+        .d3-slider-range {
+            height: 17px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .d3-slider-handle {
+            width: 10px;
+            height: 23px;
+        }
+
+        .d3-slider-horizontal .d3-slider-handle {
+            margin-left: -6px;
+        }
+        /*  .d3-slider-axis-bottom {
+            left: -23.1%;
+          }*/
+
+        #user-composition-container {
+            width: 475px;
+            position: relative;
+        }
+
+        #is-show-user-composition {
+            float: left;
+            margin-top: 19px;
+            margin-right: 5px;
+        }
+
+        #chart-slider {
+            width: 215px;
+            margin: -58px 0 0 120px;
+        }
+
+        #slider-overlay {
+            width: 235px;
+            height: 40px;
+            background: pink;
+            position: absolute;
+            height: 40px;
+            background: rgba(240, 240, 240, 0.48);
+            top: 5px;
+            left: 110px;
+            z-index: 99;
+        }
+
+        #user-composition-indictor {
+            width: 100%;
+            /*display: none;*/
+            position: absolute;
+            left: 345px;
+            top: 0;
+        }
+
+        .color-category1 {
+            background: -webkit-gradient(linear, left top, left bottom, from(#71DFDF), to(#2f62b7));
+            background: -webkit-linear-gradient(to bottom, #71DFDF, #2f62b7);
+            background: -o-linear-gradient(to bottom, #71DFDF, #2f62b7);
+            background: -moz-linear-gradient(to bottom, #71DFDF, #2f62b7);
+            background: linear-gradient(to bottom, #71DFDF, #2f62b7);
+        }
+
+        .color-category2 {
+            background: -webkit-gradient(linear, left top, left bottom, from(#93EA4F), to(#3B8DC9));
+            background: -webkit-linear-gradient(to bottom, #93EA4F, #3B8DC9);
+            background: -o-linear-gradient(to bottom, #93EA4F, #3B8DC9);
+            background: -moz-linear-gradient(to bottom, #93EA4F, #3B8DC9);
+            background: linear-gradient(to bottom, #93EA4F, #3B8DC9);
+        }
+
+        .color-category3 {
+            background: -webkit-gradient(linear, left top, left bottom, from(#77D2B4), to(#F98762));
+            background: -webkit-linear-gradient(to bottom, #77D2B4, #F98762);
+            background: -o-linear-gradient(to bottom, #77D2B4, #F98762);
+            background: -moz-linear-gradient(to bottom, #77D2B4, #F98762);
+            background: linear-gradient(to bottom, #77D2B4, #F98762);
+        }
+
+        .slider-color-category1 {
+            background: -webkit-gradient(linear, left top, left bottom, from(#71DFDF), to(#2f62b7));
+            background: -webkit-linear-gradient(to right, #71DFDF, #2f62b7);
+            background: -o-linear-gradient(to right, #71DFDF, #2f62b7);
+            background: -moz-linear-gradient(to right, #71DFDF, #2f62b7);
+            background: linear-gradient(to right, #71DFDF, #2f62b7);
+        }
+
+        .slider-color-category2 {
+            background: -webkit-gradient(linear, left top, left bottom, from(#93EA4F), to(#3B8DC9));
+            background: -webkit-linear-gradient(to right, #93EA4F, #3B8DC9);
+            background: -o-linear-gradient(to right, #93EA4F, #3B8DC9);
+            background: -moz-linear-gradient(to right, #93EA4F, #3B8DC9);
+            background: linear-gradient(to right, #93EA4F, #3B8DC9);
+        }
+
+        .slider-color-category3 {
+            background: -webkit-gradient(linear, left top, left bottom, from(#77D2B4), to(#F98762));
+            background: -webkit-linear-gradient(to right, #77D2B4, #F98762);
+            background: -o-linear-gradient(to right, #77D2B4, #F98762);
+            background: -moz-linear-gradient(to right, #77D2B4, #F98762);
+            background: linear-gradient(to right, #77D2B4, #F98762);
+        }
+
+        #viz {}
+
+        #error-info {
+            display: none;
+            text-align: center;
+            padding: 75px 0 25px;
+        }
+
+        .layer, .area {
+            clip-path: url(#clip);
+        }
+
+        .selected-layer {
+            opacity: 0.6;
+        }
+
+        .area {
+            fill: #2A5295;
+        }
+
+        .brush .extent {
+            stroke: #fff;
+            fill-opacity: .125;
+            shape-rendering: crispEdges;
+        }
+
+        .verticalLine {
+            pointer-events: none;
+        }
+
+        #tip {
+            position:absolute;
+            padding:10px 15px;
+            background: rgba(0, 0, 0, .8);
+            font-size:14px;
+            border-radius: 4px;
+            color: #fff;
+            /*display: none;*/
+            z-index: 999999;
+        }
+
+        #tip-left, #tip-top{
+            color:#333;
+        }
+
+        .arrow-box-right {
+            right: 0;
+        }
+
+        [v-cloak] { display: none }
+    </style>
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_echarts.html"-->
+    <div class="c-right">
+        <div class="wrap-table">
+            <div class="option">
+                <span class="icon export" v-on="click: exportBasicReport">导出</span>
+            </div>
+            <div id="control">
+                <div class="control-container">
+                    <h4>显示方式：</h4>
+                    <div id="showing-methods-tab" style="float: left;">
+                        <ul class="tabs" style="margin-left: 0; margin-top: 10px;">
+                            <li
+                                    v-repeat="tab : tabs"
+                                    v-class="active : $index == activeIndex"
+                                    v-text="tab.name"
+                                    v-on="click: onClickTab(tab, $index)">绝对值</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="control-container" id="color-container">
+                    <h4>配色：</h4>
+                    <div class="selected-color single-color {{ selectColorCate }}" v-on="click: togglePalette">
+                        <div class="palette" v-show="states.isShow" v-cloak>
+                            <div v-repeat="color : colors" v-on="click: onClickColor(color, $index, $event)" class="{{ 'single-color color-category' + color }}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-container" id="user-composition-container">
+                    <input type="checkbox" id="is-show-user-composition" v-model="states.isZoomIn">
+                    <label for="is-show-user-composition"><h4>用户成分分析：</h4></label>
+                    <div id="chart-slider" class="slider-color-category1"></div>
+                    <div id="slider-overlay" v-show="!states.isZoomIn"></div>
+                    <div id="user-composition-indictor" v-show="states.isZoomIn">
+                        <span class="js-start-day" v-text="startDay | dayFormat"></span>至<span class="js-end-day" v-text="endDay | dayFormat"></span>新增
+                    </div>
+                </div>
+            </div>
+
+            <div class="mod-body" style="position: relative;">
+                <p id="error-info">数据加载失败</p>
+
+                <div id="viz">
+
+                    <div id="tip" v-show="states.isShow" v-style="top: top + 'px', left: left + 'px'" v-cloak>
+                        <span v-text="date">-</span>
+                        <br>
+                        <br>
+                        <span v-text="select"></span>
+                        <br>
+                        <span v-text="data">-</span>
+                        <br>
+                        <span v-text="sumTitle"></span>
+                        <br>
+                        <span v-text="total"></span>
+                    </div>
+
+                </div>
+
+                <div class="wait-load"><img src="/img/loadding.gif" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript" src="/js/echarts/d3.js"></script>
+<script type="text/javascript" src="/js/echarts/d3.slider.js"></script>
+<script type="text/javascript" src="/js/vue.js"></script>
+<script type="text/javascript" src="/js/echarts/freshness/um.streamChart.js"></script>
+<script type="text/javascript" src="/js/echarts/freshness/freshness.js"></script>
+<!--http://mobile.umeng.com/apps/4100008dd65107258db11ef4/reports/freshness-->
+</body>
+</html>

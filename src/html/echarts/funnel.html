@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>漏斗模型</title>
+    <!--include "../modules/header_import.html"-->
+    <style type="text/css">
+        *{ box-sizing: border-box;}
+        hr{
+            border: 0;
+            border-top: 1px solid #eee;
+            height: 0;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        /*btn*/
+        .btn{height:40px; min-width:38px;display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.42857143;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:3px}
+        .btn.active.focus,.btn.active:focus,.btn.focus,.btn:active.focus,.btn:active:focus,.btn:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
+        .btn.focus,.btn:focus,.btn:hover{color:#333;text-decoration:none}
+        .btn.active,.btn:active{background-image:none;outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}
+        .btn.disabled,.btn[disabled],fieldset[disabled] .btn{pointer-events:none;cursor:not-allowed;filter:alpha(opacity=65);-webkit-box-shadow:none;box-shadow:none;opacity:.65}
+        /*echart*/
+        #funnel_chart_map{padding-top:22px;color: #777c7c;}
+        .g-chart{width:100%}
+        /*.btn-group-vertical>.btn-group:after, .btn-group-vertical>.btn-group:before, .btn-toolbar:after, .btn-toolbar:before, .clearfix:after, .clearfix:before, .container-fluid:after, .container-fluid:before, .container:after, .container:before, .dl-horizontal dd:after, .dl-horizontal dd:before, .form-horizontal .form-group:after, .form-horizontal .form-group:before, .modal-footer:after, .modal-footer:before, .nav:after, .nav:before, .navbar-collapse:after, .navbar-collapse:before, .navbar-header:after, .navbar-header:before, .navbar:after, .navbar:before, .pager:after, .pager:before, .panel-body:after, .panel-body:before, .row:after, .row:before{*/
+        /*display: table;*/
+        /*content: " ";*/
+        /*}*/
+        /*y轴*/
+        .g-chart-leftbar{float:left;border-right:1px solid #fff}
+        .g-chart-leftbar-tick-out{position:relative}
+        .g-chart-leftbar-tick{position:absolute;top:-10px;height:20px;line-height:20px;right:10px}
+        .g-chart-main,.g-chart-bar-out,.g-chart-bottom-left{float:left;position:relative;height:100%}
+        .g-chart-bar-in{cursor:pointer;position:absolute;bottom:0;width:50%;max-width:120px;left:50%;-webkit-transform:translate(-50%,0);-ms-transform:translate(-50%,0);transform:translate(-50%,0);background:#76abe9;border-radius:3px 3px 0 0;-webkit-transition:background .2s;transition:background .2s}
+        .g-chart-bar-out:hover .g-chart-bar-in,.g-chart-bar-out:hover+.g-chart-bar-out .g-chart-bar-in{background:#609de6}
+        .active-before .g-chart-bar-in,.active-after .g-chart-bar-in{background:#4a90e2;border:2px solid #2275d7}
+        .g-chart-bar-title{position:absolute;left:0;margin-bottom:4px;width:100%;height:15px;line-height:15px;text-align:center;font-weight:400;font-size:16px}
+        .g-chart-bar-out:hover .g-chart-bar-title,.g-chart-bar-out:hover+.g-chart-bar-out .g-chart-bar-title{color:#4c535a}
+        .active-before .g-chart-bar-title,.active-after .g-chart-bar-title{font-weight:700}
+        .g-chart-convert-out{position:absolute;right:0;top:50%;z-index:2}
+        .g-chart-convert-title{position: relative;left: 18px; font-size: 12px; text-align: center; padding-bottom: 2px;}
+        .active-before .g-chart-convert-title{ color: #000000; font-weight: bold;}
+        .g-chart-convert-in{cursor:pointer;left:18px;position:relative;text-align:center;width:50px;height:40px;color:#fff;padding:10px 0;border-radius:3px}
+        .g-chart-convert-in:before{content:"";display:block;width:28px;height:28px;position:absolute;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);border-radius:3px;right:-13px;top:6px;z-index:-1}
+        /*横线*/
+        .g-chart-main-seperate-line{color:#ccc;position:absolute;left:0;width:100%;padding:0;margin:0;z-index:-1}
+        /*主体*/
+        .convert-color-1{background:#e35c47;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-1:hover,.convert-color-1:hover:before{background:#d63921}
+        .active-before .convert-color-1,.active-before .convert-color-1:before{background:#d63921}
+        .convert-color-1:before{background:#e35c47;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-2{background:#e36a48;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-2:hover,.convert-color-2:hover:before{background:#d74921}
+        .active-before .convert-color-2,.active-before .convert-color-2:before{background:#d74921}
+        .convert-color-2:before{background:#e36a48;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-3{background:#e3924a;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-3:hover,.convert-color-3:hover:before{background:#d97821}
+        .active-before .convert-color-3,.active-before .convert-color-3:before{background:#d97821}
+        .convert-color-3:before{background:#e3924a;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-4{background:#e4b14c;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-4:hover,.convert-color-4:hover:before{background:#dc9d21}
+        .active-before .convert-color-4,.active-before .convert-color-4:before{background:#dc9d21}
+        .convert-color-4:before{background:#e4b14c;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-5{background:#e4c14d;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-5:hover,.convert-color-5:hover:before{background:#ddb121}
+        .active-before .convert-color-5,.active-before .convert-color-5:before{background:#ddb121}
+        .convert-color-5:before{background:#e4c14d;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-6{background:#d7cb53;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-6:hover,.convert-color-6:hover:before{background:#c8ba2f}
+        .active-before .convert-color-6,.active-before .convert-color-6:before{background:#c8ba2f}
+        .convert-color-6:before{background:#d7cb53;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-7{background:#c5c24c;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-7:hover,.convert-color-7:hover:before{background:#a8a536}
+        .active-before .convert-color-7,.active-before .convert-color-7:before{background:#a8a536}
+        .convert-color-7:before{background:#c5c24c;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-8{background:#77c34a;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-8:hover,.convert-color-8:hover:before{background:#5fa436}
+        .active-before .convert-color-8,.active-before .convert-color-8:before{background:#5fa436}
+        .convert-color-8:before{background:#77c34a;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-9{background:#a8c34b;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-9:hover,.convert-color-9:hover:before{background:#8ca437}
+        .active-before .convert-color-9,.active-before .convert-color-9:before{background:#8ca437}
+        .convert-color-9:before{background:#a8c34b;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-10{background:#48c362;-webkit-transition:background .2s;transition:background .2s}
+        .convert-color-10:hover,.convert-color-10:hover:before{background:#35a34c}
+        .active-before .convert-color-10,.active-before .convert-color-10:before{background:#35a34c}
+        .convert-color-10:before{background:#48c362;-webkit-transition:background .2s;transition:background .2s}
+        /*chart bottom*/
+        .g-chart-bottom-main{float:left}
+        .g-chart-bottombar{width:100%;height:70px;clear:both}
+        .g-chart-bottom-sec-out{float:left;position:relative;text-align:center}
+        .g-chart-bottom-name{display:inline-block}
+        .g-chart-bottom-left .g-chart-bottom-name{height:30px;margin-top:24px}
+        .g-chart-bottom-left.active-before .g-chart-bottom-name{background:#00b27a;color:#fff;border:0}
+        .g-chart-bottom-main .g-chart-bottom-name{line-height:1.2;margin-top:20px;background:0;color:#4a90e2;border-radius:0;border:0;max-width:calc(100% - 50px);padding:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .g-chart-bottom-main .g-chart-bottom-name:hover,.g-chart-bottom-main .g-chart-bottom-name:active,.g-chart-bottom-main .g-chart-bottom-name:focus{color:#2275d7;-webkit-box-shadow:none;box-shadow:none;border:0;outline:0}
+        .g-chart-bottom-main .active-before .g-chart-bottom-name,.g-chart-bottom-main .active-after .g-chart-bottom-name{border-bottom:2px solid #00b27a}
+        .g-chart-arrow-out{position:absolute;right:0;top:0;z-index:50}
+        .g-chart-arrow-in{cursor:pointer;left:25px;position:relative;text-align:center;width:50px;top:25px;height:35px;background:url(/img/echarts/arrow_normal.svg) no-repeat;-webkit-transition:background .2s;transition:background .2s}
+        .g-chart-arrow-in:hover{background:url(/img/echarts/arrow_hover.svg) no-repeat}
+        .active-before .g-chart-arrow-in{background:url(/img/echarts/arrow_selected.svg) no-repeat}
+        .retention-total{font-size:16px;font-weight:700}
+        #sensors-future-modal .modal-content{border-radius:none}
+        #sensors-future-modal .modal-header{border-bottom:0}
+
+        .chart-map{
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_echarts.html"-->
+    <div class="c-right">
+        <div class="chart-map clearfix" id="funnel_chart_map"></div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript">
+    //辅助工具
+    var tools = {
+        formatNumber: function(a, b) {
+            if (a === null) {
+                return "--"
+            }
+            if (!$.isNumeric(a)) {
+                return a + ""
+            }
+            a += "";
+            if (a === "0") {
+                return a
+            }
+            if (b !== true) {
+                return (a + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            }
+            if (a.indexOf(".") !== -1) {
+                return a
+            }
+            a = parseInt(a, 10);
+            var c = "";
+            if (a < 0) {
+                c = "负";
+                a = Math.abs(a)
+            }
+            if (a % 100000000 === 0) {
+                return c + (a / 100000000) + "亿"
+            } else {
+                if (a % 10000 === 0) {
+                    return c + (a / 10000) + "万"
+                } else {
+                    return c + a
+                }
+            }
+        }
+    };
+    //漏斗图表插件
+    (function() {
+        function a(k, l) {
+            var c = {};
+            c = $.extend({
+                height: 350,
+                leftBarWidth: 50
+            }, l);
+
+            function b(n) {
+                var o = n[0],
+                        m = n[n.length - 1];
+                return o < m ? [o, m] : [m, o]
+            }
+            function e(s, n) {
+                n = n || 10;
+                var p = b(s),
+                        o = p[1] - p[0],
+                        r = Math.pow(10, Math.floor(Math.log(o / n) / Math.LN10)),
+                        q = n / o * r;
+                if (q <= 0.15) {
+                    r *= 10
+                } else {
+                    if (q <= 0.35) {
+                        r *= 5
+                    } else {
+                        if (q <= 0.75) {
+                            r *= 2
+                        }
+                    }
+                }
+                p[0] = Math.ceil(p[0] / r) * r;
+                p[1] = Math.floor(p[1] / r) * r + r * 0.5;
+                p[2] = r;
+                return p
+            }
+            c.getScaleSeries = function(m) {
+                return m * c.height / (c.leftBarSeperate * c.scale[2])
+            };
+
+            function d(m) {
+                var n = null;
+                var o = String(m).match(/\.([^0]+)/);
+                if (o && o[1]) {
+                    o = o[1].length;
+                    m = m.toFixed(o)
+                }
+                if (String(parseInt(m)).length > 6) {
+                    n = (m / 10000).toFixed(1).toString();
+                    if (n.split(".")[1] !== "0") {
+                        return n + "w"
+                    } else {
+                        return n.split(".")[0] + "w"
+                    }
+                } else {
+                    if (String(parseInt(m)).length > 4) {
+                        n = (m / 1000).toFixed(1).toString();
+                        if (n.split(".")[1] !== "0") {
+                            return n + "k"
+                        } else {
+                            return n.split(".")[0] + "k"
+                        }
+                    } else {
+                        return m
+                    }
+                }
+            }
+            (function h() {
+                var m = c.series.slice(0).sort(function(o, n) {
+                    return n - o
+                })[0];
+                c.scale = e([0, m], 5);
+                c.leftBarSeperate = Math.ceil(c.scale[1] / c.scale[2]);
+                c.leftBarSeperateHeight = c.height / c.leftBarSeperate
+            })();
+
+            function j() {
+                i = "";
+                for (var m = c.leftBarSeperate; m > 0; m--) {
+                    i += ('<div class="g-chart-leftbar-tick-out" style="height:' + c.leftBarSeperateHeight + 'px;"><div class="g-chart-leftbar-tick">' + d(m * c.scale[2]) + "</div></div>")
+                }
+                return i
+            }
+            function g() {
+                var o = 100 / c.series.length + "%",
+                        m = null,
+                        p = "",
+                        n = 0;
+                for (n = 0; n <= c.leftBarSeperate; n++) {
+                    p += '<hr class="g-chart-main-seperate-line" style="top: ' + (n * c.leftBarSeperateHeight) + 'px"/>'
+                }
+                for (n = 0; n < c.series.length; n++) {
+                    m = c.getScaleSeries(c.series[n]);
+                    p += '<div class="g-chart-bar-out" style="width:' + o + '">';
+                    if (n < (c.series.length - 1)) {
+                        p += ('<div class="g-chart-convert-out"><div class="g-chart-convert-title">流失率</div><div class="g-chart-convert-in">' + c.convert[n] + "</div></div>")
+                    }
+                    p += ('<div class="g-chart-bar-title" style="bottom:' + m + 'px">' + tools.formatNumber(c.series[n]) + '<span style="font-size:13px;">人</span></div>');
+                    p += '<div class="g-chart-bar-in" style="height:' + m + 'px"></div></div>'
+                }
+                return p
+            }
+            function f() {
+                var n = 100 / c.series.length + "%",
+                        o = "";
+                o += ('<div class="g-chart-bottom-left" style="width:' + c.leftBarWidth + 'px"><div class="g-chart-leftbar-tick">0</div><button class="g-chart-bottom-name btn"></button></div>');
+                o += '<div class="g-chart-bottom-main" style="width:calc(100% - ' + c.leftBarWidth + 'px)">';
+                for (var m = 0; m < c.category.length; m++) {
+                    o += '<div class="g-chart-bottom-sec-out" style="width:' + n + '">';
+                    if (m < (c.category.length - 1)) {
+                        o += '<div class="g-chart-arrow-out"><div class="g-chart-arrow-in"></div></div>'
+                    }
+                    o += ('<button class="g-chart-bottom-name btn">' + c.category[m] + "</button></div>")
+                }
+                o += "</div>";
+                return o
+            }
+            var i = "";
+            i += ('<div class="g-chart g-chartbar clearfix" style="height:' + c.height + 'px">');
+            i += '<div class="g-chart-leftbar" style="width:' + c.leftBarWidth + 'px">';
+            i += j();
+            i += "</div>";
+            i += '<div class="g-chart-main" style="width:calc(100% - ' + c.leftBarWidth + 'px)">';
+            i += g();
+            i += "</div>";
+            i += '<div class="g-chart-bottombar">';
+            i += f();
+            i += "</div>";
+            i += "</div>";
+            k.html(i)
+        }
+        $.fn.gChartBar = function(b) {
+            a(this, b);
+            return this
+        }
+    })();
+
+    //画图表
+    function drawChart(){
+        $("#funnel_chart_map").empty();
+        $("#funnel_chart_map").gChartBar({
+            series: [303,267,231,221,190],
+            category: ['第一步：<br/>点击开始','第二步：<br/>点击注册','第三步：<br/>点确定或跳过密码','第四步：名片宣传页<br/>下一步点击','第五步：<br/>创建名片页'],
+            convert: ['88.12%','86.52%','95.67%','88.88%',0],
+            leftBarWidth: 50
+        });
+        var k = $("#funnel_chart_map .g-chart");
+        k.find(".g-chart-bottom-left").addClass("active-before").find(".g-chart-bottom-name").html("总览");
+        var o = k.find(".g-chart-bar-out").each(function(s) {
+            $(this).data("bar-pos", s)
+        });
+        var h = k.find(".g-chart-bottom-sec-out").each(function(s) {
+            $(this).data("bar-pos", s)
+        });
+        var m = k.find(".g-chart-bottom-left").add(o).add(h),
+                l = h.size() - 1,
+                i = k.find(".g-chart-convert-in");
+        i.each(function(u, s) {
+            var w = Number($(s).text().slice(0, -1)) / 10;
+            var v = 0;
+            if (w === 0) {
+                v = 1
+            } else {
+                v = Math.ceil(w)
+            }
+            $(s).addClass("convert-color-" + v)
+        });
+
+        function n() {
+            if (!$(this).hasClass("active-before")) {
+                var s = $(this).data("bar-pos");
+                m.removeClass("active-before");
+                m.removeClass("active-after");
+                if (s === l) {
+                    s = s - 1
+                }
+                o.eq(s).addClass("active-before");
+                o.eq(s + 1).addClass("active-after");
+                h.eq(s).addClass("active-before");
+                h.eq(s + 1).addClass("active-after");
+//            $("#fu_table_out").children().hide();
+//            $("#fu_table_out .table-detail").eq(s).show()
+            }
+        }
+        k.on("selectstart", function(s) {
+            s.preventDefault();
+            s.stopPropagation();
+            return false
+        });
+        k.on("click", ".g-chart-bottom-left", function() {
+            if (!$(this).hasClass("active-before")) {
+                m.removeClass("active-before");
+                m.removeClass("active-after");
+                $(this).addClass("active-before");
+                $("#fu_table_out").children().hide();
+                $("#fu_state_table_out").show()
+            }
+        }).on("click", ".g-chart-bar-in", function() {
+            n.call($(this).closest(".g-chart-bar-out"))
+        }).on("click", ".g-chart-bottom-main .g-chart-bottom-name", function() {
+            n.call($(this).closest(".g-chart-bottom-sec-out"))
+        }).on("click", ".g-chart-arrow-in", function() {
+            n.call($(this).closest(".g-chart-bottom-sec-out"))
+        }).on("click", ".g-chart-convert-in", function() {
+            n.call($(this).closest(".g-chart-bar-out"))
+        })
+    }
+    drawChart();
+</script>
+<!--http://data.systoon.com/funnel/?project=production#funnel_id=2&from_date=2017-02-06&to_date=2017-02-10&sampling_factor=64-->
+</body>
+</html>
