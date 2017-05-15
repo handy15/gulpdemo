@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>根据json结构创建table</title>
+    <!--include "../modules/header_import.html"-->
+    <style type="text/css">
+        *{ padding: 0; margin: 0;}
+        body{ font-size: 16px; font-family: 'microsoft Yahei',"Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.2;}
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color:#777777;
+        }
+        :-moz-placeholder{ /* Mozilla Firefox 4 to 18 */
+            color:#777777;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color:#777777;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color:#777777;
+        }
+        .showDiv{ width: 99%; /*min-width: 1000px;*/ margin: 15px auto;overflow: hidden; overflow-x: auto;}
+        .showDiv h2{ padding-bottom: 20px; text-align: center;}
+        /*search*/
+        .search{ padding: 10px 0 10px 15px; background:#f2f2f2; border-radius: 6px;}
+        input{
+            line-height: 1.2;
+            font-family: 'microsoft Yahei';
+            font-size: 16px;
+        }
+        .ipt-text{
+            width: 300px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            padding: 6px 12px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+            transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+            color: #555;
+            vertical-align: middle;
+        }
+        .ipt-text:focus{
+            border-color: #66afe9;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+            outline: 0 none;
+        }
+        .btn{
+            background-color: #428bca;
+            border: 1px solid #357ebd;
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: #ffffff;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        .btn:hover{
+            background-color: #3071a9;
+            border-color: #285e8e;
+        }
+        .tips{ padding-left: 8px; color: #ff0000; font-size: 14px;}
+        /*table*/
+        .myTable{
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e1e1e1;
+            font-size: 14px;
+        }
+        .myTable td,.myTable th{
+            border: 1px solid #e1e1e1;
+            padding: 10px 5px;
+            text-align: center;
+        }
+        .myTable thead th{
+            background: #f2f2f2;
+            background-image: -webkit-gradient(linear, left 0, left 100%, from(#f8f8f8),to(#ececec) );
+            background-image: -webkit-linear-gradient(top, #f8f8f8, 0%,#ececec, 100%);
+            background-image: -moz-linear-gradient(top, #f8f8f8 0, #ececec 100%);
+            background-image: linear-gradient(to bottom, #f8f8f8 0, #ececec 100%);
+            background-repeat: repeat-x;
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr = '#fff8f8f8', endColorstr = '#ffececec',GradientType = 0);
+            padding: 10px;
+            color: #777777;
+        }
+        .myTable tbody th{
+            background-color: #f6fcff;
+            font-weight: normal;
+        }
+        .myTable td{
+            text-align: left;
+            transition: background-color 0.15s ease-in-out 0s, color 0.15s ease-in-out 0s;
+        }
+        .myTable tr:hover td{ background-color: #eff4f7;}
+        .myTable tr.active td{ background-color: #ffab00; color: #ffffff;}
+    </style>
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_javascript.html"-->
+    <div class="c-right">
+        <div class="showDiv">
+            <h2>埋点实时展示</h2>
+            <div class="search">
+                <label for="msg">查询条件：</label><input class="ipt-text" type="text" id ="msg" placeholder="可以是设备号也可以是用户ID" />
+                <input class="btn" type="button" onclick="settingDN()" value="设置查询条件" />
+                <span class="tips" id="tips"></span>
+            </div>
+            <div style="margin-top: 20px;"></div>
+            <table class="myTable">
+                <thead>
+                <tr>
+                    <th>key</th>
+                    <th>value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>_id</th>
+                    <td>58c9e56ebfa92b970901ec24</td>
+                </tr>
+                <tr>
+                    <th>path</th>
+                    <td>/user/obtainFeed</td>
+                </tr>
+                <tr>
+                    <th>info</th>
+                    <td>
+                        <p style="padding-bottom: 10px;">get</p>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>get.key</th>
+                                <th>get.value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>tags</th>
+                                <td>["User Category"]</td>
+                            </tr>
+                            <tr>
+                                <th>summary</th>
+                                <td>获取名片feed数据接口</td>
+                            </tr>
+                            <tr>
+                                <th>description</th>
+                                <td>返回名片的feed数据.</br>Method: GET</br>Error Code: </br><font color=\"red\">106016</font>: 操作失败</br><font color=\"red\">106017</font>: 参数错误</br><font color=\"red\">106018</font>: 服务异常</br><font color=\"red\">106019</font>: Feed数据为空</br></td>
+                            </tr>
+                            <tr>
+                                <th>operationId</th>
+                                <td>obtainFeedUsingGET</td>
+                            </tr>
+                            <tr>
+                                <th>consumes</th>
+                                <td>["application/json"]</td>
+                            </tr>
+                            <tr>
+                                <th>parameters</th>
+                                <td>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>parameters.name</th>
+                                            <th>parameters.in</th>
+                                            <th>parameters.description</th>
+                                            <th>parameters.required</th>
+                                            <th>parameters.type</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>X-Toon-User-ID"</td>
+                                            <td>header</td>
+                                            <td>User ID</td>
+                                            <td>true</td>
+                                            <td>string</td>
+                                        </tr>
+                                        <tr>
+                                            <td>X-Toon-User-ID"</td>
+                                            <td>header</td>
+                                            <td>User ID</td>
+                                            <td>true</td>
+                                            <td>string</td>
+                                        </tr>
+                                        <tr>
+                                            <td>X-Toon-User-ID"</td>
+                                            <td>header</td>
+                                            <td>User ID</td>
+                                            <td>true</td>
+                                            <td>string</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>responses</th>
+                                <td>获取名片feed数据接口</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div style="overflow: auto;margin-top: 15px;">
+                <table id="table" class="myTable">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript">
+    document.getElementById("table").parentNode.style.maxHeight = window.innerHeight - 150;
+    var ws;
+    function connection(){
+        ws = new WebSocket("ws://localhost:8080/dataInterOper/buriedPoint");
+        ws.onopen = function(evn){
+            console.log(evn);
+        };
+        ws.onmessage = function(evn){
+            console.log(evn.data);
+            var table = document.getElementById("table");
+            var tips = document.getElementById("tips");
+            var thisData = evn.data;
+            var table_rows = 1;
+            var timmer = setInterval(function(){
+//            thisData = '{"ui":"335795","dv":"' + Math.ceil(Math.random()*100) +'","tt":"100","fi":"","receiveTime":"2016-12-14 11:42:16.0703","ci":"","sf":"6382C3D3-DCBA-44F6-BF92-AA47513034D3","ft":"4","dn":"DBCF66C3-5EAF-43AE-9007-29BFEB1128D9","oi":"2c9c9c6f58fb51980158fb6c6c7f04aa","bc":"19","bd":"\"{\"details\":\"自动登陆拉取feed完成\",\"startStatus\":\"1\",\"startId\":\"2016\\/12\\/14 11:42:15 03\",\"moduleId\":\"19\",\"type\":\"0\",\"telephone\":\"\",\"conTime\":\"2016\\/12\\/14 11:42:16 715\"}\"","ip":"106.39.33.246","my":{"a":{"b":{"c":"666sdfsda","d":"test"}},"z":"fs"}}';
+                thisData = '{"ui":"335795","dv":"' + Math.ceil(Math.random()*100) +'","tt":"100","fi":"","receiveTime":"2016-12-14 11:42:16.0703","ci":"","sf":"6382C3D3-DCBA-44F6-BF92-AA47513034D3","ft":"4","dn":"DBCF66C3-5EAF-43AE-9007-29BFEB1128D9","oi":"2c9c9c6f58fb51980158fb6c6c7f04aa","bc":"19","bd":"\"{\"details\":\"自动登陆拉取feed完成\",\"startStatus\":\"1\",\"startId\":\"2016\\/12\\/14 11:42:15 03\",\"moduleId\":\"19\",\"type\":\"0\",\"telephone\":\"\",\"conTime\":\"2016\\/12\\/14 11:42:16 715\"}\"","ip":"106.39.33.246"}';
+//            thisData = '{"a":{"b":{"c":5},"c":9},"d":"abcdef"}';
+                if(table_rows<6){
+                    try{
+//                    var obj=JSON.parse(thisData.replace('""{','{').replace('}""','}'));
+                        var obj={
+                                    "_id": "58c9e56ebfa92b970901ec24",
+                                    "path": "/user/obtainFeed",
+                                    "info": {
+                                        "get": {
+                                            "tags": ["User Category"],
+                                            "summary": "获取名片feed数据接口",
+                                            "description": "返回名片的feed数据.</br>Method: GET</br>Error Code: </br><font color=\"red\">106016</font>: 操作失败</br><font color=\"red\">106017</font>: 参数错误</br><font color=\"red\">106018</font>: 服务异常</br><font color=\"red\">106019</font>: Feed数据为空</br>",
+                                            "operationId": "obtainFeedUsingGET",
+                                            "consumes": ["application/json"],
+//                                        "produces": ["application/json"],
+                                            "parameters": [
+                                                {
+                                                    "name": "X-Toon-User-ID",
+                                                    "in": "header",
+                                                    "description": "User ID",
+                                                    "required": true,
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "X-Toon-User-Token",
+                                                    "in": "header",
+                                                    "description": "User Token",
+                                                    "required": true,
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "X-Toon-User-Agent",
+                                                    "in": "header",
+                                                    "description": "User Agent",
+                                                    "required": true,
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "feedId",
+                                                    "in": "query",
+                                                    "required": false,
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "feedIds",
+                                                    "in": "query",
+                                                    "required": false,
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "collectionFormat": "multi"
+                                                }
+                                            ],
+                                            "responses": {
+                                                "200": {
+                                                    "description": "OK"
+                                                },
+                                                "1001": {
+                                                    "description": "User error 1001"
+                                                },
+                                                "2001": {
+                                                    "description": "User error 2001"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ;
+                        var keys = getKeys(obj);
+                        console.log(keys);
+                        //获取obj的层深，决定行数
+                        var thead = table.getElementsByTagName('thead')[0];
+                        var tbody = table.getElementsByTagName('tbody')[0];
+                        //初始化table的表头
+                        if(!thead.hasChildNodes()){
+                            //计算表头的行数
+                            var theadRowNum = 0;
+                            var reg = /\[[^\[\]]*\]/g;
+                            for(var i= 0,len=keys.length;i<len;i++){
+                                theadRowNum = Math.max(theadRowNum,keys[i].match(reg).length);
+                            }
+                            var fragmentTrs = document.createDocumentFragment('');
+                            for(var j= 1;j<=theadRowNum;j++){
+                                //储存colspan不为1的title
+                                var colspanTxt = [];
+                                var fragment = document.createDocumentFragment('');
+                                for(var i= 0,len=keys.length;i<len;i++){
+                                    var texts = keys[i].match(reg);
+                                    if(j <= texts.length){
+                                        var th = document.createElement('th');
+                                        th.innerHTML = texts[j-1].replace('["','').replace('"]','');
+                                        if(j == texts.length){
+                                            th.rowSpan = (theadRowNum-j+1);
+                                            fragment.appendChild(th);
+                                        }else{
+                                            var thisTxt = texts[j-1];
+                                            console.log(colspanTxt.indexOf(thisTxt));
+                                            if(-1 == colspanTxt.indexOf(thisTxt)){
+                                                colspanTxt.push(thisTxt);
+                                                //计算colspan的值
+                                                var thisColspanNum = 0;
+                                                var reg01 = new RegExp(thisTxt.replace('[','\\[').replace(']','\\]'),'g');
+                                                for(var k = i;k<len;k++){
+                                                    if(keys[k].match(reg01)){
+                                                        thisColspanNum++;
+                                                    }
+                                                }
+                                                th.colSpan=thisColspanNum;
+                                                fragment.appendChild(th);
+                                            }
+                                        }
+                                    }
+                                }
+                                var tr = document.createElement('tr');
+                                tr.appendChild(fragment);
+                                fragmentTrs.appendChild(tr);
+                            }
+                            thead.appendChild(fragmentTrs);
+                        }
+                        //追加body的数据
+                        var fragmentBody = document.createDocumentFragment('');
+                        for(var i= 0,len=keys.length;i<len;i++){
+                            var td = document.createElement('td');
+                            td.innerHTML = eval('obj' + keys[i]);
+                            fragmentBody.appendChild(td);
+                        }
+                        var tr = document.createElement('tr');
+                        tr.className = 'active';
+                        tr.appendChild(fragmentBody);
+                        tbody.insertBefore(tr,tbody.firstChild);
+                        //定时清楚高亮
+                        setTimeout(function(){
+                            tr.className = tr.className.replace('active');
+                        },1000);
+                    }catch(e){
+                        //error in the above string parse to JSON(in this case,yes)!
+                        console.log(e);
+                        tips.innerHTML=thisData;
+                    }
+                }else{
+                    clearInterval(timmer);
+                }
+                table_rows++;
+            },1500);
+        };
+        ws.onclose = function(){
+            console.log("关闭");
+        };
+
+    };
+    function settingDN(){
+        var msg = document.getElementById("msg").value;
+        ws.send(msg);
+        document.getElementById("msg").value = "";
+    }
+    //遍历key值确保按顺序输出
+    function getKeys(obj,objectName){
+        var self = arguments.callee;
+        var keys = [];
+        for(var p in obj){
+            if(typeof obj[p] == 'object'){
+                var parent = objectName ? objectName + '["' + p + '"]' : '["' + p + '"]';
+                keys = keys.concat(self(obj[p],parent));
+            }else{
+                keys.push(objectName ? objectName + '["' + p + '"]' : '["' + p + '"]');
+            }
+        }
+        return keys;
+    }
+    //console.log(getKeys({"a":{"b":{"c":5},"c":9},"d":"abcdef"}));
+    //判断array中是否存在某个字符串
+    Array.prototype.indexOf = function(val){
+        for(var i= 0,len=this.length;i<len;i++){
+            if(val === this[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+    connection();
+</script>
+</body>
+</html>
