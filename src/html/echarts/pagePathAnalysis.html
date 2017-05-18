@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面跳出率分析</title>
+    <!--include "../modules/header_import.html"-->
+    <style type="text/css">
+        svg rect,svg text,svg tspan{ cursor: pointer;}
+        #chartDiv{ padding-top: 10px; padding-left: 10px;padding-right: 10px;}
+        .page{ margin-bottom: 30px; display:flex; display:-ms-flex; display:-webkit-flex;}
+        .page span{display: inline-block; font-size: 13px;
+            line-height: 30px; text-align: center; border:1px solid #d8d6d6; background-color: #f6f6f6;flex:1;
+            -ms-flex:1;
+            -webkit-flex:1;
+            -webkit-box-flex:1;
+            position: relative;}
+        .pathvalue{
+            position: absolute;
+            /*height: 20px;*/
+            padding: 5px 10px;;
+            background-color: #ffffff;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 4px;
+            border: 1px solid #dddddd;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            transition: display 5s ease-in-out 0s;
+            color:#000000;
+        }
+        .no-data{
+            text-align: center;
+            color: #ff0000;
+            font-size: 16px;;
+        }
+    </style>
+</head>
+<body>
+<!--include "../modules/header_webDesign.html"-->
+<div class="container01">
+    <!--include "../modules/left_echarts.html"-->
+    <div class="c-right">
+        起始页面：<select name="startPage" id="startPage">
+            <option value="0" selected="selected">服务</option>
+            <option value="1">旅游</option>
+            <option value="2">活动</option>
+            <option value="3">活动详情</option>
+        </select>
+        <div id="chartDiv" style="height:auto;position:relative; min-height: 300px; min-width:1000px;">
+            <div class="page"><span>第一页</span><span>第二页</span><span>第三页</span><span>第四页</span><span>第五页</span></div>
+        </div>
+    </div>
+</div>
+<!--include "../modules/footer.html"-->
+<!--include "../modules/scripts.html"-->
+<script type="text/javascript" src="/js/echarts/d3.js"></script>
+<script  type="text/javascript">
+    var json = ['service','travel','activity','detail'];
+    $(function(){
+        getChartData();
+        $('body').click(function(){
+            window.lastClickNode = -1;
+            $('path').attr({
+                stroke: "#d0cece",  /*描边色*/
+                "stroke-opacity": 0.4 /*描边透明度*/
+            });
+        });
+    });
+    //添加一个提示框
+    var tooltip=d3.select("body")
+            .append("div")
+            .attr("class","pathvalue")
+//                .style("opacity",0.0);
+            .style("display","none");
+    //桑基图node的最小高度
+    var nodeMinHeight = 45;
+    //每页中的项目个数初始化为1
+    var inputNum = 0;
+    //初始化页数列
+    var pageColums = 5;
+    function getChartData(){
+        //桑基图数据
+        var data = {
+            'nodes':[],
+            'links': []
+        };
+        //2个ajax请求是否成功的标志
+        var flag = 0;
+        var fileName = json[$('#startPage').val()];
+        //获取桑基图的nodes数据
+        $.ajax({
+            type : "get",
+            url :"/js/echarts/pagePathAnalysis/" + fileName +".node.js",
+            data : {},
+            dataType:'json',
+            success : function(rjson) {
+                data.nodes = rjson.data;
+                //获取每页中，项目数最大的数值
+                var nowPageIndex = 1;
+                var nowPageCount = 0;
+                inputNum = 0;
+                for(var i= 0,len=rjson.data.length;i<len;i++){
+                    var pageVisitNum = rjson.data[i].page_visit_num;
+                    if(nowPageIndex == pageVisitNum){
+                        nowPageCount++;
+                    }else{
+                        nowPageIndex = pageVisitNum;
+                        nowPageCount = 1;
+                    }
+                    if(i == 0){
+                        inputNum = rjson.data[i].value;
+                    }
+                }
+                //如果数据不足页，桑基图的宽度需要按比例计算
+                pageColums = nowPageIndex;
+                flag++;
+                if(flag==2){
+                    renderSankey(data);
+                }
+            }
+        });
+        //获取桑基图的paths数据
+        $.ajax({
+            type : "get",
+            url :"/js/echarts/pagePathAnalysis/" + fileName +".path.js",
+            data : {},
+            dataType:'json',
+            success : function(rjson) {
+                data.links = rjson.data;
+                flag++;
+                if(flag==2){
+                    renderSankey(data);
+                }
+            }
+        });
+    }
+    //生成桑基图
+    function renderSankey(data){
+        var o = document.getElementById("chartDiv");
+        //暂无数据处理
+        var $noData = $('#noData');
+        if(data.nodes.length == 0){
+            if($noData.length == 0){
+                $(o).append('<div class="no-data" id="noData">暂无数据！</div>');
+            }
+        }else{
+            $noData.remove();
+        }
+        var w = o.offsetWidth; //宽度
+        var min=w*0.05;
+        var newW=(w-min)*pageColums/5;
+
+        //设置同一个节点名称，rect的颜色相同，titles数组存储title的名称，用下标index取值
+        var titles = [];
+        for(var i= 0,len=data.nodes.length;i<len;i++){
+            if(-1 == $.inArray(data.nodes[i].title,titles)){
+                titles.push(data.nodes[i].title);
+            }
+        }
+
+        // 定义桑基布局
+        var sankey = d3.sankey()
+                .nodeWidth(140)
+                .nodePadding(12)
+//                .size([newW, inputNum*5])
+                .size([newW, Math.max(750,inputNum/1.5)])
+                .nodes(data.nodes)
+                .links(data.links)
+                .layout(0);
+        // 路径数据生成器
+        var path = sankey.link();
+        d3.select("svg").remove();
+        //创建一个SVG容器
+        var svg = d3.select("#chartDiv").append("svg")
+                .attr("width",newW)
+//                .attr("height",inputNum*5).attr("style","padding:10px 0");
+                .attr("height",Math.max(750,inputNum/1.5)).attr("style","padding:10px 0");
+        // 绘制连接数据
+        var links = svg.append("g").selectAll("path")
+                .data(data.links)
+                .enter()
+
+        // 绑定节点数据
+        var nodes = svg.append("g").selectAll(".node")
+                .data(data.nodes)
+                .enter();
+
+
+        // 绘制连接线
+//        var color = d3.scale.category10();
+
+        var paths = links.append("path")
+                .attr({
+                    fill: "none",   //填充色
+                    stroke: "#d0cece",  //描边色
+                    "stroke-opacity": 0.5,  //描边透明度
+                    d: path,  //路径数据
+                    id: function(d,i){ return 'link' +i },  //ID
+                    "class" : function(d,i){return "s" + d.source.i + ' t' + d.target.i;}
+                })
+                .style("stroke-width", function (d) {  //连线的宽度
+//                    return d.path_num==0?0:Math.max(d.path_num,15);
+                    return d.path_num==0?0:d.dy;
+//                    return d.dy;
+                }).style("display",function(d){
+                    return d.path_num==0?"none":"block";
+                });
+
+        paths.on('mouseover',function(d,i){
+            /*
+             鼠标移入时，
+             （1）通过 selection.html() 来更改提示框的文字
+             （2）通过更改样式 left 和 top 来设定提示框的位置
+             （3）设定提示框的透明度为1.0（完全不透明）
+             */
+            var $path = $('.s'+ d.source.i+'.t'+ d.target.i);
+            if(0 != d.path_num && 0.1 != $path.attr('stroke-opacity')){
+                tooltip.html('从“'+d.source_title+"”<br/>到“"+ d.target_title+"”<br />会话数："+d.path_num)
+                        .style({
+                            "left":(d3.event.pageX + 10) + "px",
+                            "top": (d3.event.pageY - 60) + "px",
+                            "display":"block"
+                        });
+                $path.attr({
+                    "stroke-opacity": 0.8
+                });
+//                        .style("opacity",1.0);
+                //tooltip.style("box-shadow","10px 0px 0px"+color(i));//在提示框后添加阴影
+            }
+        }).on("mousemove",function(d){
+            /* 鼠标移动时，更改样式 left 和 top 来改变提示框的位置 */
+            var $path = $('.s'+ d.source.i+'.t'+ d.target.i);
+            if(0.1 != $path.attr('stroke-opacity')){
+                tooltip.style({
+                    "left":(d3.event.pageX + 10) + "px",
+                    "top": (d3.event.pageY - 60) + "px"
+                });
+            }
+        }).on("mouseout",function(d){
+            //鼠标移除 透明度设为0
+//            tooltip.style("opacity",0.0);
+            var $path = $('.s'+ d.source.i+'.t'+ d.target.i);
+            if(0.1 != $path.attr('stroke-opacity')) {
+                tooltip.style("display", "none");
+                $path.attr({
+                    "stroke-opacity": 0.5
+                });
+            }
+        });
+
+//        var maxvalue = 500;
+//        var minvalue = 0;
+//
+//        //定义一个线性比例尺，将最小值和最大值之间的值映射到[0, 1]
+//        var linear = d3.scale.linear()
+//                .domain([minvalue, maxvalue])
+//                .range([0, 1]);
+
+        //定义最小值和最大值对应的颜色
+//        var a = d3.rgb(26,134,122);  //蓝色
+//        var b = d3.rgb(152,233,194);    //浅蓝色
+        var a = d3.rgb('#2f9ca1');
+        var b = d3.rgb('#dde76e');
+
+        //颜色插值函数
+        var computeColor = d3.interpolate(a,b);
+        var rects = nodes.append("rect")
+                .attr({
+                    x: function (d) {return d.x? d.x:0; },
+                    y: function (d) {return d.y? d.y:0; },
+                    height: function (d) {return d.dy? d.dy:0; },
+//                    height: function (d) {return d.dy; },
+                    width: sankey.nodeWidth(),
+//                        fill: function(d,i){ return computeColor(d.value); }
+                    fill: function(d,i){
+                        return computeColor($.inArray(d.title,titles)/Math.max(1,(titles.length-1)));
+                    }
+                });
+
+
+        // 绘制节点文本
+        var text= nodes.append("text")
+                .attr({
+                    x: function (d) { return d.x?d.x+5:5; },
+                    y: function (d) {return tspanY(d,0); }
+                })
+                .attr("font-size",12);
+        text.append("tspan")
+                .attr({
+                    x: function (d) { return d.x?d.x+5:5; },
+                    y: function (d) {return tspanY(d,-15);},
+//                    fill:d3.rgb(107,89,14),
+                    fill:d3.rgb(73,59,3),
+                    style:"font-size:14px;font-weight:bold"
+                })
+                .text(function(d){
+                    return d.title
+                });
+        text.append("tspan")
+                .attr({
+                    x: function (d) { return d.x?d.x+5:5; },
+                    y: function (d) {return tspanY(d,0); },
+                    style:function(d){return (d.dy? d.dy:0)<nodeMinHeight ? 'display:none;' : ''}
+                })
+                .text(function(d){
+                    return "session会话数："+ d.visit_num
+                });
+        text .append("tspan")
+                .attr({
+                    x: function (d) { return d.x?d.x+5:5; },
+                    y: function (d) {return tspanY(d,15); },
+                    style:function(d){return (d.dy? d.dy:0)<nodeMinHeight ? 'display:none;' : ''}
+                })
+                .text(function(d){
+                    return "跳出率："+ d.leave_rate;
+//                    return "跳出率："+ d.value
+                });
+//        text .append("tspan")
+//                .attr({
+//                    x: function (d) { return d.x+5; },
+//                    y: function (d) {return tspanY(d,3,35); }
+//                })
+//                .attr('startOffset','50%')
+//                .text(function(d){
+//                    return "其他（"+ d.page_visit_num+"）";
+//                });
+        //nodes交互事件
+        rects.on('mouseover',function(d,i){
+            nodeMouseOver(d,i);
+        }).on("mousemove",function(d){
+            nodeMouseMove(d);
+        }).on("mouseout",function(d){
+            nodeMouseOut(d);
+        }).on("click",function(d){
+            nodeClick(d);
+        });
+
+        text.on('mouseover',function(d,i){
+            nodeMouseOver(d,i);
+        }).on("mousemove",function(d){
+            nodeMouseMove(d);
+        }).on("mouseout",function(d){
+            nodeMouseOut(d);
+        }).on("click",function(d){
+            nodeClick(d);
+        });
+    }
+    /**
+     * 计算tspan的y轴位置
+     * @param d object 桑基图的node对象
+     * @param offsetY number y方向上调整位置
+     */
+    function tspanY(d,offsetY){
+        var dy = d.dy? d.dy:0;
+        var y = d.y? d.y:0;
+        var returnNum = 0;
+        if(dy<nodeMinHeight){
+            returnNum = y+(dy+10)/2;
+        }else{
+            if(dy>=600){
+                returnNum = 300+offsetY;
+            }else{
+                returnNum = y+(dy+10)/2+offsetY;
+            }
+        }
+        return returnNum;
+    }
+    //nodes的事件
+    function nodeMouseOver(d,i){
+        /*
+         鼠标移入时，
+         （1）通过 selection.html() 来更改提示框的文字
+         （2）通过更改样式 left 和 top 来设定提示框的位置
+         （3）设定提示框的透明度为1.0（完全不透明）
+         */
+        if(d.dy<nodeMinHeight) {
+            tooltip.html("<span style='color:#493b03;font-weight: bold;'>" + d.title+"</span><br/>session会话数："+ d.visit_num+"<br />跳出率："+d.leave_rate)
+                    .style({
+                        "left":(d3.event.pageX + 10) + "px",
+                        "top": (d3.event.pageY - 60) + "px",
+                        "display":"block"
+                    });
+        }
+    }
+    function nodeMouseMove(d){
+        /* 鼠标移动时，更改样式 left 和 top 来改变提示框的位置 */
+        if(d.dy<nodeMinHeight) {
+            tooltip.style({
+                "left":(d3.event.pageX + 10) + "px",
+                "top": (d3.event.pageY - 60) + "px"
+            });
+        }
+    }
+    function nodeMouseOut(d){
+        //鼠标移除 隐藏div
+        if(d.dy<nodeMinHeight) {
+            tooltip.style("display", "none");
+        }
+    }
+    function nodeClick(d){
+        if(this.lastClickNode != d.i){
+            this.lastClickNode = d.i;
+            event.stopPropagation();
+            $('path').attr({
+                stroke: "#d0cece",
+                "stroke-opacity": 0.1
+            });
+            setPathHighlight(d);
+        }
+    }
+    //递归设置path高亮
+    function setPathHighlight(d){
+        var self = arguments.callee;
+        $('path.s' + d.i).attr({
+            stroke:"#5a5cb1",
+            "stroke-opacity": 0.5
+        });
+        for(var i= 0,len= d.sourceLinks.length;i<len;i++){
+            if(0 != d.sourceLinks[i].path_num){
+                self(d.sourceLinks[i].target);
+            }
+        }
+    }
+
+//    更改起始页面
+    $('#startPage').change(function(){
+        getChartData();
+    });
+
+    //对原sankey进行修改
+    d3.sankey = function() {
+        var sankey = {},
+                nodeWidth = 24,
+                nodePadding = 8,
+                size = [1, 1],
+                nodes = [],
+                links = [];
+
+        sankey.nodeWidth = function(_) {
+            if (!arguments.length) return nodeWidth;
+            nodeWidth = +_;
+            return sankey;
+        };
+
+        sankey.nodePadding = function(_) {
+            if (!arguments.length) return nodePadding;
+            nodePadding = +_;
+            return sankey;
+        };
+
+        sankey.nodes = function(_) {
+            if (!arguments.length) return nodes;
+            nodes = _;
+            return sankey;
+        };
+
+        sankey.links = function(_) {
+            if (!arguments.length) return links;
+            links = _;
+            return sankey;
+        };
+
+        sankey.size = function(_) {
+            if (!arguments.length) return size;
+            size = _;
+            return sankey;
+        };
+
+        sankey.layout = function(iterations) {
+            computeNodeLinks();
+            computeNodeValues();
+            computeNodeBreadths();
+            computeNodeDepths(iterations);
+            computeLinkDepths();
+            return sankey;
+        };
+
+        sankey.relayout = function() {
+            computeLinkDepths();
+            return sankey;
+        };
+
+        sankey.link = function() {
+            var curvature = .5;
+
+            function link(d) {
+                var x0 = d.source.x + d.source.dx,
+                        x1 = d.target.x,
+                        xi = d3.interpolateNumber(x0, x1),
+                        x2 = xi(curvature),
+                        x3 = xi(1 - curvature),
+                        y0 = d.source.y + d.sy + d.dy / 2,
+                        y1 = d.target.y + d.ty + d.dy / 2;
+                return "M" + x0 + "," + y0
+                        + "C" + x2 + "," + y0
+                        + " " + x3 + "," + y1
+                        + " " + x1 + "," + y1;
+            }
+
+            link.curvature = function(_) {
+                if (!arguments.length) return curvature;
+                curvature = +_;
+                return link;
+            };
+
+            return link;
+        };
+
+        // Populate the sourceLinks and targetLinks for each node.
+        // Also, if the source and target are not objects, assume they are indices.
+        function computeNodeLinks() {
+            nodes.forEach(function(node) {
+                node.sourceLinks = [];
+                node.targetLinks = [];
+            });
+            links.forEach(function(link) {
+                var source = link.source,
+                        target = link.target;
+                if (typeof source === "number") source = link.source = nodes[link.source];
+                if (typeof target === "number") target = link.target = nodes[link.target];
+                source.sourceLinks.push(link);
+                target.targetLinks.push(link);
+            });
+        }
+
+        // Compute the value (size) of each node by summing the associated links.
+        function computeNodeValues() {
+            nodes.forEach(function(node) {
+                if(!node.value){
+                    node.value = Math.max(
+                            d3.sum(node.sourceLinks, value),
+                            d3.sum(node.targetLinks, value)
+                    );
+                }
+            });
+        }
+
+        // Iteratively assign the breadth (x-position) for each node.
+        // Nodes are assigned the maximum breadth of incoming neighbors plus one;
+        // nodes with no incoming links are assigned breadth zero, while
+        // nodes with no outgoing links are assigned the maximum breadth.
+        function computeNodeBreadths() {
+            var remainingNodes = nodes,
+                    nextNodes,
+                    x = 0;
+
+            while (remainingNodes.length) {
+                nextNodes = [];
+                remainingNodes.forEach(function(node) {
+                    node.x = x;
+                    node.dx = nodeWidth;
+                    node.sourceLinks.forEach(function(link) {
+                        if (nextNodes.indexOf(link.target) < 0) {
+                            nextNodes.push(link.target);
+                        }
+                    });
+                });
+                remainingNodes = nextNodes;
+                ++x;
+            }
+
+            //
+            moveSinksRight(x);
+            scaleNodeBreadths((size[0] - nodeWidth) / (x - 1));
+        }
+
+        function moveSourcesRight() {
+            nodes.forEach(function(node) {
+                if (!node.targetLinks.length) {
+                    node.x = d3.min(node.sourceLinks, function(d) { return d.target.x; }) - 1;
+                }
+            });
+        }
+
+        function moveSinksRight(x) {
+            nodes.forEach(function(node) {
+                if (!node.sourceLinks.length) {
+                    node.x = x - 1;
+                }
+            });
+        }
+
+        function scaleNodeBreadths(kx) {
+            nodes.forEach(function(node) {
+                node.x *= kx;
+            });
+        }
+
+        function computeNodeDepths(iterations) {
+            var nodesByBreadth = d3.nest()
+                    .key(function(d) { return d.x; })
+                    .sortKeys(d3.ascending)
+                    .entries(nodes)
+                    .map(function(d) { return d.values; });
+
+            //
+            initializeNodeDepth();
+            resolveCollisions();
+            for (var alpha = 1; iterations > 0; --iterations) {
+                relaxRightToLeft(alpha *= .99);
+                resolveCollisions();
+                relaxLeftToRight(alpha);
+                resolveCollisions();
+            }
+
+            function initializeNodeDepth() {
+                var ky = d3.min(nodesByBreadth, function(nodes) {
+                    return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value);
+                });
+                nodesByBreadth.forEach(function(nodes) {
+                    nodes.forEach(function(node, i) {
+                        node.y = i;
+                        node.dy = node.value * ky;
+                    });
+                });
+
+                links.forEach(function(link) {
+                    link.dy = link.value * ky;
+                });
+            }
+
+            function relaxLeftToRight(alpha) {
+                nodesByBreadth.forEach(function(nodes, breadth) {
+                    nodes.forEach(function(node) {
+                        if (node.targetLinks.length) {
+                            var y = d3.sum(node.targetLinks, weightedSource) / d3.sum(node.targetLinks, value);
+                            node.y += (y - center(node)) * alpha;
+                        }
+                    });
+                });
+
+                function weightedSource(link) {
+                    return center(link.source) * link.value;
+                }
+            }
+
+            function relaxRightToLeft(alpha) {
+                nodesByBreadth.slice().reverse().forEach(function(nodes) {
+                    nodes.forEach(function(node) {
+                        if (node.sourceLinks.length) {
+                            var y = d3.sum(node.sourceLinks, weightedTarget) / d3.sum(node.sourceLinks, value);
+                            node.y += (y - center(node)) * alpha;
+                        }
+                    });
+                });
+
+                function weightedTarget(link) {
+                    return center(link.target) * link.value;
+                }
+            }
+
+            function resolveCollisions() {
+                nodesByBreadth.forEach(function(nodes) {
+                    var node,
+                            dy,
+                            y0 = 0,
+                            n = nodes.length,
+                            i;
+
+                    // Push any overlapping nodes down.
+                    nodes.sort(ascendingDepth);
+                    for (i = 0; i < n; ++i) {
+                        node = nodes[i];
+                        dy = y0 - node.y;
+                        if (dy > 0) node.y += dy;
+                        y0 = node.y + node.dy + nodePadding;
+                    }
+
+                    // If the bottommost node goes outside the bounds, push it back up.
+                    dy = y0 - nodePadding - size[1];
+                    if (dy > 0) {
+                        y0 = node.y -= dy;
+
+                        // Push any overlapping nodes back up.
+                        for (i = n - 2; i >= 0; --i) {
+                            node = nodes[i];
+                            dy = node.y + node.dy + nodePadding - y0;
+                            if (dy > 0) node.y -= dy;
+                            y0 = node.y;
+                        }
+                    }
+                });
+            }
+
+            function ascendingDepth(a, b) {
+                return a.y - b.y;
+            }
+        }
+
+        function computeLinkDepths() {
+            nodes.forEach(function(node) {
+                node.sourceLinks.sort(ascendingTargetDepth);
+                node.targetLinks.sort(ascendingSourceDepth);
+            });
+            nodes.forEach(function(node) {
+                var sy = 0, ty = 0;
+                node.sourceLinks.forEach(function(link) {
+                    link.sy = sy;
+                    sy += link.dy;
+                });
+                node.targetLinks.forEach(function(link) {
+                    link.ty = ty;
+                    ty += link.dy;
+                });
+            });
+
+            function ascendingSourceDepth(a, b) {
+                return a.source.y - b.source.y;
+            }
+
+            function ascendingTargetDepth(a, b) {
+                return a.target.y - b.target.y;
+            }
+        }
+
+        function center(node) {
+            return node.y + node.dy / 2;
+        }
+
+        function value(link) {
+            return link.value;
+        }
+
+        return sankey;
+    };
+</script>
+</body>
+</html>

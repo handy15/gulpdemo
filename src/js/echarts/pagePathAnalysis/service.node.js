@@ -1,0 +1,116 @@
+﻿{
+    "totalCount": 1,
+    "data": [{
+    "title": "服务",
+    "visit_num": 68,
+    "value": 68,
+    "leave_rate": "73.53%",
+    "page_visit_num": 1,
+    "retention_num": 18,
+    "i": 0
+}, {
+    "title": "分类",
+    "visit_num": 4,
+    "value": 4,
+    "leave_rate": "75.00%",
+    "page_visit_num": 2,
+    "retention_num": 1,
+    "i": 1
+}, {
+    "title": "服务详情",
+    "visit_num": 4,
+    "value": 4,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 2
+}, {
+    "title": "立即预约",
+    "visit_num": 3,
+    "value": 3,
+    "leave_rate": "0.00%",
+    "page_visit_num": 2,
+    "retention_num": 3,
+    "i": 3
+}, {
+    "title": "更多服务",
+    "visit_num": 2,
+    "value": 2,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 4
+}, {
+    "title": "选择分类",
+    "visit_num": 2,
+    "value": 2,
+    "leave_rate": "50.00%",
+    "page_visit_num": 2,
+    "retention_num": 1,
+    "i": 5
+}, {
+    "title": "家庭保洁",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 6
+}, {
+    "title": "家电清洗",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 7
+}, {
+    "title": "立减活动",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 8
+}, {
+    "title": "服务详情",
+    "visit_num": 3,
+    "value": 3,
+    "leave_rate": "33.33%",
+    "page_visit_num": 3,
+    "retention_num": 2,
+    "i": 9
+}, {
+    "title": "更多服务",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "0.00%",
+    "page_visit_num": 3,
+    "retention_num": 1,
+    "i": 10
+}, {
+    "title": "服务认证",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 3,
+    "retention_num": 0,
+    "i": 11
+}, {
+    "title": "常用地址管理",
+    "visit_num": 2,
+    "value": 2,
+    "leave_rate": "100.00%",
+    "page_visit_num": 4,
+    "retention_num": 0,
+    "i": 12
+}, {
+    "title": "清洗养护",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 4,
+    "retention_num": 0,
+    "i": 13
+}]
+}

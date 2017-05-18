@@ -1,0 +1,148 @@
+﻿{
+    "totalCount": 1,
+    "data": [{
+    "title": "活动",
+    "visit_num": 281,
+    "value": 281,
+    "leave_rate": "76.51%",
+    "page_visit_num": 1,
+    "retention_num": 66,
+    "i": 0
+}, {
+    "title": "发布活动",
+    "visit_num": 38,
+    "value": 38,
+    "leave_rate": "73.68%",
+    "page_visit_num": 2,
+    "retention_num": 10,
+    "i": 1
+}, {
+    "title": "活动详情",
+    "visit_num": 23,
+    "value": 23,
+    "leave_rate": "86.96%",
+    "page_visit_num": 2,
+    "retention_num": 3,
+    "i": 2
+}, {
+    "title": "运动",
+    "visit_num": 2,
+    "value": 2,
+    "leave_rate": "50.00%",
+    "page_visit_num": 2,
+    "retention_num": 1,
+    "i": 3
+}, {
+    "title": "会议",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 4
+}, {
+    "title": "娱乐",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 5
+}, {
+    "title": "讲座沙龙",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 2,
+    "retention_num": 0,
+    "i": 6
+}, {
+    "title": "活动描述",
+    "visit_num": 5,
+    "value": 5,
+    "leave_rate": "100.00%",
+    "page_visit_num": 3,
+    "retention_num": 0,
+    "i": 7
+}, {
+    "title": "户外",
+    "visit_num": 3,
+    "value": 3,
+    "leave_rate": "100.00%",
+    "page_visit_num": 3,
+    "retention_num": 0,
+    "i": 8
+}, {
+    "title": "活动详情",
+    "visit_num": 2,
+    "value": 2,
+    "leave_rate": "100.00%",
+    "page_visit_num": 3,
+    "retention_num": 0,
+    "i": 9
+}, {
+    "title": "演出",
+    "visit_num": 2,
+    "value": 2,
+    "leave_rate": "0.00%",
+    "page_visit_num": 3,
+    "retention_num": 2,
+    "i": 10
+}, {
+    "title": "兴趣",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "0.00%",
+    "page_visit_num": 3,
+    "retention_num": 1,
+    "i": 11
+}, {
+    "title": "娱乐",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 3,
+    "retention_num": 0,
+    "i": 12
+}, {
+    "title": "兴趣",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "0.00%",
+    "page_visit_num": 4,
+    "retention_num": 1,
+    "i": 13
+}, {
+    "title": "娱乐",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 4,
+    "retention_num": 0,
+    "i": 14
+}, {
+    "title": "户外",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "0.00%",
+    "page_visit_num": 4,
+    "retention_num": 1,
+    "i": 15
+}, {
+    "title": "娱乐",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 5,
+    "retention_num": 0,
+    "i": 16
+}, {
+    "title": "户外",
+    "visit_num": 1,
+    "value": 1,
+    "leave_rate": "100.00%",
+    "page_visit_num": 5,
+    "retention_num": 0,
+    "i": 17
+}]
+}

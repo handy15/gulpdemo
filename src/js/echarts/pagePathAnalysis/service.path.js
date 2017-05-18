@@ -1,0 +1,270 @@
+﻿{
+    "totalCount": 1,
+    "data": [{
+    "source_title": "服务",
+    "source": 0,
+    "value": "4",
+    "target": 1,
+    "path_num": 4,
+    "target_title": "分类"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "4",
+    "target": 2,
+    "path_num": 4,
+    "target_title": "服务详情"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "3",
+    "target": 3,
+    "path_num": 3,
+    "target_title": "立即预约"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "2",
+    "target": 4,
+    "path_num": 2,
+    "target_title": "更多服务"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "2",
+    "target": 5,
+    "path_num": 2,
+    "target_title": "选择分类"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "1",
+    "target": 6,
+    "path_num": 1,
+    "target_title": "家庭保洁"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "1",
+    "target": 7,
+    "path_num": 1,
+    "target_title": "家电清洗"
+}, {
+    "source_title": "服务",
+    "source": 0,
+    "value": "1",
+    "target": 8,
+    "path_num": 1,
+    "target_title": "立减活动"
+}, {
+    "source_title": "分类",
+    "source": 1,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "分类",
+    "source": 1,
+    "value": "1",
+    "target": 10,
+    "path_num": 1,
+    "target_title": "更多服务"
+}, {
+    "source_title": "分类",
+    "source": 1,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "服务详情",
+    "source": 2,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "服务详情",
+    "source": 2,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "服务详情",
+    "source": 2,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "立即预约",
+    "source": 3,
+    "value": "3",
+    "target": 9,
+    "path_num": 3,
+    "target_title": "服务详情"
+}, {
+    "source_title": "立即预约",
+    "source": 3,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "立即预约",
+    "source": 3,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "更多服务",
+    "source": 4,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "更多服务",
+    "source": 4,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "更多服务",
+    "source": 4,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "选择分类",
+    "source": 5,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "选择分类",
+    "source": 5,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "选择分类",
+    "source": 5,
+    "value": "1",
+    "target": 11,
+    "path_num": 1,
+    "target_title": "服务认证"
+}, {
+    "source_title": "家庭保洁",
+    "source": 6,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "家庭保洁",
+    "source": 6,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "家庭保洁",
+    "source": 6,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "家电清洗",
+    "source": 7,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "家电清洗",
+    "source": 7,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "家电清洗",
+    "source": 7,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "立减活动",
+    "source": 8,
+    "value": "0.01",
+    "target": 9,
+    "path_num": 0,
+    "target_title": "服务详情"
+}, {
+    "source_title": "立减活动",
+    "source": 8,
+    "value": "0.01",
+    "target": 10,
+    "path_num": 0,
+    "target_title": "更多服务"
+}, {
+    "source_title": "立减活动",
+    "source": 8,
+    "value": "0.01",
+    "target": 11,
+    "path_num": 0,
+    "target_title": "服务认证"
+}, {
+    "source_title": "服务详情",
+    "source": 9,
+    "value": "2",
+    "target": 12,
+    "path_num": 2,
+    "target_title": "常用地址管理"
+}, {
+    "source_title": "服务详情",
+    "source": 9,
+    "value": "0.01",
+    "target": 13,
+    "path_num": 0,
+    "target_title": "清洗养护"
+}, {
+    "source_title": "更多服务",
+    "source": 10,
+    "value": "0.01",
+    "target": 12,
+    "path_num": 0,
+    "target_title": "常用地址管理"
+}, {
+    "source_title": "更多服务",
+    "source": 10,
+    "value": "1",
+    "target": 13,
+    "path_num": 1,
+    "target_title": "清洗养护"
+}, {
+    "source_title": "服务认证",
+    "source": 11,
+    "value": "0.01",
+    "target": 12,
+    "path_num": 0,
+    "target_title": "常用地址管理"
+}, {
+    "source_title": "服务认证",
+    "source": 11,
+    "value": "0.01",
+    "target": 13,
+    "path_num": 0,
+    "target_title": "清洗养护"
+}]
+}
