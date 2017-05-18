@@ -88,7 +88,7 @@
         //获取桑基图的nodes数据
         $.ajax({
             type : "get",
-            url :"/js/echarts/pagePathAnalysis/" + fileName +".node.js",
+            url :"/js/data/" + fileName +".node.js",
             data : {},
             dataType:'json',
             success : function(rjson) {
@@ -120,7 +120,7 @@
         //获取桑基图的paths数据
         $.ajax({
             type : "get",
-            url :"/js/echarts/pagePathAnalysis/" + fileName +".path.js",
+            url :"/js/data/" + fileName +".path.js",
             data : {},
             dataType:'json',
             success : function(rjson) {
