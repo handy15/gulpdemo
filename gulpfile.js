@@ -271,9 +271,19 @@ gulp.task('revStyles', function() {
 
 // 脚本
 gulp.task('revScripts', function() {
-    return gulp.src(PATH.dest.js + '/**/*.js')
+    gulp.src([PATH.dest.js + '/**/*.js','!'+PATH.dest.js + '/**/data/*.js'])
         .pipe(rev())
         .pipe(uglify())
+        //.on('error', function (e) {
+        //    console.log(e)
+        //})
+        .pipe(gulp.dest(PATH.rev.js))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(PATH.MD5.js));
+
+    //json数据的js发布
+    gulp.src([PATH.dest.js + '/**/data/*.js'])
+        .pipe(rev())
         .pipe(gulp.dest(PATH.rev.js))
         .pipe(rev.manifest())
         .pipe(gulp.dest(PATH.MD5.js));
